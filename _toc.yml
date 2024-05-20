@@ -3,10 +3,12 @@
 
 format: jb-book
 root: index
-chapters:
-  - file: book/markdown
-  - file: book/notebooks
-  - file: book/bibliography
+parts:
+  -caption: Deep Learning
+  chapters:
+    - file: book/markdown
+    - file: book/notebooks
+    - file: book/bibliography
 
 # Or you organize the TOC by parts
 
