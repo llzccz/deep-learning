@@ -1,6 +1,6 @@
 # **Deep Learning Open Book** 
 
-<center><img src=assets/images/ing.png" width="70%" class="bg-white mb-1" ><br> Image: What is DeepLearning</center>
+<center><img src="https://github.com/llzccz/deep-learning/blob/main/assets/images/ing.png" width="70%" class="bg-white mb-1" ><br> Image: What is DeepLearning</center>
 
 <!-- `````{grid} 2
 :reverse:
