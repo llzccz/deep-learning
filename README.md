@@ -1,20 +1,20 @@
-# Deep Learning
+# JackW_DL
 
-This cookiecutter creates a simple boilerplate for a Jupyter Book.
+A Deep Learning Open Book created by JackWang
 
 ## Usage
 
 ### Building the book
 
-If you'd like to develop and/or build the Deep Learning book, you should:
+If you'd like to develop and/or build the JackW_DL book, you should:
 
 1. Clone this repository
 2. Run `pip install -r requirements.txt` (it is recommended you do this within a virtual environment)
-3. (Optional) Edit the books source files located in the `deep-learning/` directory
-4. Run `jupyter-book clean deep-learning/` to remove any existing builds
-5. Run `jupyter-book build deep-learning/`
+3. (Optional) Edit the books source files located in the `JackW_DL/` directory
+4. Run `jupyter-book clean JackW_DL/` to remove any existing builds
+5. Run `jupyter-book build JackW_DL/`
 
-A fully-rendered HTML version of the book will be built in `deep-learning/_build/html/`.
+A fully-rendered HTML version of the book will be built in `JackW_DL/_build/html/`.
 
 ### Hosting the book
 
@@ -24,7 +24,7 @@ For GitHub and GitLab deployment specifically, the [cookiecutter-jupyter-book](h
 
 ## Contributors
 
-We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/llzccz/deep-learning/graphs/contributors).
+We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/JackWang0318/JackW_DL/graphs/contributors).
 
 ## Credits
 
