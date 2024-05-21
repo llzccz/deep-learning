@@ -1,0 +1,1005 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Autoencoder &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/autoencoder';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/autoencoder.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Object detection" href="object-detection.html" />
+    <link rel="prev" title="Time series" href="time-series.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Time series</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/autoencoder.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/autoencoder.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/autoencoder.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/autoencoder.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/deep-learning/autoencoder.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Autoencoder</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning">Unsupervised Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fully-connected-autoencoder">Fully-connected Autoencoder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-autoencoder-applications">Potential Autoencoder Applications</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-autoencoder">Convolutional Autoencoder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-study">Self study</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span> 
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="autoencoder">
+<h1>Autoencoder<a class="headerlink" href="#autoencoder" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>An autoencoder is a type of artificial neural network used to learn efficient codings of unlabeled data (unsupervised learning). An autoencoder learns two functions: an encoding function that transforms the input data, and a decoding function that recreates the input data from the encoded representation. The autoencoder learns an efficient representation (encoding) for a set of data, typically for dimensionality reduction.</p>
+</section>
+<section id="unsupervised-learning">
+<h2>Unsupervised Learning<a class="headerlink" href="#unsupervised-learning" title="Link to this heading">#</a></h2>
+<p>Autoencoder is a kind of unsupervised learning, which means working with datasets without considering a target variable. There are some Applications and Goals for it:</p>
+<ul class="simple">
+<li><p>Finding hidden structures in data.</p></li>
+<li><p>Data compression.</p></li>
+<li><p>Clustering.</p></li>
+<li><p>Retrieving similar objects.</p></li>
+<li><p>Exploratory data analysis.</p></li>
+<li><p>Generating new examples.</p></li>
+</ul>
+<p>And for unsupervised learning, its main Principal Component Analysis (PCA) is:</p>
+<ul class="simple">
+<li><p>Find directions of maximum variance</p></li>
+</ul>
+<figure class="align-default" id="id1">
+<img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/01_PCA1.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/01_PCA1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 14 </span><span class="caption-text">Illustration of PCA</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Transform features onto directions of maximum variance</p></li>
+</ul>
+<figure class="align-default" id="id2">
+<img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/02_PCA2.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/02_PCA2.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 15 </span><span class="caption-text">Illustration of PCA</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p>Usually consider a subset of vectors of most variance (dimensionality reduction)</p></li>
+</ul>
+<figure class="align-default" id="id3">
+<img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/03_PCA3.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/03_PCA3.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 16 </span><span class="caption-text">Illustration of PCA</span><a class="headerlink" href="#id3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="fully-connected-autoencoder">
+<h2>Fully-connected Autoencoder<a class="headerlink" href="#fully-connected-autoencoder" title="Link to this heading">#</a></h2>
+<p>Here is an example of a basic fully-connected autoencoder</p>
+<figure class="align-default" id="id4">
+<img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/04_simple.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/04_simple.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Illustration of Fully Connected autoencoder</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If we don’t use non-linear activation functions and minimize the MSE, this is very similar to PCA. However, the latent dimensions will not necessarily be orthogonal and will have same variance.</p>
+</div>
+<p>The loss function of this simple model is
+$<span class="math notranslate nohighlight">\(L(x, x') = \left\lVert x - x' \right\rVert^2_2 = \sum_i (x_i - x_i')^2\)</span>$</p>
+<section id="potential-autoencoder-applications">
+<h3>Potential Autoencoder Applications<a class="headerlink" href="#potential-autoencoder-applications" title="Link to this heading">#</a></h3>
+<p>And there are some potential autoencoder applications, for example:</p>
+<ul class="simple">
+<li><p>After training, disregard the output part, we can use embedding as input to classic machine learning methods (SVM, KNN, Random Forest, …).</p></li>
+<li><p>Similar to transfer learning, we can train autoencoder on large image dataset, then fine tune encoder part on your own, smaller dataset and/or provide your own output (classification) layer.</p></li>
+<li><p>Latent space can also be used for visualization (EDA, clustering), but there are better methods for that.</p></li>
+</ul>
+</section>
+</section>
+<section id="convolutional-autoencoder">
+<h2>Convolutional Autoencoder<a class="headerlink" href="#convolutional-autoencoder" title="Link to this heading">#</a></h2>
+<p>For convolutional autoencoder, we mainly use transposed convolution construct the output, and transposed convolution (sometimes called “deconvolution”) allows us to increase the size of the output feature map compared to the input feature map.</p>
+<p>The difference between regular convolution and transposed convolution can be seen from the following image.</p>
+<figure class="align-default" id="id5">
+<img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/05_diff_conv.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/05_diff_conv.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Difference between regular and transposed convolution</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In transposed convolutions, we stride over the output; hence, larger strides will result in larger outputs (opposite to regular convolutions); and we pad the output; hence, larger padding will result in smaller output maps.</p>
+<p>So, the whole model consists of two parts, encoder and decoder, and they are composed with regular convolution and transposed convolution respectively.</p>
+<figure class="align-default" id="id6">
+<img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/06_convmodel.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/autoencoder/06_convmodel.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Structure of convoluted autoencoder</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here is some other tricks to help our training:</p>
+<ol class="arabic simple">
+<li><p>Add dropout layers to force networks to learn redundant features.</p></li>
+<li><p>Add dropout after the input, or add noise to the input to learn to denoise images.</p></li>
+<li><p>Add L1 penalty to the loss to learn sparse feature representations.</p></li>
+</ol>
+</div>
+</section>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>Let’s build a 2-layers auto-encoder with TensorFlow to compress images to a lower latent space and then reconstruct them. And this project will be done on MNIST dataste.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>MNIST Dataset parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_features</span> <span class="o">=</span> <span class="mi">784</span> <span class="c1"># data features (img shape: 28*28).</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Training parameters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">training_steps</span> <span class="o">=</span> <span class="mi">20000</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">display_step</span> <span class="o">=</span> <span class="mi">1000</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Network Parameters</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_hidden_1</span> <span class="o">=</span> <span class="mi">128</span> <span class="c1"># 1st layer num features.</span>
+<span class="n">num_hidden_2</span> <span class="o">=</span> <span class="mi">64</span> <span class="c1"># 2nd layer num features (the latent dim).</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Prepare MNIST data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.datasets</span> <span class="kn">import</span> <span class="n">mnist</span>
+<span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">),</span> <span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+<span class="c1"># Convert to float32.</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span> <span class="o">=</span> <span class="n">x_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">x_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="c1"># Flatten images to 1-D vector of 784 features (28*28).</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span> <span class="o">=</span> <span class="n">x_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_features</span><span class="p">]),</span> <span class="n">x_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_features</span><span class="p">])</span>
+<span class="c1"># Normalize images value from [0, 255] to [0, 1].</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span> <span class="o">=</span> <span class="n">x_train</span> <span class="o">/</span> <span class="mf">255.</span><span class="p">,</span> <span class="n">x_test</span> <span class="o">/</span> <span class="mf">255.</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Use tf.data API to shuffle and batch data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">train_data</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Dataset</span><span class="o">.</span><span class="n">from_tensor_slices</span><span class="p">((</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">test_data</span><span class="o">.</span><span class="n">repeat</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span><span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Store layers weight &amp; bias.
+A random value generator to initialize weights.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_normal</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">RandomNormal</span><span class="p">()</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;encoder_h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_features</span><span class="p">,</span> <span class="n">num_hidden_1</span><span class="p">])),</span>
+    <span class="s1">&#39;encoder_h2&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_hidden_1</span><span class="p">,</span> <span class="n">num_hidden_2</span><span class="p">])),</span>
+    <span class="s1">&#39;decoder_h1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_hidden_2</span><span class="p">,</span> <span class="n">num_hidden_1</span><span class="p">])),</span>
+    <span class="s1">&#39;decoder_h2&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_hidden_1</span><span class="p">,</span> <span class="n">num_features</span><span class="p">])),</span>
+<span class="p">}</span>
+<span class="n">biases</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;encoder_b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_hidden_1</span><span class="p">])),</span>
+    <span class="s1">&#39;encoder_b2&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_hidden_2</span><span class="p">])),</span>
+    <span class="s1">&#39;decoder_b1&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_hidden_1</span><span class="p">])),</span>
+    <span class="s1">&#39;decoder_b2&#39;</span><span class="p">:</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">random_normal</span><span class="p">([</span><span class="n">num_features</span><span class="p">])),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Building the encoder.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Encoder Hidden layer with sigmoid activation.</span>
+    <span class="n">layer_1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;encoder_h1&#39;</span><span class="p">]),</span>
+                                   <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;encoder_b1&#39;</span><span class="p">]))</span>
+    <span class="c1"># Encoder Hidden layer with sigmoid activation.</span>
+    <span class="n">layer_2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_1</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;encoder_h2&#39;</span><span class="p">]),</span>
+                                   <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;encoder_b2&#39;</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">layer_2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Building the decoder.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">decoder</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Decoder Hidden layer with sigmoid activation.</span>
+    <span class="n">layer_1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;decoder_h1&#39;</span><span class="p">]),</span>
+                                   <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;decoder_b1&#39;</span><span class="p">]))</span>
+    <span class="c1"># Decoder Hidden layer with sigmoid activation.</span>
+    <span class="n">layer_2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">layer_1</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="s1">&#39;decoder_h2&#39;</span><span class="p">]),</span>
+                                   <span class="n">biases</span><span class="p">[</span><span class="s1">&#39;decoder_b2&#39;</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">layer_2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Mean square loss between original images and reconstructed ones.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mean_square</span><span class="p">(</span><span class="n">reconstructed</span><span class="p">,</span> <span class="n">original</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="n">original</span> <span class="o">-</span> <span class="n">reconstructed</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Adam optimizer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Optimization process.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_optimization</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="c1"># Wrap computation inside a GradientTape for automatic differentiation.</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">g</span><span class="p">:</span>
+        <span class="n">reconstructed_image</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">encoder</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">mean_square</span><span class="p">(</span><span class="n">reconstructed_image</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Variables to update, i.e. trainable variables.</span>
+    <span class="n">trainable_variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">weights</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">biases</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    
+    <span class="c1"># Compute gradients.</span>
+    <span class="n">gradients</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">trainable_variables</span><span class="p">)</span>
+    
+    <span class="c1"># Update W and b following gradients.</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">gradients</span><span class="p">,</span> <span class="n">trainable_variables</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">loss</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Run training for the given number of steps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="p">(</span><span class="n">batch_x</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">training_steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)):</span>
+    
+    <span class="c1"># Run the optimization.</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">run_optimization</span><span class="p">(</span><span class="n">batch_x</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">step</span> <span class="o">%</span> <span class="n">display_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;step: </span><span class="si">%i</span><span class="s2">, loss: </span><span class="si">%f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">step</span><span class="p">,</span> <span class="n">loss</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>step: 0, loss: 0.234978
+step: 1000, loss: 0.016520
+step: 2000, loss: 0.010679
+step: 3000, loss: 0.008460
+step: 4000, loss: 0.007236
+step: 5000, loss: 0.006323
+step: 6000, loss: 0.006220
+step: 7000, loss: 0.005524
+step: 8000, loss: 0.005355
+step: 9000, loss: 0.005005
+step: 10000, loss: 0.004884
+step: 11000, loss: 0.004767
+step: 12000, loss: 0.004663
+step: 13000, loss: 0.004198
+step: 14000, loss: 0.004016
+step: 15000, loss: 0.003990
+step: 16000, loss: 0.004066
+step: 17000, loss: 0.004013
+step: 18000, loss: 0.003900
+step: 19000, loss: 0.003652
+step: 20000, loss: 0.003604
+</pre></div>
+</div>
+</div>
+</div>
+<p>Testing and Visualization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Encode and decode images from test set and visualize their reconstruction.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">canvas_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">28</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span>
+<span class="n">canvas_recon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">28</span> <span class="o">*</span> <span class="n">n</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">batch_x</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span>
+    <span class="c1"># Encode and decode the digit image.</span>
+    <span class="n">reconstructed_images</span> <span class="o">=</span> <span class="n">decoder</span><span class="p">(</span><span class="n">encoder</span><span class="p">(</span><span class="n">batch_x</span><span class="p">))</span>
+    <span class="c1"># Display original images.</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Draw the generated digits.</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">batch_x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">])</span>
+        <span class="n">canvas_orig</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">28</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="n">j</span> <span class="o">*</span> <span class="mi">28</span><span class="p">:(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">28</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+    <span class="c1"># Display reconstructed images.</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="c1"># Draw the generated digits.</span>
+        <span class="n">reconstr_img</span> <span class="o">=</span> <span class="n">reconstructed_images</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">])</span>
+        <span class="n">canvas_recon</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="mi">28</span><span class="p">:(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="n">j</span> <span class="o">*</span> <span class="mi">28</span><span class="p">:(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">28</span><span class="p">]</span> <span class="o">=</span> <span class="n">reconstr_img</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original Images&quot;</span><span class="p">)</span>     
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">canvas_orig</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reconstructed Images&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">canvas_recon</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;upper&quot;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original Images
+</pre></div>
+</div>
+<img alt="../_images/45818e7923bf42c1c8e9a5454d8be5967502bc9178bb9988955d9d7c41192a75.png" src="../_images/45818e7923bf42c1c8e9a5454d8be5967502bc9178bb9988955d9d7c41192a75.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reconstructed Images
+</pre></div>
+</div>
+<img alt="../_images/a44d74d3691736555e47fa156186f0710fb8c244ef083318e956016ac9a43874.png" src="../_images/a44d74d3691736555e47fa156186f0710fb8c244ef083318e956016ac9a43874.png" />
+</div>
+</div>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<!-- You can get a better understanding of autoencoders by practicing the three examples given in the [autoencoder](../assignments/deep-learning/autoencoder/autoencoder.ipynb) notebook. -->
+<!-- Assignment - [Base denoising autoencoder dimension reduction](../assignments/deep-learning/autoencoder/base-denoising-autoencoder-dimension-reduction.ipynb) -->
+</section>
+<section id="self-study">
+<h2>Self study<a class="headerlink" href="#self-study" title="Link to this heading">#</a></h2>
+<p>You can refer to this book chapter for further study:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.deeplearningbook.org/contents/autoencoders.html">deeplearningbook</a></p></li>
+</ul>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://github.com/rasbt">Sebastian Raschka</a> for creating the open-source project <a class="reference external" href="https://github.com/rasbt/stat453-deep-learning-ss20">stat453-deep-learning-ss20</a> and <a class="reference external" href="https://github.com/aymericdamien">Aymeric Damien</a> for creating the open-source project <a class="reference external" href="https://github.com/aymericdamien/TensorFlow-Examples/">TensorFlow-Examples</a>. They inspire the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="time-series.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Time series</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="object-detection.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Object detection</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unsupervised-learning">Unsupervised Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fully-connected-autoencoder">Fully-connected Autoencoder</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#potential-autoencoder-applications">Potential Autoencoder Applications</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-autoencoder">Convolutional Autoencoder</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-study">Self study</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

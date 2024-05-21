@@ -1,0 +1,733 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Intro to Deep Learning &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/dl-overview';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/dl-overview.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Neural Networks" href="nn.html" />
+    <link rel="prev" title="Deep Learning Open Book" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/dl-overview.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/dl-overview.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/dl-overview.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/dl-overview.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/deep-learning/dl-overview.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Intro to Deep Learning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-deep-learning">Why Deep Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-single-hidden-layer-neural-network">A Single Hidden Layer Neural Network</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-activation-functions">Common Activation Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-deep-learning-architectures">Types of Deep Learning Architectures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#densely-connected-networks">Densely Connected Networks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks">Convolutional Neural Networks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-rnns">Recurrent Neural Networks (RNNs)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers">Transformers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-in-training-neural-networks">Challenges in Training Neural Networks</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="intro-to-deep-learning">
+<h1>Intro to Deep Learning<a class="headerlink" href="#intro-to-deep-learning" title="Link to this heading">#</a></h1>
+<p>Deep Learning is the study of Artificial Neural Networks(ANNs). It is a subset of Machine Learning (ML), ML being a subset of Artificial Intelligence.</p>
+<p>Inspired by the human brain’s biological neuron, ANNs has become the building block of modern intelligent systems, from our smartphones that can accurately identify our faces and voices, streaming services (like YouTube and Netflix) that know exactly what we want to watch, cars that can see the visual world and drive themselves, and not to mention AlphaGo that won world chess competition.</p>
+<p>This notebook will introduce a high level overview of Deep Learning.</p>
+<section id="why-deep-learning">
+<h2>Why Deep Learning<a class="headerlink" href="#why-deep-learning" title="Link to this heading">#</a></h2>
+<p>Deep Learning is used to extract the patterns in (a huge amount of) data. Its potential has been seen in complex problems such as vision oriented and natural language.</p>
+<p>Let’s take an example to develop more intuitive understanding of why deep learning has became so popular. Let’s say that as an Engineer, you are asked by your city state to build a program that can recognize car and truck moving in a given road. The program can later be deployed in a less loads-road to warn trucks that pass there that the road was not designed for these types of vehicles.</p>
+<p>With normal programming, you would have to provide and to write all instructions (codes) of that particular program. The chance (close to reality) is that it would be hard, mostly because there are different types of cars and trucks and each can be unique in its ways, which can make it hard to write the rules forming such program.</p>
+<p>How can deep learning solve that? Well, by feeding the images of cars and trucks to a deep learning model, say a convolutional neural network (more on this latter), it can learn the underlying features of cars and trucks, and thus will be able to recognize each and each. We will see this in practice in later notebooks.</p>
+<p>With the advent of the computation power, both paid and free (Google Colab &amp; Kaggle), open source datasets, and intelligent frameworks such as TensorFlow and PyTorch, it has become very much possible to do deep learning, even at personal level. This was not possible a decade ago.</p>
+</section>
+<section id="a-single-hidden-layer-neural-network">
+<h2>A Single Hidden Layer Neural Network<a class="headerlink" href="#a-single-hidden-layer-neural-network" title="Link to this heading">#</a></h2>
+<p><img src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/Neuralnetwork.png" alt="Neuralnetwork.png"><br> Image: A Single hidden layer neural network, Wikimedia</p>
+<p>The image above represent a single hidden layer neural network. Usually, any typical neural network has 3 main layers:</p>
+<ul class="simple">
+<li><p><strong>Input layer</strong> that takes the input data. The input data can be image, text, or numbers but ofcourse whatever the data type is, the input to a neural network will always have to be in a numeric format.</p></li>
+<li><p><strong>Hidden layer</strong> that is between the input and the output layers. There is a alot of computations that takes place in this layer but that is not in the scope of this notebook.</p></li>
+<li><p><strong>Output layer</strong> that give the output of the network. Output can be a numerical number (mostly in regression problem) or a probability (mostly in classification problem).</p></li>
+</ul>
+<p>A neural network having more than one layer is commonly referred to <code class="docutils literal notranslate"><span class="pre">Deep</span> <span class="pre">Neural</span> <span class="pre">Network(DNN)</span></code>. Also, it is important to note that a neural network can have multiple input layers, multiple hidden layers, and multiple output layers. The structure of how a neural network has to be or its size will mostly depend on the type of a problem being solved.</p>
+<p>With the exception of the input layer, you will find something called activation function being applied to hidden and output layers. What is an activation function?</p>
+</section>
+<section id="common-activation-functions">
+<h2>Common Activation Functions<a class="headerlink" href="#common-activation-functions" title="Link to this heading">#</a></h2>
+<p>Activation functions are used to introduce nonlinearities in the network. I like to say that they dictate the output format of a given layer.</p>
+<p>Or simply put, these type of mathematical functions are used to make a decision of the layer’s output. In later notebooks, this will certainly make sense.</p>
+<p>Here are the 3 most used activation functions:</p>
+<ul class="simple">
+<li><p><strong>ReLU(Rectified Linear Unit)</strong>: This is mostly used in hidden layers and it is a default activation function in most problems that will work well in most cases. ReLU always give the positive outputs, if the input number is greater than 0, the output will be that number. If it’s less than 0, the output will be 0. The whole purpose of this type of activation function is to penalize the negative numbers. ReLu has different versions such as SeLU and LeakyReLU. In most cases, ReLU can only be used in output layer when the problem is a regression type, but this is not a necessity too.</p></li>
+<li><p><strong>Sigmoid</strong>: A sigmoid function gives the probabilistic output (a number between 0 and 1). It can be used in output layers of a classification problem.</p></li>
+<li><p><strong>Softmax</strong>: This type of function is also used in output classification layers, but instead of giving probalistic output, its output is an actual classes. This will make sense in later notebooks.</p></li>
+</ul>
+</section>
+<section id="types-of-deep-learning-architectures">
+<h2>Types of Deep Learning Architectures<a class="headerlink" href="#types-of-deep-learning-architectures" title="Link to this heading">#</a></h2>
+<p>There are 4 main types of deep learning architectures. This is going to be a high level since they will be covered in the next notebooks.</p>
+<section id="densely-connected-networks">
+<h3>Densely Connected Networks<a class="headerlink" href="#densely-connected-networks" title="Link to this heading">#</a></h3>
+<p>Densely connected networks are made of stacks of layers from the input to the output.</p>
+<p>The units (or neurons) of any layer in that type of network are connected to all other units of the next layer. This is why they are also called fully connected layers.</p>
+<p>Densely connected layers are generally used for tabular data. Tabular data are these kinds of data that are in a tabular fashion. An example of tabular data is customer records: you have a column of names, roles, data joined, etc…</p>
+<p><img alt="Densely connected.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/ioMW08ea2.png" />
+<em>Image: Densely connected networks</em></p>
+<p>Dense layers are also used (in the combination of other architectures) as the last layer in either classification or regression problems. The right number of units in the last layer depends on the problem. Take an example: if you are classifying the news into 4 categories, then the last layer will have 4 units. If you are predicting the price of a house given its features, the last layer will have 1 unit.</p>
+<p>Dense networks are mostly used in simple tasks. When it comes to complex things like image recognition or text processing, they fail because they can’t hold spatial features (in image) or can’t learn a sequence in text for instance. But above all, the more deep they become, they tend to have many parameters which can results in having a big network/complex computations.</p>
+</section>
+<section id="convolutional-neural-networks">
+<h3>Convolutional Neural Networks<a class="headerlink" href="#convolutional-neural-networks" title="Link to this heading">#</a></h3>
+<p>CNN’s, a.k.a. Convents are widely known as the go-to neural network architectures for computer vision tasks like image recognition and object detection, but they can also be used in other tasks such as texts and time series processing.</p>
+<p>Convents are typically made of convolution, pooling layers, and fully connected layers at the end. Convolutional layers are used to extract the spatial features in images, and pooling layers are used to compress the resulted feature maps from convolution layers. And fully connected layers for classification purposes.</p>
+<p><img alt="on-IOL-iG.png-2.webp" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/KF4gj3zPD.webp" /></p>
+<p>Convnets are of 3 dimensions. The most popular one is Conv2D that is used in images and videos divided into frames. Conv1D is used in sequential data such as texts, time series, and sounds. A popular sound architecture called WaveNet is made of 10 stacked 1D Convents.</p>
+<p>Conv3D is used in videos and volumetric images such as CT scans.</p>
+</section>
+<section id="recurrent-neural-networks-rnns">
+<h3>Recurrent Neural Networks (RNNs)<a class="headerlink" href="#recurrent-neural-networks-rnns" title="Link to this heading">#</a></h3>
+<p>The standard feedforward network (or call them densely connected network) maps the input to output. RNNs go beyond that. They can maintain the recurrence of data at each time step.</p>
+<p><img alt="TF RNN.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/7kzTaiwxp.png" /></p>
+<p>Due to their ability to preserve the recurrence of information, RNNs are commonly used in sequential data such as texts and time series.</p>
+<p>The basic RNN cells are not efficient at handling large sequences due to a short memory problem. They also suffer from <a class="reference external" href="https://www.youtube.com/watch?v=qhXZsFVxGKo">vanishing gradients</a>.</p>
+<p>The variant of RNNs that are able to handle long sequences is called Long Short Term Memory(LSTM). LSTM has also the ability to handle the sequences of variable lengths.</p>
+<p>A special design difference about the LSTM cell is that it has a gate which is the basis of why it can control the flow of information over many time steps.</p>
+<p>In short, LSTM uses gates to control the flow of information from the current time step to the next time step in the following 4 ways:</p>
+<ul class="simple">
+<li><p>The input gate recognizes the input sequence.</p></li>
+<li><p>Forget gate gets rid of all irrelevant information contained in the input sequence and store relevant information in long term memory.</p></li>
+<li><p>LTSM cell updates update cell’s state values.</p></li>
+<li><p>Output gate controls the information that has to be sent to the next time step.</p></li>
+</ul>
+<p><img alt="Screen Shot 2021-09-01 at 09.22.56.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/avzF2LKrK.png" /></p>
+<p>The ability of LSTMs to handle long-term sequences makes it a suitable neural network architecture for various sequential tasks such as text classification, sentiment analysis, speech recognition, image caption generation, machine translation.</p>
+</section>
+<section id="transformers">
+<h3>Transformers<a class="headerlink" href="#transformers" title="Link to this heading">#</a></h3>
+<p>Although recurrent neural networks are still used for sequential modeling, they have short-term memory problems when used for long sequences, and they are computationally expensive. The RNN’s inability to handle long sequences and expensiveness are the two most motivations of transformers.</p>
+<p>Transformers are one of the latest groundbreaking researches in the natural language community. They are sorely based on the attention mechanisms that learn the relationships between words of the sentence and pays attention to the relevant words.</p>
+<p>One of the most notable things about transformers is that they don’t use any recurrent or convolutional layers. It’s just only attention mechanisms and other standard layers like embedding layer, dense layer, and normalization layers.</p>
+<p>They are commonly used in language tasks such as text classification, question answering, and machine translation.</p>
+<p>There have been <a class="reference external" href="https://arxiv.org/pdf/2101.01169.pdf">researches</a> that show that they can also be used for computer vision tasks, such as image classification, object detection, image segmentation, and image captioning with <a class="reference external" href="https://arxiv.org/pdf/1502.03044.pdf">visual attention</a>.</p>
+<p>To learn more about the transformer, check out its awesome <a class="reference external" href="https://arxiv.org/pdf/1706.03762.pdf">paper</a>.</p>
+<p><img alt="Screen Shot 2021-09-04 at 23.16.48.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/99Ltf-fAy.png" /></p>
+<p>Below is a high level summary of the common neural networks architectures.</p>
+<p><img alt="Deep Learning Architectures.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/dl-overview/jzEyGcRBWM.png" /></p>
+</section>
+</section>
+<section id="challenges-in-training-neural-networks">
+<h2>Challenges in Training Neural Networks<a class="headerlink" href="#challenges-in-training-neural-networks" title="Link to this heading">#</a></h2>
+<p>Training neural networks is a big challenge and this still an area of research. For example, how do you choose a right architecture? Although the type of data can tell the most architecture that should come into picture at first, it is not a trivial question. Take an example, we know CNN as image first algorithm, bit it has been used in some natural language processing and time series tasks, and it can perform well.</p>
+<p>Also, deep learning models have many hyperparameters. Hyperparameters include things like number of layers, number of neurons, learning rate, activation functions, and optimizers (optimizers are used to reduce loss during training).</p>
+<p>All these choices to be make it hard to train neural networks. Although there has been some techniques that can reduce number of chocs to be made, such as transfer learning which motivates reusing the pretrained models, training this type of models is not an easy thing.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><strong>Deep Learning Open Book</strong></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="nn.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Neural Networks</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-deep-learning">Why Deep Learning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-single-hidden-layer-neural-network">A Single Hidden Layer Neural Network</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-activation-functions">Common Activation Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#types-of-deep-learning-architectures">Types of Deep Learning Architectures</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#densely-connected-networks">Densely Connected Networks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks">Convolutional Neural Networks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-rnns">Recurrent Neural Networks (RNNs)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers">Transformers</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges-in-training-neural-networks">Challenges in Training Neural Networks</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

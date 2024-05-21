@@ -1,0 +1,1223 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Diffusion Model &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/difussion-model';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/difussion-model.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Deep Q-learning" href="dqn.html" />
+    <link rel="prev" title="Generative adversarial networks" href="gan.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/difussion-model.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/difussion-model.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/difussion-model.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/difussion-model.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/deep-learning/difussion-model.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Diffusion Model</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation">Expectation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties">Properties</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Properties</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-parameterization-trick">Re-parameterization trick</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-expectation">Mean (Expectation)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Variance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kl-divergence">KL Divergence</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jensen-s-inequality">Jensen’s inequality</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-kl-divergence">Properties of KL Divergence</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evidence-lower-bound-elbo">Evidence lower bound (ELBO)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Properties</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-and-reverse-process">Forward and Reverse process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-schedule">Noise schedule</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-schedule">Linear schedule</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-schedule">Cosine schedule</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-libraries">Import Libraries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-loading">Data Loading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-augmentation">Data Augmentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-schedule-beta">Linear schedule-beta</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython<span class="w"> </span>tensorflow_addons<span class="w"> </span>opencv-python<span class="w"> </span>requests
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="diffusion-model">
+<h1>Diffusion Model<a class="headerlink" href="#diffusion-model" title="Link to this heading">#</a></h1>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading">#</a></h2>
+<p>Before we learn the diffusion model, we have to know some background knowledge in statistics. Perhaps you already have a good mastery of them, let’s review them together.</p>
+<section id="expectation">
+<h3>Expectation<a class="headerlink" href="#expectation" title="Link to this heading">#</a></h3>
+<section id="definition">
+<h4>Definition<a class="headerlink" href="#definition" title="Link to this heading">#</a></h4>
+<p>In probability theory, expectation (also called expected value, mean, average) is a generalization of the weighted average.</p>
+<p><span class="math notranslate nohighlight">\(E[X] = x_1 p_1 + x_2 p2 + ... +x_n p_n = \sum_{i=1}^n x_i p_1\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(x_i\)</span> and <span class="math notranslate nohighlight">\(p_i\)</span> are i-th a possible outcome and its probability, respectively.</p>
+</section>
+<section id="properties">
+<h4>Properties<a class="headerlink" href="#properties" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(E[aX]=aE[X]\)</span> where a is a constant value.</p></li>
+<li><p><span class="math notranslate nohighlight">\(E[X+b]=E[X]+b\)</span> where b is a constant value.</p></li>
+<li><p><span class="math notranslate nohighlight">\(E[X+Y]=E[X]+E[Y]\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="variance">
+<h3>Variance<a class="headerlink" href="#variance" title="Link to this heading">#</a></h3>
+<p>Variance is a measure of dispersion, meaning it is a measure of how far a set of numbers is spread out from their average value.</p>
+<section id="id1">
+<h4>Definition<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<p>The variance of a random variable <span class="math notranslate nohighlight">\(X\)</span> is the expected value of the squared deviation from the expectation of <span class="math notranslate nohighlight">\(X\)</span>.</p>
+</section>
+<section id="id2">
+<h4>Properties<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Var[X]=E[X^2]−E[X]^2\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Var[aX]=a^2 Var[X]\)</span> where a is a constant value.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Var[X+b]=Var[X]\)</span> where b is a constant value.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Var[X+Y]=Var[X]+Var[Y]\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="re-parameterization-trick">
+<h3>Re-parameterization trick<a class="headerlink" href="#re-parameterization-trick" title="Link to this heading">#</a></h3>
+<p>When we sample data from a probability distribution, backpropagation the gradient is not possible because it is a stochastic process. To make it trainable, the re-parameterization trick is useful.</p>
+<p>Let us assume that <span class="math notranslate nohighlight">\(z\)</span> is sampled data from a gaussian distribution which the mean is <span class="math notranslate nohighlight">\(\mu\)</span> and the variance is <span class="math notranslate nohighlight">\(\sigma^2\)</span>. Then, the mean and variance of <span class="math notranslate nohighlight">\(z\)</span> would be <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span>. Therefore, <span class="math notranslate nohighlight">\(z\)</span> can be written as follows.</p>
+<p><span class="math notranslate nohighlight">\(z = N(\mu, \sigma^2 I) = \mu + \sigma \odot \epsilon\)</span>, where <span class="math notranslate nohighlight">\(\epsilon \thicksim N(0, I)\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(\odot\)</span> refers to element-wise product.</p>
+<p>The mean and variance of <span class="math notranslate nohighlight">\(z\)</span> correspond to <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\sigma^2\)</span>, respectively.</p>
+<section id="mean-expectation">
+<h4>Mean (Expectation)<a class="headerlink" href="#mean-expectation" title="Link to this heading">#</a></h4>
+<p><span class="math notranslate nohighlight">\(E[z] = E[\mu+\sigma \odot \epsilon] = E[\mu] + \sigma E[\epsilon] = \mu\)</span></p>
+<p>The expectation of <span class="math notranslate nohighlight">\(\epsilon\)</span> is 0 by definition.</p>
+</section>
+<section id="id3">
+<h4>Variance<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<p><span class="math notranslate nohighlight">\(Var[z] = Var[\mu + \sigma \odot \epsilon] = Var[\sigma \odot \epsilon] = \sigma^2 Var[\epsilon] = \sigma^2\)</span></p>
+<p>The variance of \epsilon is 1 by definition.</p>
+</section>
+</section>
+<section id="kl-divergence">
+<h3>KL Divergence<a class="headerlink" href="#kl-divergence" title="Link to this heading">#</a></h3>
+<p>In mathematical statistics, the Kullback–Leibler divergence (relative entropy), is a type of statistical distance.</p>
+<section id="id4">
+<h4>Definition<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<ol class="arabic simple">
+<li><p>Discrete probability distribution</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(D_{KL}(P||Q) = \sum_{x \in X} P(x) log \frac{P(x)}{Q(x)}\)</span>,where <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> are discrete probability distributions.</p>
+<ol class="arabic simple" start="2">
+<li><p>Continuous probability distribution</p></li>
+</ol>
+<p><span class="math notranslate nohighlight">\(D_{KL} (P||Q) = \int _{− \infty}^{\infty} p(x) log \frac{p(x)}{q(x)}dx\)</span>, where <span class="math notranslate nohighlight">\(p\)</span> and <span class="math notranslate nohighlight">\(q\)</span> denote the probability densities of <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span>.</p>
+</section>
+<section id="jensen-s-inequality">
+<h4>Jensen’s inequality<a class="headerlink" href="#jensen-s-inequality" title="Link to this heading">#</a></h4>
+<p>In mathematics, Jensen’s inequality relates the value of a convex (or concave) function of an integral to the integral of the function.</p>
+<ul class="simple">
+<li><p>Convex function: <span class="math notranslate nohighlight">\(f(E[X]) \leqq E[f(X)]\)</span>;</p></li>
+<li><p>Concave function: <span class="math notranslate nohighlight">\(f(E[X]) \geqq E[f(X)]\)</span>.</p></li>
+</ul>
+</section>
+<section id="properties-of-kl-divergence">
+<h4>Properties of KL Divergence<a class="headerlink" href="#properties-of-kl-divergence" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>KL Divergence is always non-negative;</p></li>
+<li><p>The cross-entropy is always larger than the entropy;</p></li>
+<li><p>Two univariate normal distributions <span class="math notranslate nohighlight">\(P\)</span> and <span class="math notranslate nohighlight">\(Q\)</span> are simplified to <span class="math notranslate nohighlight">\(D_{KL}(P||Q) = log \frac{\sigma_q}{\sigma_p} + \frac{\sigma^2_p + (\mu_p − \mu_q)^2}{2\sigma^2_q} − \frac{1}{2}\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="evidence-lower-bound-elbo">
+<h3>Evidence lower bound (ELBO)<a class="headerlink" href="#evidence-lower-bound-elbo" title="Link to this heading">#</a></h3>
+<p>In variational Bayesian methods, the evidence lower bound (often abbreviated ELBO) is a useful lower bound on the log-likelihood of some observed data.</p>
+<section id="id5">
+<h4>Definition<a class="headerlink" href="#id5" title="Link to this heading">#</a></h4>
+<p><span class="math notranslate nohighlight">\(ELBO := E_{z∼q_{\phi}}[log \frac{pθ(x,z)}{q_{\phi}(z)}]\)</span></p>
+<p>where <span class="math notranslate nohighlight">\(p_{\theta}(x, z)\)</span> is joint distribution of <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(z\)</span>. <span class="math notranslate nohighlight">\(\theta\)</span> and <span class="math notranslate nohighlight">\(\phi\)</span> are parameters.</p>
+<p>ELBO is used to obtain the lower bound of the evidence (or log evidence). The evidence is the likelihood function evaluated at a fixed <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(evidence := log p_{\theta}(x)\)</span></p>
+</section>
+<section id="id6">
+<h4>Properties<a class="headerlink" href="#id6" title="Link to this heading">#</a></h4>
+<ul class="simple">
+<li><p>The evidence is always larger than ELBO;</p></li>
+<li><p>KL Divergence between <span class="math notranslate nohighlight">\(p_{\theta}(z|x)\)</span> and <span class="math notranslate nohighlight">\(q_{\phi}(z)\)</span> equals <span class="math notranslate nohighlight">\(evidence−ELBO\)</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="forward-and-reverse-process">
+<h3>Forward and Reverse process<a class="headerlink" href="#forward-and-reverse-process" title="Link to this heading">#</a></h3>
+<p>The diffusion models make data into a gaussian noise (latent vector) and restore it again. The former is called the forward process, and the latter is called the reverse process.</p>
+<p>In the forward process, we add a gaussian noise to the data step by step (usually hundreds of steps). The transform of an individual step is defined as follows.</p>
+<p><span class="math notranslate nohighlight">\(x_t = q(x_t|x_{t−1}) = N(x_t, \sqrt{1−\beta_t}x_{t−1}, \beta_t I)\)</span></p>
+<p>In the reverse process, we restore image from a gaussian noise (a latent vector). If <span class="math notranslate nohighlight">\(\beta_t\)</span> is small enough, the reverse <span class="math notranslate nohighlight">\(q(x_{t-1}|x_t)\)</span> will also be gaussian. It is noteworthy that the reverse process is tractable when conditioned on <span class="math notranslate nohighlight">\(x_0\)</span>.</p>
+<img src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/diffusion-model/01_structure.png" width="90%" class="bg-white mb-1"></section>
+<section id="noise-schedule">
+<h3>Noise schedule<a class="headerlink" href="#noise-schedule" title="Link to this heading">#</a></h3>
+<p>In diffusion models, the noise schedule define the methodology for iteratively adding noise to an image or for updating a sample based on model outputs. I’ll introduce two type of schedules which are linear schedule and cosine schedule. The linear and cosine schedule were introduced by <a class="reference external" href="https://arxiv.org/abs/2006.11239">Denoising Diffusion Probabilistic Models</a> and <a class="reference external" href="https://arxiv.org/abs/2006.11239">Improved Denoising Diffusion Probabilistic Models</a>, respectively.</p>
+<section id="linear-schedule">
+<h4>Linear schedule<a class="headerlink" href="#linear-schedule" title="Link to this heading">#</a></h4>
+<p>In the linear schedule, <span class="math notranslate nohighlight">\(\beta_t\)</span> changes linearly.</p>
+<img src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/diffusion-model/02_linear.png" width="90%" class="bg-white mb-1">
+<p>Illustration of linear schedule</p>
+</section>
+<section id="cosine-schedule">
+<h4>Cosine schedule<a class="headerlink" href="#cosine-schedule" title="Link to this heading">#</a></h4>
+<p>Alex Nichol and Prafulla Dhariwal proposed the cosine schedule to prevent an image from turning into noise too quickly. They construct a different noise schedule in terms of <span class="math notranslate nohighlight">\(\overline{\alpha_t}\)</span>.</p>
+<p><span class="math notranslate nohighlight">\(\overline{\alpha_t} = \frac{f(t)}{f(0)}\)</span>, <span class="math notranslate nohighlight">\(f(t) = cos(\frac{\frac{t}{T} + s}{1+s} \frac{\pi}{2})^2\)</span>. By definition, the <span class="math notranslate nohighlight">\(\beta_t\)</span> equals <span class="math notranslate nohighlight">\(1 - \frac{\overline{\alpha_t}}{\overline{\alpha_{t-1}}}\)</span>.</p>
+<img src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/diffusion-model/03_cosine.png" width="90%" class="bg-white mb-1">
+<p>Illustration of cosine schedule</p>
+</section>
+</section>
+</section>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<section id="import-libraries">
+<h3>Import Libraries<a class="headerlink" href="#import-libraries" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">zipfile</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">Layer</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Reshape</span><span class="p">,</span> <span class="n">Conv2DTranspose</span><span class="p">,</span> <span class="n">Add</span><span class="p">,</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPool2D</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span>
+                                     <span class="n">Flatten</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">BatchNormalization</span><span class="p">,</span> <span class="n">Input</span><span class="p">,</span> <span class="n">MultiHeadAttention</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span>
+<span class="kn">import</span> <span class="nn">tensorflow_addons</span> <span class="k">as</span> <span class="nn">tfa</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">TIME_STEPS</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">IM_SHAPE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">N_HEADS</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">ATTN_DIM</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">N_GROUPS</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">N_RESNETS</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">2e-4</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">FACTOR</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-loading">
+<h3>Data Loading<a class="headerlink" href="#data-loading" title="Link to this heading">#</a></h3>
+<p>The dataset can be downloaded from <a class="reference external" href="https://www.kaggle.com/datasets/jessicali9530/celeba-dataset">here</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://static-1300131294.cos.ap-shanghai.myqcloud.com/data/deep-learning/diffusion-model/archive.zip&#39;</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">zipfile</span><span class="o">.</span><span class="n">ZipFile</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+    <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s1">&#39;./&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ds_train</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">image_dataset_from_directory</span><span class="p">(</span>
+    <span class="s2">&quot;t/celebA&quot;</span><span class="p">,</span> <span class="n">label_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">image_size</span><span class="o">=</span><span class="p">(</span><span class="n">IM_SHAPE</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">IM_SHAPE</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-preprocessing">
+<h3>Data Preprocessing<a class="headerlink" href="#data-preprocessing" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mf">127.5</span> <span class="o">-</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-augmentation">
+<h3>Data Augmentation<a class="headerlink" href="#data-augmentation" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">augmentation</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">random_flip_left_right</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_dataset</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ds_train</span>
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">preprocess</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">augmentation</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">unbatch</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">buffer_size</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">reshuffle_each_iteration</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">,</span><span class="n">drop_remainder</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">prefetch</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">AUTOTUNE</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="linear-schedule-beta">
+<h3>Linear schedule-beta<a class="headerlink" href="#linear-schedule-beta" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">linear_beta_schedule</span><span class="p">(</span><span class="n">timesteps</span><span class="p">):</span>
+    <span class="n">beta_start</span> <span class="o">=</span> <span class="mf">0.0001</span>
+    <span class="n">beta_end</span> <span class="o">=</span> <span class="mf">0.02</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">beta_start</span><span class="p">,</span> <span class="n">beta_end</span><span class="p">,</span> <span class="n">timesteps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">betas</span> <span class="o">=</span> <span class="n">linear_beta_schedule</span><span class="p">(</span><span class="n">TIME_STEPS</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">betas</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alphas</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">betas</span>
+<span class="n">alphas_cumprod</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="n">alphas</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">sqrt_alphas_cumprod</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">alphas_cumprod</span><span class="p">)</span>
+<span class="n">sqrt_one_minus_alphas_cumprod</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">alphas_cumprod</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extract</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_shape</span><span class="p">):</span>
+    <span class="n">b</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="o">*</span><span class="p">((</span><span class="mi">1</span><span class="p">,)</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))))</span>
+    <span class="k">return</span> <span class="n">output</span>
+
+<span class="k">def</span> <span class="nf">q_sample</span><span class="p">(</span><span class="n">x_start</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">noise</span><span class="p">):</span>
+
+    <span class="n">sqrt_alphas_cumprod_t</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">sqrt_alphas_cumprod</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_start</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">sqrt_one_minus_alphas_cumprod_t</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">sqrt_one_minus_alphas_cumprod</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x_start</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="n">out_sample</span> <span class="o">=</span> <span class="n">sqrt_alphas_cumprod_t</span> <span class="o">*</span> <span class="n">x_start</span> <span class="o">+</span> <span class="n">sqrt_one_minus_alphas_cumprod_t</span> <span class="o">*</span> <span class="n">noise</span><span class="c1">### x_start=x_0, noise = z</span>
+    <span class="k">return</span> <span class="n">out_sample</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PositionalEmbeddings</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">dim</span>
+
+    <span class="k">def</span> <span class="nf">get_timestep_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timesteps</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        From Fairseq.</span>
+<span class="sd">        Build sinusoidal embeddings.</span>
+<span class="sd">        This matches the implementation in tensor2tensor, but differs slightly</span>
+<span class="sd">        from the description in Section 3.5 of &quot;Attention Is All You Need&quot;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">half_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">10000.</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">half_dim</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">range</span><span class="p">(</span><span class="n">half_dim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">*</span> <span class="o">-</span><span class="n">emb</span><span class="p">)</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">timesteps</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">emb</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">emb</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">emb</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">embedding_dim</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">emb</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">emb</span><span class="p">,</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">emb</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_timestep_embedding</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">res_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">filters</span><span class="p">,</span><span class="n">n_groups</span><span class="p">,</span><span class="n">temb</span><span class="p">):</span>
+    <span class="n">previous</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,)(</span><span class="n">x</span><span class="p">)</span> <span class="c1">### Convolution layer with padding same, so that the resolution remains the same</span>
+
+    <span class="c1">### temb represents the time embedding.</span>
+    <span class="c1">### It is passed into the silu activation function and a Dense Layer(Which can change the the embedding dimension )</span>
+    <span class="c1">### We also reshape the time embedding to match the output of 2d convnets.</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">filters</span><span class="p">)(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">temb</span><span class="p">))[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:]</span>
+
+    <span class="c1">### Group Normalization is used.</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">silu</span><span class="p">(</span><span class="n">tfa</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GroupNormalization</span><span class="p">(</span><span class="n">n_groups</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,)(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Project residual</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,)(</span><span class="n">previous</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">add</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">residual</span><span class="p">])</span>  <span class="c1"># Add back residual</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="n">im_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">n_resnets</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">n_groups</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">attn_dim</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span><span class="n">n_heads</span><span class="o">=</span><span class="mi">4</span><span class="p">,):</span>
+    <span class="n">input_1</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">im_shape</span><span class="p">)</span><span class="c1">### image input</span>
+    <span class="n">input_2</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">())</span><span class="c1">### time input</span>
+    <span class="n">t_dim</span> <span class="o">=</span> <span class="n">im_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">16</span>
+
+    <span class="c1"># Entry block</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)(</span><span class="n">input_1</span><span class="p">)</span>
+    <span class="n">temb</span> <span class="o">=</span> <span class="n">PositionalEmbeddings</span><span class="p">(</span><span class="n">t_dim</span><span class="p">)(</span><span class="n">input_2</span><span class="p">)</span><span class="c1">### Create embeddings from the time input_2</span>
+    <span class="n">temb</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">t_dim</span><span class="p">)(</span><span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">gelu</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">t_dim</span><span class="p">)(</span><span class="n">temb</span><span class="p">)))</span><span class="c1">### pass the embedding into the gelu activation function</span>
+
+    <span class="n">hs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="c1">### variable used for storing each resolution level output, in the downward path, to be concatenated to the inputs of the upward path.</span>
+
+    <span class="c1">### Downward Path</span>
+    <span class="k">for</span> <span class="n">filters</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">]:</span><span class="c1">### for every resolution level (32,64,128,256), represent the depth they map to resolutions of (32,16,8,4)</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resnets</span><span class="p">):</span><span class="c1">### we go through each resnet block per resolution level</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">res_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">filters</span><span class="p">,</span><span class="n">n_groups</span><span class="p">,</span><span class="n">temb</span><span class="p">)</span><span class="c1">### resblock</span>
+            <span class="c1">### if the resolution=16 (coinciding with a depth=64), we make the resnet output features attend to each other.</span>
+            <span class="c1">### Note how the attention axes = (1,2). This corresponds to the height and width dimensions.</span>
+            <span class="c1">### Feel free to Check the documentation out :) https://www.tensorflow.org/api_docs/python/tf/keras/layers/MultiHeadAttention.</span>
+            <span class="c1">### query = key = value = x.</span>
+            <span class="c1">### We again use Group Normalization.</span>
+            <span class="k">if</span> <span class="n">filters</span> <span class="o">==</span> <span class="mi">64</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">tfa</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GroupNormalization</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="n">n_groups</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)(</span>
+                    <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">num_heads</span><span class="o">=</span><span class="n">n_heads</span><span class="p">,</span> <span class="n">key_dim</span><span class="o">=</span><span class="n">attn_dim</span><span class="p">,</span> <span class="n">attention_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">)(</span><span class="n">query</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">))</span>
+        <span class="n">hs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="c1">### append the output features to hs</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span><span class="c1">### Downsampling in order to move to the next resolution level</span>
+
+
+    <span class="c1">### Bottleneck</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">res_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="n">n_groups</span><span class="p">,</span><span class="n">temb</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tfa</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GroupNormalization</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="n">n_groups</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)(</span>
+      <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">num_heads</span><span class="o">=</span><span class="n">n_heads</span><span class="p">,</span> <span class="n">key_dim</span><span class="o">=</span><span class="n">attn_dim</span><span class="p">,</span> <span class="n">attention_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">)(</span><span class="n">query</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">))</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">res_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="n">n_groups</span><span class="p">,</span><span class="n">temb</span><span class="p">)</span>
+
+
+    <span class="c1">### Upward path</span>
+    <span class="k">for</span> <span class="n">filters</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">256</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span><span class="mi">32</span><span class="p">]:</span>
+        <span class="c1">### we resize x, to match with the shape of feature outputs (hs) in the downward path</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">resize_with_pad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">hs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">hs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">hs</span><span class="o">.</span><span class="n">pop</span><span class="p">()],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_resnets</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">res_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">filters</span><span class="p">,</span><span class="n">n_groups</span><span class="p">,</span><span class="n">temb</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">filters</span> <span class="o">==</span> <span class="mi">64</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">tfa</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GroupNormalization</span><span class="p">(</span><span class="n">groups</span><span class="o">=</span><span class="n">n_groups</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)(</span>
+                  <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">num_heads</span><span class="o">=</span><span class="n">n_heads</span><span class="p">,</span> <span class="n">key_dim</span><span class="o">=</span><span class="n">attn_dim</span><span class="p">,</span> <span class="n">attention_axes</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="p">)(</span><span class="n">query</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">filters</span> <span class="o">!=</span> <span class="mi">32</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">Conv2DTranspose</span><span class="p">(</span><span class="n">filters</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">strides</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),)(</span><span class="n">x</span><span class="p">)</span><span class="c1">### Upsampling</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">res_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="n">n_groups</span><span class="p">,</span><span class="n">temb</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">Conv2D</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;same&quot;</span><span class="p">,</span> <span class="p">)(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Define the model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">([</span><span class="n">input_1</span><span class="p">,</span><span class="n">input_2</span><span class="p">],</span> <span class="n">outputs</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;unet&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="n">model</span><span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="n">im_shape</span><span class="o">=</span><span class="n">IM_SHAPE</span><span class="p">,</span><span class="n">n_resnets</span><span class="o">=</span><span class="n">N_RESNETS</span><span class="p">,</span><span class="n">n_groups</span><span class="o">=</span><span class="n">N_GROUPS</span><span class="p">,</span><span class="n">attn_dim</span><span class="o">=</span><span class="n">ATTN_DIM</span><span class="p">,</span><span class="n">n_heads</span><span class="o">=</span><span class="n">N_HEADS</span><span class="p">,)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">LRSchedule</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">schedules</span><span class="o">.</span><span class="n">LearningRateSchedule</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_lr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_lr</span> <span class="o">=</span> <span class="n">init_lr</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_lr</span><span class="o">*</span><span class="p">(</span><span class="mi">100000</span><span class="o">/</span><span class="p">(</span><span class="n">step</span><span class="o">+</span><span class="mi">100000</span><span class="p">))</span>
+
+<span class="n">OPTIMIZER</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">LRSchedule</span><span class="p">(</span><span class="mf">1e-4</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">custom_loss</span><span class="p">(</span><span class="n">denoise_model</span><span class="p">,</span> <span class="n">x_start</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">noise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1">### Our custom loss function takes in the predicted noise and compares (using the Huber Loss) it with the actual noise</span>
+    <span class="c1">### Huber Loss with a default value for delta as 1.0 Check out the documentation: https://www.tensorflow.org/api_docs/python/tf/keras/losses/Huber</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">Huber</span><span class="p">()</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">x_start</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span><span class="n">mean</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">stddev</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="c1">### noise=epsilon=z</span>
+    <span class="n">x_noisy</span> <span class="o">=</span> <span class="n">q_sample</span><span class="p">(</span><span class="n">x_start</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">noise</span><span class="p">)</span><span class="c1">### x_t using the q_sample method</span>
+    <span class="n">predicted_noise</span> <span class="o">=</span> <span class="n">denoise_model</span><span class="p">([</span><span class="n">x_noisy</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span><span class="c1">### model takes in the x_t and t and outputs noise</span>
+    <span class="k">return</span> <span class="n">h</span><span class="p">(</span><span class="n">noise</span><span class="p">,</span><span class="n">predicted_noise</span><span class="p">)</span>
+
+<span class="c1">### custom training block</span>
+<span class="c1">### You can use tf.function to make graphs out of your programs. It is a transformation tool that creates Python-independent dataflow graphs</span>
+<span class="c1">### out of your Python code. This will help you create performant and portable models.</span>
+<span class="nd">@tf</span><span class="o">.</span><span class="n">function</span>
+<span class="k">def</span> <span class="nf">training_block</span><span class="p">(</span><span class="n">x_batch</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">recorder</span><span class="p">:</span>
+        <span class="c1">### for every element in the batch, we generate t randomly</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">((</span><span class="n">BATCH_SIZE</span><span class="p">,),</span><span class="n">minval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">maxval</span><span class="o">=</span><span class="n">TIME_STEPS</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">custom_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x_batch</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="n">partial_derivatives</span> <span class="o">=</span> <span class="n">recorder</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">trainable_weights</span><span class="p">)</span>
+    <span class="n">OPTIMIZER</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">partial_derivatives</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">trainable_weights</span><span class="p">))</span><span class="c1">### gradient descent</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="k">def</span> <span class="nf">neuralearn</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+        <span class="n">init_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">step</span><span class="p">,</span> <span class="n">x_batch</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">):</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">training_block</span><span class="p">(</span><span class="n">x_batch</span><span class="p">)</span>
+            <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;: Training Loss-----&gt;&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">losses</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Time Elapsed: ---&gt; &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">init_time</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39; s&#39;</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Training Complete!!!!&quot;</span><span class="p">)</span>
+
+<span class="n">neuralearn</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sqrt_recip_alphas</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">alphas</span><span class="p">)</span>
+<span class="n">alphas_cumprod_prev</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,)),</span><span class="n">alphas_cumprod</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="c1">### alpha_t-1_bar = alphas_cumprod_prev</span>
+
+<span class="n">posterior_variance</span> <span class="o">=</span> <span class="n">betas</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">alphas_cumprod_prev</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">alphas_cumprod</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">p_sample</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_index</span><span class="p">):</span>
+
+    <span class="n">betas_t</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">betas</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="c1">### betas_t = 1-alphas_t</span>
+    <span class="n">sqrt_one_minus_alphas_cumprod_t</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">sqrt_one_minus_alphas_cumprod</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="c1">### square root of 1-alpha_t_bar</span>
+    <span class="n">sqrt_recip_alphas_t</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">sqrt_recip_alphas</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="c1">### 1/square root of alpha_t</span>
+
+    <span class="n">model_mean</span> <span class="o">=</span> <span class="n">sqrt_recip_alphas_t</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">betas_t</span> <span class="o">*</span> <span class="n">model</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span> <span class="o">/</span> <span class="n">sqrt_one_minus_alphas_cumprod_t</span><span class="p">)</span><span class="c1">### equation 4 of algorithm 2 above</span>
+
+    <span class="k">if</span> <span class="n">t_index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model_mean</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">posterior_variance_t</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="n">posterior_variance</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="c1">### sigma_t</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model_mean</span> <span class="o">+</span> <span class="n">tf</span><span class="o">.</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">posterior_variance_t</span><span class="p">)</span> <span class="o">*</span> <span class="n">noise</span>
+
+<span class="n">imgs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">((</span><span class="mi">64</span><span class="p">,</span><span class="n">IM_SHAPE</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">IM_SHAPE</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">IM_SHAPE</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">TIME_STEPS</span><span class="p">)):</span><span class="c1">### we go backwards from t = 1000 to t = 0</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">p_sample</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">img</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">fill</span><span class="p">((</span><span class="mi">1</span><span class="p">,),</span><span class="n">i</span><span class="p">,),</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">imgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span><span class="mi">16</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">imgs</span><span class="p">[</span><span class="mi">999</span><span class="p">])[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;off&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ims</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">TIME_STEPS</span><span class="p">):</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">imgs</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="n">random_index</span><span class="p">],</span> <span class="n">animated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ims</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">im</span><span class="p">])</span>
+    <span class="n">ims</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">im</span><span class="p">])</span>
+
+<span class="n">animate</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">ArtistAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">ims</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">repeat_delay</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">animate</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;diffusion.gif&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<!-- Assignment - [Denoising difussion model](../assignments/deep-learning/difussion-model/denoising-difussion-model.ipynb) -->
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://github.com/phykn">Kwangnam Yu</a> for creating the open-source project <a class="reference external" href="https://github.com/phykn/diffusion_models_tutorial">diffusion_models_tutorial</a> and <a class="reference external" href="https://www.kaggle.com/">kaggle</a> for creating the open-source course <a class="reference external" href="https://www.kaggle.com/code/folefac/denoising-diffusion-models-with-tensorflow#3.-The-Celeb-A-Dataset-%F0%9F%92%BE">Denoising Diffusion Models with TensorFlow</a>. They inspire the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="gan.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Generative adversarial networks</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="dqn.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Deep Q-learning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#background">Background</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#expectation">Expectation</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#definition">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties">Properties</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variance">Variance</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Properties</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#re-parameterization-trick">Re-parameterization trick</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-expectation">Mean (Expectation)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Variance</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kl-divergence">KL Divergence</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#jensen-s-inequality">Jensen’s inequality</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#properties-of-kl-divergence">Properties of KL Divergence</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evidence-lower-bound-elbo">Evidence lower bound (ELBO)</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Definition</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Properties</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-and-reverse-process">Forward and Reverse process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-schedule">Noise schedule</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-schedule">Linear schedule</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#cosine-schedule">Cosine schedule</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#import-libraries">Import Libraries</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-loading">Data Loading</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-preprocessing">Data Preprocessing</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-augmentation">Data Augmentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-schedule-beta">Linear schedule-beta</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,942 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Beginner’s Guide to Text Pre-Processing &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'assignments/beginner-guide-to-text-preprocessing';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/assignments/beginner-guide-to-text-preprocessing.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Bitcoin LSTM Model with Tweet Volume and Sentiment" href="bitcoin-lstm-model-with-tweet-volume-and-sentiment.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deep-learning/cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning/cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning/cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deep-learning/rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning/rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning/rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../deep-learning/nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning/nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../deep-learning/nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../deep-learning/dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/assignments/beginner-guide-to-text-preprocessing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/assignments/beginner-guide-to-text-preprocessing.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/assignments/beginner-guide-to-text-preprocessing.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fassignments/beginner-guide-to-text-preprocessing.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/assignments/beginner-guide-to-text-preprocessing.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Beginner’s Guide to Text Pre-Processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-text-pre-processing">Why Text Pre-processing?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-packages">Downloading Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-accented-characters">Removing Accented Characters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-special-non-alphanumeric-characters">Removing Special &amp; Non-Alphanumeric Characters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-to-lowercase">Converting to Lowercase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-punctuation">Removing Punctuation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stopword-removal">Stopword Removal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stemming">Stemming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lemmatization">Lemmatization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">Putting it all together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="beginners-guide-to-text-pre-processing">
+<h1>Beginner’s Guide to Text Pre-Processing<a class="headerlink" href="#beginners-guide-to-text-pre-processing" title="Link to this heading">#</a></h1>
+<p>Natural Language Processing is a subdomain under Artificial Intelligence which deals with processing natural language data like text and speech. We can also term NLP as the “Art of extracting information from texts”. Recently there has been a lot of activity in this field and amazing research coming out every day! But, the revolutionary research was the “Transformer” which opened up avenues to build massive Deep Learning models which can come very close to human-level tasks like Summarization and Question Answering. Then came the GPTs and BERTs which were massive models consisting of billions of computation parameters trained on very huge datasets and can be fine-tuned to a variety of NLP tasks and problem statements.</p>
+<p>Deep down, the roots of building a robust NLP model, Text Processing, plays a very important role. This might not be very evident in the recent models like BERT and GPT, but it is one of the most elementary processes in Natural Language Processing. All NLP researchers and enthusiasts will have done Text Processing more times than not while attempting to solve problems in this domain. For a beginner, Text Processing is a fundamental concept to be nailed before setting sights on solving advanced problems. This brings to a question - Why Text Processing?</p>
+<section id="why-text-pre-processing">
+<h2>Why Text Pre-processing?<a class="headerlink" href="#why-text-pre-processing" title="Link to this heading">#</a></h2>
+<p>Text Pre-processing is important because language models are quite complex and there might be unnecessary data in the text corpus which might add to an ambiguity factor in the dataset, make it more computationally intensive and also impact the accuracy to a pretty considerable extent.</p>
+<p>Text Pre-processing is important because language models are quite complex, largely due to grammar rules. Unnecessary data in non-processed datasets will only add to ambiguity, increase computation requirements, and impact the accuracy of the model to a considerable extent.</p>
+<p>Moreover, we have to get the text transformed into vectors/numbers which can be ingested by machines or computers. This process is called Encoding Technique and we have many techniques like CountVectorizer, Tf-Idf Vectorizer, Bag of Words, Word2Vec, GLoVe, etc. Popularly this process is also known as Text Representation. This comes after the Text Pre-Processing. We shall look into these techniques in the next article 🙂</p>
+<p>Coming back to Text Pre-processing, let us look into a few popular Text Pre-processing methods in NLP.</p>
+</section>
+<section id="downloading-packages">
+<h2>Downloading Packages<a class="headerlink" href="#downloading-packages" title="Link to this heading">#</a></h2>
+<p>We will use the most popular library in processing textual data - NLTK (Natural Language Toolkit). On top of downloading and loading the base NLTK library we have to download a few additional files for our Pre-Processing techniques. The code is shown below:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>nltk
+
+<span class="kn">import</span> <span class="nn">nltk</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;punkt&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;wordnet&#39;</span><span class="p">)</span>
+<span class="n">nltk</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;stopwords&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: All code examples can be executed on Colab exactly the way it is shown in the articles.</p>
+<p>Once that is done, we can start doing different pre-processing activities, a few of which are listed below. At the end, we will bundle all of these pre-processing techniques into a function, making it very easy to use and even add that into a sequence with other pre-processing techniques.</p>
+</section>
+<section id="removing-accented-characters">
+<h2>Removing Accented Characters<a class="headerlink" href="#removing-accented-characters" title="Link to this heading">#</a></h2>
+<p>This will be our first pre-processing technique, which involves removing unaccented characters like é, â etc. These characters won’t be adding any meaning if included in the sentence. We can use the library - unicodedata to replace the unaccented characters with normal characters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">unicodedata</span>
+
+<span class="k">def</span> <span class="nf">remove_accented_chars</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFKD&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">text</span>
+
+<span class="n">remove_accented_chars</span><span class="p">(</span><span class="s1">&#39;résumé&#39;</span><span class="p">)</span>
+<span class="c1"># Result - &#39;resume&#39;</span>
+
+<span class="n">remove_accented_chars</span><span class="p">(</span><span class="s1">&#39;café&#39;</span><span class="p">)</span>
+<span class="c1"># Result - &#39;cafe&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;cafe&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="removing-special-non-alphanumeric-characters">
+<h2>Removing Special &amp; Non-Alphanumeric Characters<a class="headerlink" href="#removing-special-non-alphanumeric-characters" title="Link to this heading">#</a></h2>
+<p>Next step is to take care of special symbols, numbers and non-alphanumeric characters like #, &#64;, $ etc. We can remove these characters easily using regular expressions.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="k">def</span> <span class="nf">remove_special_characters</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[^a-zA-Z\s]&#39;</span>
+    <span class="n">n_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;[^a-zA-Z0-9\s]&#39;</span>
+    <span class="c1"># Removing everything apart from alphanumerical chars</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="c1"># Removing numbers</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">n_pattern</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+
+<span class="n">remove_special_characters</span><span class="p">(</span><span class="s1">&#39;The brown fox is quick and the blue dog is lazy!&#39;</span><span class="p">)</span>
+<span class="c1"># Result - The brown fox is quick and the blue dog is lazy</span>
+
+<span class="n">remove_special_characters</span><span class="p">(</span><span class="s1">&#39;@ElonMusk is revolutionizing the Space industry, especially the aspect of Reusable rockets!!!&#39;</span><span class="p">)</span>
+<span class="c1"># Result - ElonMusk is revolutionizing the Space industry especially the aspect of Reusable rockets</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ElonMusk is revolutionizing the Space industry especially the aspect of Reusable rockets&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: Removing numbers may or may not be feasible based on the scenario of the problem statement. Therefore, removing numbers is solely based on the dataset and the problem statement.</p>
+</section>
+<section id="converting-to-lowercase">
+<h2>Converting to Lowercase<a class="headerlink" href="#converting-to-lowercase" title="Link to this heading">#</a></h2>
+<p>This is an important and compulsory step in Pre-processing text. If we consider the words “Banana” and “banana”, both convey the same meaning, but are represented differently and are treated as unique words by the encoder (which converts text to vectors). To combat this, we can simply convert the entire corpus to lower case to make sure every word or token (in NLP jargon) is in the same configuration which makes it easier to process and represent it in an effective manner.</p>
+<p>We can achieve this by simply using the lower() method on the string and further use strip() method to remove any white spaces too.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">to_lower</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+<span class="n">to_lower</span><span class="p">(</span><span class="s1">&#39;Hi there, How are you?&#39;</span><span class="p">)</span>
+<span class="c1"># Result - hi there, how are you?</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;hi there, how are you?&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="removing-punctuation">
+<h2>Removing Punctuation<a class="headerlink" href="#removing-punctuation" title="Link to this heading">#</a></h2>
+<p>Punctuation is an added weight to the corpus, but is very important in conveying the semantic meaning of the sentence. However, we can go ahead and remove them as one of the pre-processing techniques. Advanced encoding techniques like Word Embeddings (covered in a later post) can model the corpus without any punctuation.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">string</span>
+
+<span class="k">def</span> <span class="nf">remove_p</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">maketrans</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">string</span><span class="o">.</span><span class="n">punctuation</span><span class="p">))</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;[&#39;&#39;&quot;&quot;…]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text</span>
+
+<span class="n">remove_p</span><span class="p">(</span><span class="s1">&#39;We were , though we had rushed to get there, late for the film. &#39;&#39;Thank you&#39;&#39;, I said&#39;</span><span class="p">)</span>
+<span class="c1"># Result - We were though we had rushed to get there late for the film. Thank you I said</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;We were  though we had rushed to get there late for the film Thank you I said&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: Punctuation were not removed in the more advanced GPTs &amp; BERTs as the models were powerful enough to process and model sentences as it is without any pre-processing.</p>
+</section>
+<section id="tokenization">
+<h2>Tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">#</a></h2>
+<p>This is a very small step which converts a sentence into tokens or words. If the input is a string (sentence) the output will be the list of words/tokens in that sentence. The official definition of a token is - ”A sequence of characters which are grouped together as a useful semantic term for analyzing”. To put it in simple words, they are nothing but the smallest meaningful entities of a sentence. Here, we use NLTK’s function word_tokenize(). Tokenization is important to apply the next steps  -  Stopword Removal, Stemming and Lemmatization.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+
+<span class="k">def</span> <span class="nf">tokenization</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">nltk</span><span class="o">.</span><span class="n">word_tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tokens</span>
+
+<span class="n">tokenization</span><span class="p">(</span><span class="s1">&#39;She sells sea shells on the sea shore&#39;</span><span class="p">)</span>
+<span class="c1"># Result - [&#39;She&#39;,&#39;sells&#39;,&#39;sea&#39;,&#39;shells&#39;,&#39;on&#39;,&#39;the&#39;,&#39;sea&#39;,&#39;shore&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;She&#39;, &#39;sells&#39;, &#39;sea&#39;, &#39;shells&#39;, &#39;on&#39;, &#39;the&#39;, &#39;sea&#39;, &#39;shore&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>There is an alternative for nltk.word_tokenize i.e. tensorflow’s text_to_word_sequence which gives the same output as NLTK’s word_tokenize</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">text_to_word_sequence</span>
+
+<span class="n">text_to_word_sequence</span><span class="p">(</span><span class="s1">&#39;She sells sea shells on the sea shore&#39;</span><span class="p">)</span>
+<span class="c1">#Result - [&#39;She&#39;,&#39;sells&#39;,&#39;sea&#39;,&#39;shells&#39;,&#39;on&#39;,&#39;the&#39;,&#39;sea&#39;,&#39;shore&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;she&#39;, &#39;sells&#39;, &#39;sea&#39;, &#39;shells&#39;, &#39;on&#39;, &#39;the&#39;, &#39;sea&#39;, &#39;shore&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="stopword-removal">
+<h2>Stopword Removal<a class="headerlink" href="#stopword-removal" title="Link to this heading">#</a></h2>
+<p>Stopwords are the words which are most common like I, am, there, where etc. They usually don’t help in certain NLP tasks and are best removed to save computation and time. Common methodology in earlier times was to remove the stopwords. However, in the age of GPT and BERT, we don’t usually remove the stopwords.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+
+<span class="n">STOPWORDS</span> <span class="o">=</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">remove_stopwords</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+
+    <span class="n">filtered_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">token</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">STOPWORDS</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">filtered_tokens</span>
+
+<span class="n">remove_stopwords</span><span class="p">([</span><span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;fox&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;quick&#39;</span><span class="p">,</span> <span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;lazy&#39;</span><span class="p">])</span>
+<span class="c1">#Result - [&#39;brown&#39;, &#39;fox&#39;, &#39;quick&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;lazy&#39;]</span>
+
+<span class="c1"># We can also print all the stopwords present in NLTK configuration by print(stopwords.words(&#39;english&#39;))</span>
+
+<span class="c1"># Also we have an option to modify the set of stopwords for our custom scenario by the following methods stopwords.remove() and stopwords.add()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;brown&#39;, &#39;fox&#39;, &#39;quick&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;lazy&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Note: You can try out both approaches for creating the corpus — Removing Stopwords and Retaining the Stopwords. We can see different end results based on whether stopwords were removed or retained.</p>
+</section>
+<section id="stemming">
+<h2>Stemming<a class="headerlink" href="#stemming" title="Link to this heading">#</a></h2>
+<p>Stemming is a process of reducing a given token/word to its root form. For ex: The words - likely, likes, liked, liking are reduced to its root form i.e. like. Stemming uses a crude heuristic process that chops off the ends of words in the hope of correctly transforming words into its root form. So the words “trouble”, “troubled” and “troubles” might actually be converted to “troubl” instead of “trouble” because the ends were just chopped off!</p>
+<p>Stemming is an optional step and the best way to find out if it is effective or not is to experiment and observe the results before and after stemming. There are two types of Stemmer defined in NLTK - PorterStemmer &amp; SnowballStemmer. The details are given here. In our examples, we will be using PorterStemmer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.stem</span> <span class="kn">import</span> <span class="n">PorterStemmer</span>
+
+<span class="n">ps</span> <span class="o">=</span> <span class="n">PorterStemmer</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">stem</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+   <span class="n">stemmed_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">ps</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+   <span class="k">return</span> <span class="n">stemmed_tokens</span>
+
+<span class="n">stem</span><span class="p">([</span><span class="s1">&#39;brown&#39;</span><span class="p">,</span> <span class="s1">&#39;fox&#39;</span><span class="p">,</span> <span class="s1">&#39;quick&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;dog&#39;</span><span class="p">,</span> <span class="s1">&#39;lazy&#39;</span><span class="p">])</span>
+<span class="c1"># Result - [&#39;brown&#39;, &#39;fox&#39;, &#39;quick&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;lazi&#39;]</span>
+
+<span class="n">stem</span><span class="p">([</span><span class="s1">&#39;welcome&#39;</span><span class="p">,</span> <span class="s1">&#39;fairly&#39;</span><span class="p">,</span> <span class="s1">&#39;easily&#39;</span><span class="p">])</span>
+<span class="c1"># Result - [&#39;welcom&#39;, &#39;fairli&#39;, &#39;easili&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;welcom&#39;, &#39;fairli&#39;, &#39;easili&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="lemmatization">
+<h2>Lemmatization<a class="headerlink" href="#lemmatization" title="Link to this heading">#</a></h2>
+<p>A widely used step after lower-casing and the removal of stopwords is Lemmatization. It is similar to stemming but does not chop the ends of the words, instead it transforms to the actual root word based on a dictionary. This dictionary is called WordNet. Find more details on WordNet here. Since it has to look up a dictionary, it is slightly slower than Stemming. For example, the token “better” is transformed into “good” which retains the semantic meaning even after transformation which might not be the case in stemming (most of the times, the meaning of the stemmed word is not semantically grasped. Lazy becomes lazi after stemming!) NLTK Lemmatizer details here.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.stem.wordnet</span> <span class="kn">import</span> <span class="n">WordNetLemmatizer</span>
+
+<span class="n">lemmatizer</span> <span class="o">=</span> <span class="n">WordNetLemmatizer</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">lemmatize</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="n">lemmatized_tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">lemmatizer</span><span class="o">.</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">lemmatized_tokens</span>
+
+<span class="n">lemmatize</span><span class="p">([</span><span class="s1">&#39;welcome&#39;</span><span class="p">,</span> <span class="s1">&#39;fairly&#39;</span><span class="p">,</span> <span class="s1">&#39;better&#39;</span><span class="p">,</span> <span class="s1">&#39;goose&#39;</span> <span class="p">,</span> <span class="s1">&#39;geese&#39;</span><span class="p">])</span>
+<span class="c1"># Result - [&#39;welcome&#39;, &#39;fairly&#39;, &#39;good&#39;, &#39;goose&#39; , &#39;goose&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;welcome&#39;, &#39;fairly&#39;, &#39;better&#39;, &#39;goose&#39;, &#39;goose&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="putting-it-all-together">
+<h2>Putting it all together<a class="headerlink" href="#putting-it-all-together" title="Link to this heading">#</a></h2>
+<p>Now that we have defined functions for all Pre-processing steps, let us call them and observe the results. We can also create a pipe of function calls in a specific order for processing. This is also termed as the Pre-processing pipeline.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sentence</span> <span class="o">=</span> <span class="s1">&#39;The brown fox is quick and the blue dog is lazy!&#39;</span>
+
+<span class="c1"># REMOVING ACCENTED CHARACTERS</span>
+<span class="n">remove_accented_chars</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="c1"># Result - The brown fox is quick and the blue dog is lazy!</span>
+
+<span class="c1"># REMOVING SPECIAL CHARACTERS</span>
+<span class="n">remove_special_characters</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="c1"># Result - The brown fox is quick and the blue dog is lazy</span>
+
+<span class="c1"># CONVERTING TO LOWER CASE</span>
+<span class="c1"># Pipeline involving removal of spl chars and then lower casing</span>
+<span class="n">to_lower</span><span class="p">(</span><span class="n">remove_special_characters</span><span class="p">(</span><span class="n">sentence</span><span class="p">))</span>
+<span class="c1"># Result - the brown fox is quick and the blue dog is lazy</span>
+
+<span class="c1"># REMOVING PUNCTUATION</span>
+<span class="n">remove_p</span><span class="p">(</span><span class="n">to_lower</span><span class="p">(</span><span class="n">remove_special_characters</span><span class="p">(</span><span class="n">sentence</span><span class="p">)))</span>
+<span class="c1"># Result - the brown fox is quick and the blue dog is lazy</span>
+
+<span class="c1"># TOKENIZATION</span>
+<span class="n">text_tokens</span> <span class="o">=</span> <span class="n">tokenization</span><span class="p">(</span><span class="n">remove_p</span><span class="p">(</span><span class="n">to_lower</span><span class="p">(</span><span class="n">remove_special_characters</span><span class="p">(</span><span class="n">sentence</span><span class="p">))))</span>
+<span class="c1"># Result - [&#39;the&#39;, &#39;brown&#39;, &#39;fox&#39;, &#39;is&#39;, &#39;quick&#39;, &#39;and&#39;, &#39;the&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;is&#39;, &#39;lazy&#39;]</span>
+
+<span class="c1"># REMOVAL OF STOPWORDS</span>
+<span class="n">filtered_tokens</span> <span class="o">=</span> <span class="n">remove_stopwords</span><span class="p">(</span><span class="n">text_tokens</span><span class="p">)</span>
+<span class="c1"># Result - [&#39;brown&#39;, &#39;fox&#39;, &#39;quick&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;lazy&#39;]</span>
+
+<span class="c1"># STEMMING</span>
+<span class="n">stem</span><span class="p">(</span><span class="n">filtered_tokens</span><span class="p">)</span>
+<span class="c1"># Result - [&#39;brown&#39;, &#39;fox&#39;, &#39;quick&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;lazi&#39;]</span>
+
+<span class="c1"># LEMMATIZATION</span>
+<span class="n">lemmatize</span><span class="p">(</span><span class="n">filtered_tokens</span><span class="p">)</span>
+<span class="c1"># Result - [&#39;brown&#39;, &#39;fox&#39;, &#39;quick&#39;, &#39;blue&#39;, &#39;dog&#39;, &#39;lazy&#39;]</span>
+
+<span class="c1"># REFACTORING THE CORPUS</span>
+<span class="k">def</span> <span class="nf">refactor</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+<span class="n">refactor</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">filtered_tokens</span><span class="p">))</span>
+<span class="c1"># Result - &#39;brown fox quick blue dog lazy&#39;</span>
+<span class="c1"># ONE PIPELINE FOR ALL STEPS</span>
+<span class="n">refactor</span><span class="p">(</span><span class="n">lemmatize</span><span class="p">(</span><span class="n">remove_stopwords</span><span class="p">(</span><span class="n">tokenization</span><span class="p">(</span><span class="n">remove_p</span><span class="p">(</span><span class="n">to_lower</span><span class="p">(</span><span class="n">remove_special_characters</span><span class="p">(</span><span class="s1">&#39;The brown fox is quick and the blue dog is lazy!&#39;</span><span class="p">)))))))</span>
+<span class="c1"># Result - &#39;brown fox quick blue dog lazy&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;brown fox quick blue dog lazy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Feel free to experiment stemming, lemmatization, stopword removal aspects in the pipeline. Given here is the code containing all the functions in a single python file.</p>
+</section>
+<section id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Link to this heading">#</a></h2>
+<p>We have covered a few of the most popular Text Pre-processing steps in NLP in this post. There are a few more advanced concepts like Bi-gram, Tri-gram filtering, correcting spelling mistakes, expanding abbreviations etc. Feel free to explore these methods also. One more thing to note which has surfaced in recent years is “Pre-processing can hamper the performance of Deep NLP models!” as stated here. BERT and GPT also don’t employ rigorous pre-processing steps, which might induce a thought  - ”Was learning these techniques a waste of time?” Definitely not! These techniques are building blocks in NLP and are to be known for any beginner starting out in NLP.</p>
+<p>Try these techniques on your custom data and observe how Pre-processing techniques can help in building a very good text corpus which can later be employed for training Deep Learning Models for NLP tasks. In our next post, we will move to the next step of representing the corpus as a vector, commonly known as Text Encoding.</p>
+</section>
+<section id="acknowledgements">
+<h2>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://twitter.com/A6Singularity">Pranav Raikote</a> for creating <a class="reference external" href="https://appliedsingularity.com/2021/12/28/nlp-tutorials-part-1-beginners-guide-to-text-pre-processing/">NLP Tutorials – Part 1: Beginner’s Guide to Text Pre-Processing</a>. It inspires the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./assignments"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="bitcoin-lstm-model-with-tweet-volume-and-sentiment.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Bitcoin LSTM Model with Tweet Volume and Sentiment</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#why-text-pre-processing">Why Text Pre-processing?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#downloading-packages">Downloading Packages</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-accented-characters">Removing Accented Characters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-special-non-alphanumeric-characters">Removing Special &amp; Non-Alphanumeric Characters</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#converting-to-lowercase">Converting to Lowercase</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#removing-punctuation">Removing Punctuation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tokenization">Tokenization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stopword-removal">Stopword Removal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#stemming">Stemming</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lemmatization">Lemmatization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#putting-it-all-together">Putting it all together</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conclusion">Conclusion</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

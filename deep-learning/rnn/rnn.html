@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Recurrent Neural Networks &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/rnn/rnn';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/rnn/rnn.html" />
+    <link rel="icon" href="../../_static/fav.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Long-short term memory" href="lstm.html" />
+    <link rel="prev" title="Deepdream in TensorFlow" href="../cnn/cnn-deepdream.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Recurrent Neural Networks</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/rnn/rnn.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/rnn/rnn.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/rnn/rnn.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/rnn/rnn.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/deep-learning/rnn/rnn.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Recurrent Neural Networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython<span class="w"> </span>tensorflow
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: Ignoring invalid distribution -fds-nightly (c:\users\16111\.conda\envs\open-machine-learning-jupyter-book\lib\site-packages)
+WARNING: Ignoring invalid distribution -fds-nightly (c:\users\16111\.conda\envs\open-machine-learning-jupyter-book\lib\site-packages)
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="recurrent-neural-networks">
+<h1>Recurrent Neural Networks<a class="headerlink" href="#recurrent-neural-networks" title="Link to this heading">#</a></h1>
+<blockquote>
+<div><p>The nervous system contains many circular paths, whose activity so regenerates the excitation of any participant neuron that reference to time past becomes indefinite, although it still implies that afferent activity has realized one of a certain class of configurations over time. Precise specification of these implications by means of recursive functions, and determination of those that can be embodied in the activity of nervous nets, completes the theory.</p>
+<p>– Warren McCulloch and Walter Pitts, 1943</p>
+</div></blockquote>
+<p>A recurrent neural network (RNN) is a type of artificial neural network that uses sequential data or time series data and it is mainly used for Natural Language Processing. Now let us see what it looks like.</p>
+<p>Sequential data is not <a class="reference external" href="https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables">independent and identically distributed</a>.</p>
+<figure class="align-default" id="sequential-data">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/sequential_data.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/sequential_data.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/sequential_data.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">sequential data</span><a class="headerlink" href="#sequential-data" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>And the RNNs use recurrent edge to update.</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><img alt="RNN1" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn1.png" /></p></th>
+<th class="head text-center"><p><img alt="RNN2" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn2.png" /></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>RNN1 (recurrent)</p></td>
+<td class="text-center"><p>RNN2 (unfolded RNN1)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Then, the input (w0,w1,…,wt) sequence of words ( 1-hot encoded ) and the output (w1,w2,…,wt+1) shifted sequence of words ( 1-hot encoded ) have the following relation.</p>
+<figure class="align-default" id="rnn3">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn3.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn3.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn3.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text">RNN3</span><a class="headerlink" href="#rnn3" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The input projection is <span class="math notranslate nohighlight">\(x_t = Emb(\omega_t) = E\omega_t\)</span>, the recurrent connection is <span class="math notranslate nohighlight">\(h_t = g(W^h h_t + x_t + b^h)\)</span>, and the output projection should be <span class="math notranslate nohighlight">\(y = softmax(W^o h_t + b^o)\)</span>.
+The backpropagation of RNN is in this way:</p>
+<figure class="align-default" id="rnn4">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn4.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn4.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/rnn4.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text">RNN4</span><a class="headerlink" href="#rnn4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Let’s make the backpropagation process more clearly.</p>
+<p>First, we unfold a single-hidden layer RNN, and we can see the weight matrices <span class="math notranslate nohighlight">\(W_h\)</span> in it.</p>
+<figure class="align-default" id="backpropagation-for-rnn">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/bp_rnn1.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/bp_rnn1.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/RNN/bp_rnn1.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text">backpropagation for RNN</span><a class="headerlink" href="#backpropagation-for-rnn" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Through the image, we can get the output:</p>
+<ul class="simple">
+<li><p>Net input: <span class="math notranslate nohighlight">\(z_h^{&lt;t&gt;} = W_hx x^{&lt;t&gt;} + W_hh h^{&lt;t-1&gt;} + b_h\)</span></p></li>
+<li><p>Activation: <span class="math notranslate nohighlight">\(h^{&lt;t&gt;} = \sigma (z_h^{&lt;t&gt;})\)</span></p></li>
+<li><p>Output: <span class="math notranslate nohighlight">\(z_y^&lt;t&gt; = W_yh h^{&lt;t&gt;} + b_y\)</span>, <span class="math notranslate nohighlight">\(y^{&lt;t&gt;} = \sigma(z_y^{&lt;t&gt;})\)</span></p></li>
+</ul>
+<p>After that, the loss is computed as the sum over all time steps: <span class="math notranslate nohighlight">\(L = \sum_{t=1}^T L^{&lt;t&gt;}\)</span></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are some key points:</p>
+<ul class="simple">
+<li><p>Similar as training very deep networks with tied parameters.</p></li>
+<li><p>Example between <span class="math notranslate nohighlight">\(x_0\)</span> and <span class="math notranslate nohighlight">\(y_2\)</span>: Wh is used twice.</p></li>
+<li><p>Usually truncate the backprop after <span class="math notranslate nohighlight">\(T\)</span> timesteps.</p></li>
+<li><p>Difficulties to train long-term dependencies.</p></li>
+</ul>
+</div>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>A text classifier implemented in TensorFlow to classify SMS spam messages.
+Code first downloads and processes the SMS Spam Collection dataset from the UCI Machine Learning Repository and then builds a basic Recurrent neural network (RNN) for text classification using TensorFlow.
+The code first cleans and preprocesses the text, then splits it into training and test sets, followed by tokenizing and padding the training set. Next, the code uses an embedding layer to convert the tokenized text into a vector representation, which is then fed into a recurrent neural network and finally classified using a Softmax loss function.
+The output of the # code is the accuracy of the classifier along with some statistics
+We implement an RNN in TensorFlow to predict spam/ham from texts</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.text</span> <span class="kn">import</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.preprocessing.sequence</span> <span class="kn">import</span> <span class="n">pad_sequences</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set random seed for reproducibility</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Download or open data</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s2">&quot;tmp&quot;</span>
+<span class="n">data_file</span> <span class="o">=</span> <span class="s2">&quot;text_data.txt&quot;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">data_dir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">data_file</span><span class="p">)):</span>
+    <span class="n">zip_url</span> <span class="o">=</span> <span class="s2">&quot;http://archive.ics.uci.edu/ml/machine-learning-databases/00228/smsspamcollection.zip&quot;</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">zip_url</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">ZipFile</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s2">&quot;SMSSpamCollection&quot;</span><span class="p">)</span>
+    <span class="c1"># Format Data</span>
+    <span class="n">text_data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+    <span class="n">text_data</span> <span class="o">=</span> <span class="n">text_data</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="n">text_data</span> <span class="o">=</span> <span class="n">text_data</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Save data to text file</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">data_file</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_conn</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">text_data</span><span class="p">:</span>
+            <span class="n">file_conn</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Open data from text file</span>
+    <span class="n">text_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">data_file</span><span class="p">),</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file_conn</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">file_conn</span><span class="p">:</span>
+            <span class="n">text_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="n">text_data</span> <span class="o">=</span> <span class="n">text_data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">text_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">text_data</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="n">text_data_target</span><span class="p">,</span> <span class="n">text_data_train</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">text_data</span><span class="p">)]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a text cleaning function</span>
+<span class="k">def</span> <span class="nf">clean_text</span><span class="p">(</span><span class="n">text_string</span><span class="p">):</span>
+    <span class="n">text_string</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([^\s\w]|_|[0-9])+&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">text_string</span><span class="p">)</span>
+    <span class="n">text_string</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text_string</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">text_string</span> <span class="o">=</span> <span class="n">text_string</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">text_string</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clean texts</span>
+<span class="n">text_data_train</span> <span class="o">=</span> <span class="p">[</span><span class="n">clean_text</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">text_data_train</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text_data_train</span><span class="p">[:</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># Tokenize and pad sequences</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="p">()</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit_on_texts</span><span class="p">(</span><span class="n">text_data_train</span><span class="p">)</span>
+<span class="n">text_processed</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">texts_to_sequences</span><span class="p">(</span><span class="n">text_data_train</span><span class="p">)</span>
+<span class="n">max_sequence_length</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">text_processed</span> <span class="o">=</span> <span class="n">pad_sequences</span><span class="p">(</span>
+    <span class="n">text_processed</span><span class="p">,</span> <span class="n">maxlen</span><span class="o">=</span><span class="n">max_sequence_length</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;post&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">text_processed</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;go until jurong point crazy available only in bugis n great world la e buffet cine there got amore wat&#39;, &#39;ok lar joking wif u oni&#39;, &#39;free entry in a wkly comp to win fa cup final tkts st may text fa to to receive entry questionstd txt ratetcs apply overs&#39;, &#39;u dun say so early hor u c already then say&#39;, &#39;nah i dont think he goes to usf he lives around here though&#39;]
+(5574, 25)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Shuffle and split data</span>
+<span class="n">text_processed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">text_processed</span><span class="p">)</span>
+<span class="n">text_data_target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;ham&quot;</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">text_data_target</span><span class="p">])</span>
+<span class="n">shuffled_ix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text_data_target</span><span class="p">)))</span>
+<span class="n">x_shuffled</span> <span class="o">=</span> <span class="n">text_processed</span><span class="p">[</span><span class="n">shuffled_ix</span><span class="p">]</span>
+<span class="n">y_shuffled</span> <span class="o">=</span> <span class="n">text_data_target</span><span class="p">[</span><span class="n">shuffled_ix</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Split train/test set</span>
+<span class="n">ix_cutoff</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_shuffled</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.80</span><span class="p">)</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span> <span class="o">=</span> <span class="n">x_shuffled</span><span class="p">[:</span><span class="n">ix_cutoff</span><span class="p">],</span> <span class="n">x_shuffled</span><span class="p">[</span><span class="n">ix_cutoff</span><span class="p">:]</span>
+<span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y_shuffled</span><span class="p">[:</span><span class="n">ix_cutoff</span><span class="p">],</span> <span class="n">y_shuffled</span><span class="p">[</span><span class="n">ix_cutoff</span><span class="p">:]</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Vocabulary Size: </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;80-20 Train Test split: </span><span class="si">{:d}</span><span class="s2"> -- </span><span class="si">{:d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Vocabulary Size: 8630
+80-20 Train Test split: 4459 -- 1115
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the model using the Sequential API</span>
+<span class="n">embedding_size</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Embedding</span><span class="p">(</span>
+            <span class="n">input_dim</span><span class="o">=</span><span class="n">vocab_size</span><span class="p">,</span>
+            <span class="n">output_dim</span><span class="o">=</span><span class="n">embedding_size</span><span class="p">,</span>
+            <span class="n">input_length</span><span class="o">=</span><span class="n">max_sequence_length</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">SimpleRNN</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compile the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">RMSprop</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">),</span>
+    <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;sparse_categorical_crossentropy&quot;</span><span class="p">,</span>
+    <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Train the model</span>
+<span class="n">epochs</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">250</span>
+
+<span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 1/20
+15/15 [==============================] - 3s 65ms/step - loss: 0.5753 - accuracy: 0.7575 - val_loss: 0.4707 - val_accuracy: 0.8756
+Epoch 2/20
+15/15 [==============================] - 0s 33ms/step - loss: 0.4656 - accuracy: 0.8433 - val_loss: 0.3906 - val_accuracy: 0.9283
+Epoch 3/20
+15/15 [==============================] - 0s 24ms/step - loss: 0.3762 - accuracy: 0.9162 - val_loss: 0.3093 - val_accuracy: 0.9574
+Epoch 4/20
+15/15 [==============================] - 0s 9ms/step - loss: 0.3103 - accuracy: 0.9422 - val_loss: 0.2595 - val_accuracy: 0.9652
+Epoch 5/20
+15/15 [==============================] - 0s 10ms/step - loss: 0.2693 - accuracy: 0.9498 - val_loss: 0.2225 - val_accuracy: 0.9664
+Epoch 6/20
+15/15 [==============================] - 0s 10ms/step - loss: 0.2285 - accuracy: 0.9686 - val_loss: 0.1987 - val_accuracy: 0.9664
+Epoch 7/20
+15/15 [==============================] - 0s 10ms/step - loss: 0.2024 - accuracy: 0.9795 - val_loss: 0.1820 - val_accuracy: 0.9619
+Epoch 8/20
+15/15 [==============================] - 0s 10ms/step - loss: 0.1825 - accuracy: 0.9748 - val_loss: 0.1675 - val_accuracy: 0.9630
+Epoch 9/20
+15/15 [==============================] - 0s 9ms/step - loss: 0.1647 - accuracy: 0.9821 - val_loss: 0.1631 - val_accuracy: 0.9608
+Epoch 10/20
+15/15 [==============================] - 0s 14ms/step - loss: 0.1546 - accuracy: 0.9837 - val_loss: 0.1623 - val_accuracy: 0.9574
+Epoch 11/20
+15/15 [==============================] - 0s 12ms/step - loss: 0.1400 - accuracy: 0.9865 - val_loss: 0.1622 - val_accuracy: 0.9552
+Epoch 12/20
+15/15 [==============================] - 0s 13ms/step - loss: 0.1302 - accuracy: 0.9868 - val_loss: 0.1632 - val_accuracy: 0.9552
+Epoch 13/20
+15/15 [==============================] - 0s 14ms/step - loss: 0.1285 - accuracy: 0.9865 - val_loss: 0.1640 - val_accuracy: 0.9540
+Epoch 14/20
+15/15 [==============================] - 0s 17ms/step - loss: 0.1194 - accuracy: 0.9871 - val_loss: 0.1579 - val_accuracy: 0.9552
+Epoch 15/20
+15/15 [==============================] - 0s 15ms/step - loss: 0.1190 - accuracy: 0.9874 - val_loss: 0.1647 - val_accuracy: 0.9518
+Epoch 16/20
+15/15 [==============================] - 0s 17ms/step - loss: 0.1103 - accuracy: 0.9874 - val_loss: 0.1596 - val_accuracy: 0.9563
+Epoch 17/20
+15/15 [==============================] - 0s 11ms/step - loss: 0.1033 - accuracy: 0.9879 - val_loss: 0.1530 - val_accuracy: 0.9585
+Epoch 18/20
+15/15 [==============================] - 0s 11ms/step - loss: 0.0954 - accuracy: 0.9905 - val_loss: 0.1611 - val_accuracy: 0.9552
+Epoch 19/20
+15/15 [==============================] - 0s 17ms/step - loss: 0.0937 - accuracy: 0.9896 - val_loss: 0.1640 - val_accuracy: 0.9552
+Epoch 20/20
+15/15 [==============================] - 0s 10ms/step - loss: 0.0924 - accuracy: 0.9907 - val_loss: 0.1848 - val_accuracy: 0.9484
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot loss and accuracy over time</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;loss&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train Set&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_loss&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation Set&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Softmax Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epochs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Softmax Loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;accuracy&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train Set&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="s2">&quot;val_accuracy&quot;</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation Set&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Test Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Epochs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper left&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d2acdd85ab3fc3c11ba5fb0e75bd6191330c920e2c185fd43e37fb03d167efe6.png" src="../../_images/d2acdd85ab3fc3c11ba5fb0e75bd6191330c920e2c185fd43e37fb03d167efe6.png" />
+<img alt="../../_images/30bcbfc941c610442e6ceb4e8e2f7548ff7db77270b3422e1bb01887a0307f1f.png" src="../../_images/30bcbfc941c610442e6ceb4e8e2f7548ff7db77270b3422e1bb01887a0307f1f.png" />
+</div>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lstm.html">Long-short term memory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</div>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<p>You can practice your rnn skills by following the assignment <a class="reference internal" href="#../../assignments/deep-learning/rnn/google-stock-price-prediction-rnn.ipynb"><span class="xref myst">google stock price prediction rnn</span></a></p>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://github.com/nfmcclure">Nick</a> for creating the open-source course <a class="reference external" href="https://github.com/nfmcclure/tensorflow_cookbook">tensorflow_cookbook</a> and <a class="reference external" href="https://github.com/rasbt">Sebastian Raschka</a> for creating the open-sourse <a class="reference external" href="https://github.com/rasbt/stat453-deep-learning-ss20">stat453-deep-learning-ss20</a>. It inspires the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning/rnn"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../cnn/cnn-deepdream.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deepdream in TensorFlow</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="lstm.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Long-short term memory</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

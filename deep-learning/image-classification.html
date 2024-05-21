@@ -1,0 +1,1399 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Image classification &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/image-classification';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/image-classification.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Image segmentation" href="image-segmentation.html" />
+    <link rel="prev" title="Object detection" href="object-detection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="object-detection.html">Object detection</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/image-classification.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/image-classification.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/image-classification.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/image-classification.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/deep-learning/image-classification.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Image classification</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-image-classification">What is image classification?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges">Challenges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-of-image-classification">Pipeline of image classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-classic-models">History &amp; classic models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vggnet">VGGNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resnet">Resnet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#densenet">DenseNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mobilenet">MobileNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vit">ViT</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-datasets">Classic datasets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cifar-10-100">CIFAR-10/100</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imagenet-1000">ImageNet-1000</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standards">Standards</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-1-accuracy">Top-1 accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-5-accuracy">Top-5 accuracy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>seaborn<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython<span class="w"> </span>tensorflow<span class="w"> </span>tensorflow_addons
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="image-classification">
+<h1>Image classification<a class="headerlink" href="#image-classification" title="Link to this heading">#</a></h1>
+<section id="what-is-image-classification">
+<h2>What is image classification?<a class="headerlink" href="#what-is-image-classification" title="Link to this heading">#</a></h2>
+<p>In this chapter we will introduce the image classification problem, which is the task of assigning an input image one label from a fixed set of categories. This is one of the core problems in Computer Vision that, despite its simplicity, has a large variety of practical applications.</p>
+<div class="cell tag_hide-input docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell source</span>
+<span class="expanded">Hide code cell source</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;p style=&quot;text-align: center;&quot;&gt;</span>
+<span class="s2">&lt;iframe src=&quot;https://static-1300131294.cos.ap-shanghai.myqcloud.com/html/cls-demo/index.html&quot; width=&quot;105%&quot; height=&quot;700px;&quot; style=&quot;border:none;&quot;&gt;&lt;/iframe&gt;</span>
+<span class="s2">A demo of image classification. &lt;a href=&quot;http://vision.stanford.edu/teaching/cs231n/&quot;&gt;[source]&lt;/a&gt;</span>
+<span class="s2">&lt;/p&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</details>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<p style="text-align: center;">
+<iframe src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/html/cls-demo/index.html" width="105%" height="700px;" style="border:none;"></iframe>
+A demo of image classification. <a href="http://vision.stanford.edu/teaching/cs231n/">[source]</a>
+</p>
+</div></div>
+</div>
+<p>Let me give you an example. In the image below an image classification model takes a single image and assigns probabilities to 4 labels, {cat, dog, hat, mug}. As shown in the image, keep in mind that to a computer an image is represented as one large 3-dimensional array of numbers. In this example, the cat image is 248 pixels wide, 400 pixels tall, and has three color channels Red,Green,Blue (or RGB for short). Therefore, the image consists of 248 x 400 x 3 numbers, or a total of 297,600 numbers. Each number is an integer that ranges from 0 (black) to 255 (white). Our task is to turn this quarter of a million numbers into a single label, such as “cat”.</p>
+<figure class="align-default" id="example-of-the-image-classification-task">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/01_classify_eg.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/01_classify_eg.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/01_classify_eg.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Example of the image classification task</span><a class="headerlink" href="#example-of-the-image-classification-task" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The task in image classification is to predict a single label (or a distribution over labels as shown here to indicate our confidence) for a given image. Images are 3-dimensional arrays of integers from 0 to 255, of size Width x Height x 3. The 3 represents the three color channels Red, Green, Blue.</p>
+</section>
+<section id="challenges">
+<h2>Challenges<a class="headerlink" href="#challenges" title="Link to this heading">#</a></h2>
+<p>Since this task of recognizing a visual concept (e.g. cat) is relatively trivial for a human to perform, it is worth considering the challenges involved from the perspective of a Computer Vision algorithm. As we present (an inexhaustive) list of challenges below, keep in mind the raw representation of images as a 3-D array of brightness values:</p>
+<ul class="simple">
+<li><p>Viewpoint variation. A single instance of an object can be oriented in many ways with respect to the camera.</p></li>
+<li><p>Scale variation. Visual classes often exhibit variation in their size (size in the real world, not only in terms of their extent in the image).</p></li>
+<li><p>Deformation. Many objects of interest are not rigid bodies and can be deformed in extreme ways.</p></li>
+<li><p>Occlusion. The objects of interest can be occluded. Sometimes only a small portion of an object (as little as few pixels) could be visible.</p></li>
+<li><p>Illumination conditions. The effects of illumination are drastic on the pixel level.</p></li>
+<li><p>Background clutter. The objects of interest may blend into their environment, making them hard to identify.</p></li>
+<li><p>Intra-class variation. The classes of interest can often be relatively broad, such as chair. There are many different types of these objects, each with their own appearance.</p></li>
+</ul>
+<p>A good image classification model must be invariant to the cross product of all these variations, while simultaneously retaining sensitivity to the inter-class variations.</p>
+</section>
+<section id="pipeline-of-image-classification">
+<h2>Pipeline of image classification<a class="headerlink" href="#pipeline-of-image-classification" title="Link to this heading">#</a></h2>
+<p>We’ve seen that the task in image classification is to take an array of pixels that represents a single image and assign a label to it. Our complete pipeline can be formalized as follows:</p>
+<ul class="simple">
+<li><p>Input: Our input consists of a set of N images, each labeled with one of K different classes. We refer to this data as the training set,</p></li>
+<li><p>Learning: Our task is to use the training set to learn what every one of the classes looks like. We refer to this step as training a classifier, or learning a model,</p></li>
+<li><p>Evaluation: In the end, we evaluate the quality of the classifier by asking it to predict labels for a new set of images that it has never seen before. We will then compare the true labels of these images to the ones predicted by the classifier. Intuitively, we’re hoping that a lot of the predictions match up with the true answers (which we call the ground truth).</p></li>
+</ul>
+</section>
+<section id="history-classic-models">
+<h2>History &amp; classic models<a class="headerlink" href="#history-classic-models" title="Link to this heading">#</a></h2>
+<p>Since image classification is a classic task for computer vision, there are several models that are well-performed in the past. We can list them as follows: LeNet, AlexNet, VGGNet, GoogleNet, ResNet, DenseNet, SENet, MobileNet, ShuffleNet and ViT. In this part, we will introduce some of them.</p>
+<section id="vggnet">
+<h3>VGGNet<a class="headerlink" href="#vggnet" title="Link to this heading">#</a></h3>
+<p>The VGG (Visual Geometry Group) multilayer network model has 19 more layers than AlexNet, verifying that increasing the depth in the network structure can directly affect the model performance. The design idea of VGG is to increase the depth of the network and use a small size convolutional kernel instead. As shown in the figure below, three 3×3 convolutional kernels are used to replace the 7×7 convolutional kernels in AlexNet, and two 3×3 convolutional kernels are used to replace the 5×5 convolutional kernels, which can increase the depth of the network and improve the model effect while ensuring the same perceptual field. The number of model parameters and operations can be reduced by using smaller 3×3 Filters, and the image feature information can be better retained. The specific advantages of the improvement are summarized as follows.</p>
+<ul class="simple">
+<li><p>Using small 3×3 filters to replace large convolutional kernels.</p></li>
+<li><p>After replacing the convolution kernel, the convolution layers have the same perceptual field.</p></li>
+<li><p>Each layer is trained by ReLU activation function and batch gradient descent after convolution operation.</p></li>
+<li><p>It is verified that increasing the network depth can improve the model performance. Although, VGG has achieved good results in image classification and localization problems in 2014 due to its deeper network structure and low computational complexity, it uses 140 million parameters and is computationally intensive, which is its shortcoming.</p></li>
+</ul>
+<figure class="align-default" id="vgg-structure">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/02_VGG.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/02_VGG.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/02_VGG.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 26 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1409.1556.pdf"> Structure of VGGNet </a></span><a class="headerlink" href="#vgg-structure" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="code">
+<h4>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tensorflow_addons</span> <span class="k">as</span> <span class="nn">tfa</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">DeprecationWarning</span><span class="p">)</span>
+<span class="n">AUTOTUNE</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">AUTOTUNE</span>
+
+<span class="c1">#This code defines a function `conv_bn` that returns a sequential model consisting of a zero-padding layer, </span>
+<span class="c1"># a convolution layer, and a batch normalization layer.</span>
+
+<span class="k">def</span> <span class="nf">conv_bn</span><span class="p">(</span><span class="n">out_channels</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ZeroPadding2D</span><span class="p">(</span><span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+                <span class="n">filters</span><span class="o">=</span><span class="n">out_channels</span><span class="p">,</span>
+                <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
+                <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">,</span>
+                <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+                <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">&quot;conv&quot;</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;bn&quot;</span><span class="p">),</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This function is useful for constructing convolutional neural network architectures, as it provides a simple way to combine convolution and batch normalization layers.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">out_channels</span></code> specifies the number of output channels for the convolution layer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel_size</span></code> specifies the size of the convolution kernel.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strides</span></code> specifies the stride size for the convolution operation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">padding</span></code> specifies the padding size for the zero-padding layer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups</span></code> specifies the number of groups for the group convolution operation.</p></li>
+</ul>
+<p>The function returns a sequential model that consists of three layers:
+a zero-padding layer, a convolution layer, and a batch normalization layer.</p>
+<p>The convolution layer has <code class="docutils literal notranslate"><span class="pre">out_channels</span></code> filters, a kernel size of <code class="docutils literal notranslate"><span class="pre">kernel_size</span></code>, and a stride size of <code class="docutils literal notranslate"><span class="pre">strides</span></code>. The zero-padding layer has a padding size of <code class="docutils literal notranslate"><span class="pre">padding</span></code>. The batch normalization layer normalizes the activations of the convolution layer.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RepVGGBlock</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">in_channels</span><span class="p">,</span>
+        <span class="n">out_channels</span><span class="p">,</span>
+        <span class="n">kernel_size</span><span class="p">,</span>
+        <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">dilation</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">groups</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">deploy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RepVGGBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deploy</span> <span class="o">=</span> <span class="n">deploy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="n">groups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">=</span> <span class="n">in_channels</span>
+
+        <span class="k">assert</span> <span class="n">kernel_size</span> <span class="o">==</span> <span class="mi">3</span>
+        <span class="k">assert</span> <span class="n">padding</span> <span class="o">==</span> <span class="mi">1</span>
+
+        <span class="n">padding_11</span> <span class="o">=</span> <span class="n">padding</span> <span class="o">-</span> <span class="n">kernel_size</span> <span class="o">//</span> <span class="mi">2</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nonlinearity</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">deploy</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbr_reparam</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ZeroPadding2D</span><span class="p">(</span><span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">),</span>
+                    <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span>
+                        <span class="n">filters</span><span class="o">=</span><span class="n">out_channels</span><span class="p">,</span>
+                        <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
+                        <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                        <span class="n">padding</span><span class="o">=</span><span class="s2">&quot;valid&quot;</span><span class="p">,</span>
+                        <span class="n">dilation_rate</span><span class="o">=</span><span class="n">dilation</span><span class="p">,</span>
+                        <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+                        <span class="n">use_bias</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbr_identity</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">out_channels</span> <span class="o">==</span> <span class="n">in_channels</span> <span class="ow">and</span> <span class="n">strides</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbr_dense</span> <span class="o">=</span> <span class="n">conv_bn</span><span class="p">(</span>
+                <span class="n">out_channels</span><span class="o">=</span><span class="n">out_channels</span><span class="p">,</span>
+                <span class="n">kernel_size</span><span class="o">=</span><span class="n">kernel_size</span><span class="p">,</span>
+                <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                <span class="n">padding</span><span class="o">=</span><span class="n">padding</span><span class="p">,</span>
+                <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbr_1x1</span> <span class="o">=</span> <span class="n">conv_bn</span><span class="p">(</span>
+                <span class="n">out_channels</span><span class="o">=</span><span class="n">out_channels</span><span class="p">,</span>
+                <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span>
+                <span class="n">padding</span><span class="o">=</span><span class="n">padding_11</span><span class="p">,</span>
+                <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RepVGG Block, identity = &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rbr_identity</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;rbr_reparam&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nonlinearity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rbr_reparam</span><span class="p">(</span><span class="n">inputs</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rbr_identity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">id_out</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">id_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rbr_identity</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nonlinearity</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbr_dense</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rbr_1x1</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span> <span class="o">+</span> <span class="n">id_out</span>
+        <span class="p">)</span>
+
+    <span class="c1"># This func derives the equivalent kernel and bias in a DIFFERENTIABLE way.</span>
+    <span class="c1"># You can get the equivalent kernel and bias at any time and do whatever you want,</span>
+    <span class="c1">#     for example, apply some penalties or constraints during training, just like you do to the other models.</span>
+    <span class="c1"># May be useful for quantization or pruning.</span>
+    <span class="k">def</span> <span class="nf">get_equivalent_kernel_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">kernel3x3</span><span class="p">,</span> <span class="n">bias3x3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fuse_bn_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rbr_dense</span><span class="p">)</span>
+        <span class="n">kernel1x1</span><span class="p">,</span> <span class="n">bias1x1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fuse_bn_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rbr_1x1</span><span class="p">)</span>
+        <span class="n">kernelid</span><span class="p">,</span> <span class="n">biasid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fuse_bn_tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rbr_identity</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">kernel3x3</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pad_1x1_to_3x3_tensor</span><span class="p">(</span><span class="n">kernel1x1</span><span class="p">)</span> <span class="o">+</span> <span class="n">kernelid</span><span class="p">,</span>
+            <span class="n">bias3x3</span> <span class="o">+</span> <span class="n">bias1x1</span> <span class="o">+</span> <span class="n">biasid</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_pad_1x1_to_3x3_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kernel1x1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">kernel1x1</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span>
+                <span class="n">kernel1x1</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+            <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fuse_bn_tensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branch</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">branch</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">branch</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">):</span>
+            <span class="n">kernel</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s2">&quot;conv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">running_mean</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s2">&quot;bn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">moving_mean</span>
+            <span class="n">running_var</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s2">&quot;bn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">moving_variance</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s2">&quot;bn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">gamma</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s2">&quot;bn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">beta</span>
+            <span class="n">eps</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="s2">&quot;bn&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">epsilon</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">branch</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;id_tensor&quot;</span><span class="p">):</span>
+                <span class="n">input_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span> <span class="o">//</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups</span>
+                <span class="n">kernel_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+                    <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">input_dim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+                <span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">in_channels</span><span class="p">):</span>
+                    <span class="n">kernel_value</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">%</span> <span class="n">input_dim</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id_tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">(</span>
+                    <span class="n">kernel_value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+                <span class="p">)</span>
+            <span class="n">kernel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_tensor</span>
+            <span class="n">running_mean</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">moving_mean</span>
+            <span class="n">running_var</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">moving_variance</span>
+            <span class="n">gamma</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">gamma</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">beta</span>
+            <span class="n">eps</span> <span class="o">=</span> <span class="n">branch</span><span class="o">.</span><span class="n">epsilon</span>
+        <span class="n">std</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">running_var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">std</span>
+        <span class="k">return</span> <span class="n">kernel</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">beta</span> <span class="o">-</span> <span class="n">running_mean</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">std</span>
+
+    <span class="k">def</span> <span class="nf">repvgg_convert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">kernel</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_equivalent_kernel_bias</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">bias</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This code defines a RepVGGBlock layer in TensorFlow, which is a convolutional block used in the RepVGG model. The RepVGG model is a neural network architecture that achieves high accuracy while having a simple structure. The RepVGGBlock layer is designed to be more efficient and easier to train compared to other convolutional layers.</p>
+<p>The RepVGGBlock layer has several parameters such as <code class="docutils literal notranslate"><span class="pre">in_channels</span></code>, <code class="docutils literal notranslate"><span class="pre">out_channels</span></code>, <code class="docutils literal notranslate"><span class="pre">kernel_size</span></code>, <code class="docutils literal notranslate"><span class="pre">strides</span></code>, <code class="docutils literal notranslate"><span class="pre">padding</span></code>, <code class="docutils literal notranslate"><span class="pre">dilation</span></code>, and <code class="docutils literal notranslate"><span class="pre">groups</span></code>. <code class="docutils literal notranslate"><span class="pre">in_channels</span></code> and <code class="docutils literal notranslate"><span class="pre">out_channels</span></code> determine the number of input and output channels, respectively.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">kernel_size</span></code> specifies the size of the convolution kernel.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strides</span></code> determines the step size of the convolution operation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">padding</span></code> controls the amount of padding to be added to the input image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dilation</span></code> specifies the dilation rate of the convolution operation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">groups</span></code> determines the number of groups to be used in the convolution operation.</p></li>
+</ul>
+<p>The layer contains several convolutional operations, including a 3x3 convolution, a 1x1 convolution, and a residual identity. These convolutional operations are fused with batch normalization to improve training efficiency. The layer also includes a rectified linear unit (ReLU) activation function.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">call()</span></code> function of the RepVGGBlock layer applies the convolutional operations and the ReLU activation function to the input tensor.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">get_equivalent_kernel_bias()</span></code> function derives the equivalent kernel and bias of the layer in a differentiable way, which can be useful for applying penalties or constraints during training, such as in quantization or pruning.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">repvgg_convert()</span></code> function converts the RepVGGBlock layer to a standard convolutional layer by fusing batch normalization with convolutional operations.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">RepVGG</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">num_blocks</span><span class="p">,</span>
+        <span class="n">num_classes</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+        <span class="n">width_multiplier</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">override_groups_map</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">deploy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RepVGG</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">width_multiplier</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">deploy</span> <span class="o">=</span> <span class="n">deploy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">override_groups_map</span> <span class="o">=</span> <span class="n">override_groups_map</span> <span class="ow">or</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="k">assert</span> <span class="mi">0</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_groups_map</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_planes</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage0</span> <span class="o">=</span> <span class="n">RepVGGBlock</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">in_planes</span><span class="p">,</span>
+            <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">deploy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deploy</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cur_layer_idx</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_stage</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">num_blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_stage</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">num_blocks</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_stage</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">num_blocks</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stage4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_stage</span><span class="p">(</span>
+            <span class="nb">int</span><span class="p">(</span><span class="mi">512</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="n">num_blocks</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">stride</span><span class="o">=</span><span class="mi">2</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gap</span> <span class="o">=</span> <span class="n">tfa</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">AdaptiveAveragePooling2D</span><span class="p">(</span><span class="n">output_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_stage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">planes</span><span class="p">,</span> <span class="n">num_blocks</span><span class="p">,</span> <span class="n">stride</span><span class="p">):</span>
+        <span class="n">strides</span> <span class="o">=</span> <span class="p">[</span><span class="n">stride</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">num_blocks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">stride</span> <span class="ow">in</span> <span class="n">strides</span><span class="p">:</span>
+            <span class="n">cur_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">override_groups_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cur_layer_idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">RepVGGBlock</span><span class="p">(</span>
+                    <span class="n">in_channels</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">in_planes</span><span class="p">,</span>
+                    <span class="n">out_channels</span><span class="o">=</span><span class="n">planes</span><span class="p">,</span>
+                    <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">strides</span><span class="o">=</span><span class="n">stride</span><span class="p">,</span>
+                    <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">groups</span><span class="o">=</span><span class="n">cur_groups</span><span class="p">,</span>
+                    <span class="n">deploy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">deploy</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">in_planes</span> <span class="o">=</span> <span class="n">planes</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cur_layer_idx</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage0</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage1</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage2</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage3</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage4</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gap</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Flatten</span><span class="p">()(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This is a TensorFlow implementation of the RepVGG model, a type of convolutional neural network designed for efficient inference on mobile and embedded devices.</p>
+<ul class="simple">
+<li><p>The RepVGG model uses a series of RepVGG blocks to transform the input image into a feature representation that is then fed into a fully connected layer to make the final prediction.</p></li>
+<li><p>The RepVGG blocks are based on the VGG-style architecture, but instead of using traditional convolutional layers, they use a combination of 1x1 and 3x3 depthwise separable convolutions to reduce the number of parameters while maintaining performance.</p></li>
+<li><p>The width of the network can be adjusted by specifying a width multiplier for each stage of the network.</p></li>
+<li><p>The model also includes an adaptive average pooling layer to reduce the spatial dimensions of the feature map before the fully connected layer.</p></li>
+</ul>
+</section>
+</section>
+<section id="resnet">
+<h3>Resnet<a class="headerlink" href="#resnet" title="Link to this heading">#</a></h3>
+<p>ResNet (Residual Network) was proposed by Kaiming He and won the 2015 ILSVRC Grand Prix with an error rate of 3.57%. In the previous network, when the model is not deep enough, its network recognition is not strong, but when the network stack (Plain Network) is very deep, the network gradient disappearance and gradient dispersion are obvious, resulting in the model’s computational effectiveness but not up but down. Therefore, in view of the degradation problem of this deep network, ResNet is designed as an ultra-deep network without the gradient vanishing problem.ResNet has various types depending on the number of layers, from 18 to 1202 layers. As an example, Res Net50 consists of 49 convolutional layers and 1 fully connected layer, as shown in the figure below. This simple addition does not add additional parameters and computation to the network, but can greatly increase the training speed and improve the training effect, and this simple structure can well solve the degradation problem when the model deepens the number of layers. In this way, the network will always be in the optimal state and the performance of the network will not decrease with increasing depth.</p>
+<p>The most important part of ResNet should be the residual block, and here is the structure.</p>
+<figure class="align-default" id="residual-block">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/03_resblock.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/03_resblock.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/03_resblock.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 27 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1512.03385.pdf"> Structure of residual block </a></span><a class="headerlink" href="#residual-block" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="resnet-structure">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/04_ResNet.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/04_ResNet.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/04_ResNet.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 28 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1512.03385.pdf"> Structure of residual network </a></span><a class="headerlink" href="#resnet-structure" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="id1">
+<h4>Code<a class="headerlink" href="#id1" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="k">def</span> <span class="nf">conv_bn_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">use_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">residual_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">shortcut</span> <span class="o">=</span> <span class="n">x</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">conv_bn_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">conv_bn_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">shortcut</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">resnet</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">num_filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_blocks</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">input_shape</span><span class="p">])</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">conv_bn_relu</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="c1"># Stacking residual blocks</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num_blocks</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_blocks</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_blocks</span><span class="p">):</span>
+            <span class="n">strides</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">strides</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">residual_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">num_filters</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">i</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides</span><span class="p">)</span>
+
+    <span class="c1"># Global average pooling and fully-connected layer for classification</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">reduce_mean</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">logits</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This implementation uses the conv_bn_relu function to perform a convolution operation followed by batch normalization and ReLU activation.</p>
+<ul class="simple">
+<li><p>The residual_block function defines a residual block that consists of two convolutional layers with batch normalization and ReLU activation, followed by an addition of the input to the output of the second convolutional layer.</p></li>
+<li><p>The resnet function stacks multiple residual blocks and ends with a global average pooling layer and a fully-connected layer for classification.</p></li>
+</ul>
+</section>
+</section>
+<section id="densenet">
+<h3>DenseNet<a class="headerlink" href="#densenet" title="Link to this heading">#</a></h3>
+<p>DenseNet proposes a more radical dense connection mechanism than ResNet: i.e., connecting all layers to each other, specifically each layer accepts all the layers before it as its additional input. resNet short-circuits each layer with some previous layer (usually 2-3 layers), and the connection is made by element-level summation. In DenseNet, each layer is connected (concat) with all the preceding layers in the channel dimension and used as input to the next layer, which is a dense connection. Moreover, DenseNet is directly concat feature maps from different layers, which enables feature reuse and improves efficiency, and this feature is the most important difference between DenseNet and ResNet.</p>
+<figure class="align-default" id="dense-block">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/05_denseblock.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/05_denseblock.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/05_denseblock.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 29 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1608.06993.pdf"> Structure of dense block </a></span><a class="headerlink" href="#dense-block" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="densenet-structure">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/06_DenseNet.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/06_DenseNet.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/06_DenseNet.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 30 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1608.06993.pdf"> Structure of dense network </a></span><a class="headerlink" href="#densenet-structure" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="id2">
+<h4>Code<a class="headerlink" href="#id2" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="k">def</span> <span class="nf">conv_block</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">dropout_rate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">dense_block</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">,</span> <span class="n">growth_rate</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">):</span>
+        <span class="n">conv</span> <span class="o">=</span> <span class="n">conv_block</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">growth_rate</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">)</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="nb">input</span><span class="p">,</span> <span class="n">conv</span><span class="p">],</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">input</span>
+
+<span class="k">def</span> <span class="nf">transition_block</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">compression</span><span class="p">):</span>
+    <span class="n">n_filters</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n_filters</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_filters</span> <span class="o">*</span> <span class="n">compression</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">average_pooling2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">densenet</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">n_classes</span><span class="p">,</span> <span class="n">n_dense_blocks</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_layers_per_block</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">growth_rate</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
+    <span class="c1"># Initial convolution layer</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">conv2d</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">growth_rate</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">max_pooling2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Dense blocks</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_dense_blocks</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">dense_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n_layers_per_block</span><span class="p">,</span> <span class="n">growth_rate</span><span class="p">,</span> <span class="n">dropout_rate</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">n_dense_blocks</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">transition_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">compression</span><span class="p">)</span>
+
+    <span class="c1"># Global average pooling and classification layer</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">batch_normalization</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">average_pooling2d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pool_size</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span><span class="o">.</span><span class="n">as_list</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span> <span class="n">strides</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">dense</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="n">n_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This implementation includes functions for building the building blocks of DenseNet: conv_block, dense_block, and transition_block. These building blocks are then used to construct the densenet function, which takes an input tensor and returns the output logits for a classification task.</p>
+<p>The densenet function takes several hyperparameters as inputs, such as the number of dense blocks, the number of layers per block, the growth rate of each block, the compression factor for the transition blocks, and the dropout rate. These hyperparameters can be adjusted to optimize the performance of the model for a specific task.</p>
+</section>
+</section>
+<section id="mobilenet">
+<h3>MobileNet<a class="headerlink" href="#mobilenet" title="Link to this heading">#</a></h3>
+<p>MobileNets are based on a streamlined architecture that uses depth-wise separable convolutions to build light weight deep neural networks. We introduce two simple global hyper-parameters that efficiently trade off between latency and accuracy. These hyper-parameters allow the model builder to choose the right sized model for their application based on the constraints of the problem.</p>
+<p>Besides, the standard convolutional filters for normal CNNs are replaced by two layers: depthwise convolution and pointwise convolution to build a depthwise separable filter.</p>
+<figure class="align-default" id="mobilenet-convolution-structure">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/07_mobileconv.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/07_mobileconv.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/07_mobileconv.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 31 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1704.04861.pdf%E2%80%8Barxiv.org"> Replacement of standard convolution filter </a></span><a class="headerlink" href="#mobilenet-convolution-structure" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="mobilenet-body-structure">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/08_MobileNet.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/08_MobileNet.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/imgcls/08_MobileNet.png" style="width: 90%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 32 </span><span class="caption-text"><a class="reference external" href="https://arxiv.org/pdf/1704.04861.pdf%E2%80%8Barxiv.org"> Body structure of MobileNet </a></span><a class="headerlink" href="#mobilenet-body-structure" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="id3">
+<h4>Code<a class="headerlink" href="#id3" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="k">def</span> <span class="nf">depthwise_separable_conv</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">num_filters</span><span class="p">,</span> <span class="n">width_multiplier</span><span class="p">,</span> <span class="n">downsample</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Depthwise Separable Convolution&quot;&quot;&quot;</span>
+    <span class="c1"># Depthwise Convolution</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">DepthwiseConv2D</span><span class="p">(</span><span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span> <span class="k">if</span> <span class="n">downsample</span> <span class="k">else</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">downsample</span> <span class="k">else</span> <span class="mi">1</span><span class="p">),</span>
+                                          <span class="n">depth_multiplier</span><span class="o">=</span><span class="n">width_multiplier</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+
+    <span class="c1"># Pointwise Convolution</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">num_filters</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)(</span><span class="n">net</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">net</span>
+
+<span class="k">def</span> <span class="nf">mobilenet</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">width_multiplier</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">)</span>
+
+    <span class="c1"># Initial Convolution</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Conv2D</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">32</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">kernel_size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">strides</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;same&#39;</span><span class="p">)(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">BatchNormalization</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+
+    <span class="c1"># Depthwise Separable Convolution x 13</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">,</span> <span class="n">downsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">128</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">,</span> <span class="n">downsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">256</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">512</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">,</span> <span class="n">downsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">512</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">,</span> <span class="n">downsample</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">depthwise_separable_conv</span><span class="p">(</span><span class="n">net</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="n">width_multiplier</span><span class="p">),</span> <span class="n">width_multiplier</span><span class="p">)</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">GlobalAveragePooling2D</span><span class="p">()(</span><span class="n">net</span><span class="p">)</span>
+
+    <span class="c1"># Output</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">net</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This implementation defines two functions: depthwise_separable_conv and mobilenet. The former implements the depthwise separable convolution operation used by the MobileNet architecture, while the latter constructs the entire MobileNet model.</p>
+<p>The mobilenet function takes three arguments: input_shape (a tuple specifying the input shape of the model), num_classes (the number of output classes), and width_multiplier (a scaling factor for the number of filters in each layer of the model, defaulting to 1).</p>
+</section>
+</section>
+<section id="vit">
+<h3>ViT<a class="headerlink" href="#vit" title="Link to this heading">#</a></h3>
+<p>Different from the previous models, ViT (Vision Transformer) uses the concept of Transformer. Inspired by the Transformer scaling successes in NLP, they experiment with applying a standard Transformer directly to images, with the fewest possible modifications. To do so, they split an image into patches and provide the sequence of linear embeddings of these patches as an input to a Transformer. Image patches are treated the same way as tokens (words) in an NLP application. They train the model on image classification in supervised fashion.</p>
+<section id="id4">
+<h4>Code<a class="headerlink" href="#id4" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers</span> <span class="kn">import</span> <span class="n">LayerNormalization</span><span class="p">,</span> <span class="n">MultiHeadAttention</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Input</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.layers.experimental.preprocessing</span> <span class="kn">import</span> <span class="n">Resizing</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.models</span> <span class="kn">import</span> <span class="n">Model</span>
+
+
+<span class="k">class</span> <span class="nc">TransformerBlock</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embed_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">ff_dim</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TransformerBlock</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">att</span> <span class="o">=</span> <span class="n">MultiHeadAttention</span><span class="p">(</span><span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">key_dim</span><span class="o">=</span><span class="n">embed_dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+            <span class="n">Dense</span><span class="p">(</span><span class="n">ff_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">),</span>
+            <span class="n">Dense</span><span class="p">(</span><span class="n">embed_dim</span><span class="p">),</span>
+        <span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layernorm1</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layernorm2</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout1</span> <span class="o">=</span> <span class="n">Dropout</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout2</span> <span class="o">=</span> <span class="n">Dropout</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="p">):</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">att</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
+        <span class="n">attn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout1</span><span class="p">(</span><span class="n">attn_output</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
+        <span class="n">out1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layernorm1</span><span class="p">(</span><span class="n">inputs</span> <span class="o">+</span> <span class="n">attn_output</span><span class="p">)</span>
+        <span class="n">ffn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">(</span><span class="n">out1</span><span class="p">)</span>
+        <span class="n">ffn_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout2</span><span class="p">(</span><span class="n">ffn_output</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">layernorm2</span><span class="p">(</span><span class="n">out1</span> <span class="o">+</span> <span class="n">ffn_output</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">VisionTransformer</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">patch_size</span><span class="p">,</span> <span class="n">num_layers</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">ff_dim</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">VisionTransformer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="n">num_patches</span> <span class="o">=</span> <span class="p">(</span><span class="n">image_size</span> <span class="o">//</span> <span class="n">patch_size</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_dim</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">patch_size</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reshape</span> <span class="o">=</span> <span class="n">Resizing</span><span class="p">(</span><span class="n">image_size</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patchify</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">preprocessing</span><span class="o">.</span><span class="n">Patching</span><span class="p">(</span><span class="n">num_patches</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_projection</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patch_dim</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_weight</span><span class="p">(</span><span class="s1">&#39;position_embedding&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_patches</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_dim</span><span class="p">),</span>
+                                                   <span class="n">initializer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">initializers</span><span class="o">.</span><span class="n">RandomNormal</span><span class="p">(),</span>
+                                                   <span class="n">trainable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">Dropout</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformer_blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">TransformerBlock</span><span class="p">(</span><span class="n">embed_dim</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">patch_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span> <span class="n">ff_dim</span><span class="o">=</span><span class="n">ff_dim</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="n">rate</span><span class="p">)</span>
+                                   <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_layers</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layernorm</span> <span class="o">=</span> <span class="n">LayerNormalization</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patchify</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_projection</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">tf</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_dim</span><span class="p">)),</span> <span class="n">x</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">transformer_block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer_blocks</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">transformer_block</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">training</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layernorm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above code defines a Vision Transformer (ViT) model in TensorFlow, which is a state-of-the-art architecture for image classification tasks that combines the transformer architecture with a patch-based approach for image processing.</p>
+<p>The TransformerBlock class defines a single transformer block with multi-head attention and a feedforward neural network. The constructor takes in the following arguments:</p>
+<ul class="simple">
+<li><p>embed_dim: the dimensionality of the embedding layer</p></li>
+<li><p>num_heads: the number of attention heads</p></li>
+<li><p>ff_dim: the dimensionality of the feedforward layer</p></li>
+<li><p>rate: the dropout rate</p></li>
+</ul>
+<p>The call method of the TransformerBlock class takes in the input tensor and a boolean flag training indicating whether the layer should behave in training or inference mode. The input tensor is passed through the multi-head attention layer, followed by a dropout layer, and then added to the input tensor using residual connections. The resulting tensor is passed through a feedforward neural network, followed by another dropout layer, and then added to the residual tensor using another residual connection.</p>
+<p>The VisionTransformer class defines the ViT model, which consists of multiple transformer blocks and a final dense layer for classification. The constructor takes in the following arguments:</p>
+<ul class="simple">
+<li><p>image_size: the size of the input image</p></li>
+<li><p>patch_size: the size of the patches to be extracted from the image</p></li>
+<li><p>num_layers: the number of transformer blocks in the model</p></li>
+<li><p>num_heads: the number of attention heads in each transformer block</p></li>
+<li><p>ff_dim: the dimensionality of the feedforward layer in each transformer block</p></li>
+<li><p>num_classes: the number of output classes</p></li>
+<li><p>rate: the dropout rate</p></li>
+</ul>
+<p>The call method of the VisionTransformer class takes in the input tensor and a boolean flag training indicating whether the layer should behave in training or inference mode. The input tensor is first resized to the specified image_size and then passed through a patch extraction layer that divides the image into patches of size patch_size. Each patch is projected to a patch_dim-dimensional embedding space using a dense layer. A learnable position embedding is added to the patches and the resulting tensor is passed through a dropout layer. The resulting tensor is then passed through a stack of num_layers transformer blocks, each followed by a dropout layer. The output of the final transformer block is passed through a layer normalization layer and the first element of the resulting tensor is passed through a dense layer with num_classes output units and a softmax activation function.</p>
+</section>
+</section>
+</section>
+<section id="classic-datasets">
+<h2>Classic datasets<a class="headerlink" href="#classic-datasets" title="Link to this heading">#</a></h2>
+<p>As we said before, image classification task is mainly trained by datasets, so the importance of dataset is obvious. Here, we will introduce some widely-used datasets.</p>
+<section id="cifar-10-100">
+<h3>CIFAR-10/100<a class="headerlink" href="#cifar-10-100" title="Link to this heading">#</a></h3>
+<p>The <a class="reference external" href="http://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10 dataset</a> consists of 60000 32x32 colour images in 10 classes, with 6000 images per class. There are 50000 training images and 10000 test images. The dataset is divided into five training batches and one test batch, each with 10000 images. The test batch contains exactly 1000 randomly-selected images from each class. The training batches contain the remaining images in random order, but some training batches may contain more images from one class than another. Between them, the training batches contain exactly 5000 images from each class.</p>
+<p>The CIFAR-100 dataset is just like the CIFAR-10, except it has 100 classes containing 600 images each. There are 500 training images and 100 testing images per class. The 100 classes in the CIFAR-100 are grouped into 20 superclasses. Each image comes with a “fine” label (the class to which it belongs) and a “coarse” label (the superclass to which it belongs).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Download for Linux
+wget <a class="reference external" href="http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz">http://www.cs.toronto.edu/~kriz/cifar-10-python.tar.gz</a>
+wget <a class="reference external" href="http://www.cs.toronto.edu/~kriz/cifar-100-python.tar.gz">http://www.cs.toronto.edu/~kriz/cifar-100-python.tar.gz</a></p>
+<p>Download for Win/Mac
+Download from the offical website</p>
+</div>
+</section>
+<section id="imagenet-1000">
+<h3>ImageNet-1000<a class="headerlink" href="#imagenet-1000" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://image-net.org/">ImageNet</a> is an image dataset organized according to the WordNet hierarchy. Each meaningful concept in WordNet, possibly described by multiple words or word phrases, is called a “synonym set” or “synset”. There are more than 100,000 synsets in WordNet; the majority of them are nouns (80,000+). In ImageNet, we aim to provide on average 1000 images to illustrate each synset. Images of each concept are quality-controlled and human-annotated. In its completion, we hope ImageNet will offer tens of millions of cleanly labeled and sorted images for most of the concepts in the WordNet hierarchy.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you want to download this dataset, please visit <a class="reference external" href="https://www.kaggle.com/c/imagenet-object-localization-challenge/overview/description">kaggle</a> for more information.</p>
+</div>
+</section>
+</section>
+<section id="standards">
+<h2>Standards<a class="headerlink" href="#standards" title="Link to this heading">#</a></h2>
+<section id="top-1-accuracy">
+<h3>Top-1 accuracy<a class="headerlink" href="#top-1-accuracy" title="Link to this heading">#</a></h3>
+<p>If your predicted label takes the largest one inside the final probability vector as the prediction result, and if the one with the highest probability in your prediction result is correctly classified, then the prediction is correct. Otherwise, the prediction is wrong.</p>
+</section>
+<section id="top-5-accuracy">
+<h3>Top-5 accuracy<a class="headerlink" href="#top-5-accuracy" title="Link to this heading">#</a></h3>
+<p>Among the 50 classification probabilities of the test image, take the first 5 maximum classification probabilities, whether the correct label (classification) is in it or not, that is, whether it is one of these first 5, if it is, it is a successful classification.</p>
+</section>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<!-- Assignment - [Image classification](../../assignments/deep-learning/cnn/image-classification.ipynb) --></section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://www.stanford.edu">Stanford</a> for creating the open-source course <a class="reference external" href="https://cs231n.github.io/classification/">CS231n: Deep Learning for Computer Vision</a>, <a class="reference external" href="https://github.com/hoangthang1607">Duc Thang HOANG</a> for creating the open-source project <a class="reference external" href="https://github.com/hoangthang1607/RepVGG-Tensorflow-2">RepVGG-Tensorflow-2</a>, <a class="reference external" href="https://github.com/taki0112">Junho Kim</a> for creating the open-source project <a class="reference external" href="https://github.com/taki0112/ResNet-Tensorflow">ResNet-Tensorflow</a>, <a class="reference external" href="https://github.com/taki0112/Densenet-Tensorflow">Densenet-Tensorflow</a> and <a class="reference external" href="https://github.com/taki0112/vit-tensorflow">vit-tensorflow</a> and <a class="reference external" href="https://github.com/ohadlights">ohadlights</a> for creating the open-source project <a class="reference external" href="https://github.com/ohadlights/mobilenetv2">mobilenetv2</a>. They inspire the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="object-detection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Object detection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="image-segmentation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Image segmentation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-image-classification">What is image classification?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#challenges">Challenges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pipeline-of-image-classification">Pipeline of image classification</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#history-classic-models">History &amp; classic models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vggnet">VGGNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resnet">Resnet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#densenet">DenseNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mobilenet">MobileNet</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Code</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vit">ViT</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classic-datasets">Classic datasets</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cifar-10-100">CIFAR-10/100</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imagenet-1000">ImageNet-1000</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standards">Standards</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-1-accuracy">Top-1 accuracy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#top-5-accuracy">Top-5 accuracy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Welcome to your Jupyter Book &#8212; Lxy</title>
+    <title>Deep Learning Open Book &#8212; DL-learning</title>
   
   
   
@@ -57,10 +57,14 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/index.html" />
+    <link rel="icon" href="_static/fav.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Intro to Deep Learning" href="deep-learning/dl-overview.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -151,8 +155,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Lxy - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Lxy - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
   
   
 </a></div>
@@ -169,7 +173,43 @@
  </script></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="deep-learning/cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="deep-learning/cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deep-learning/cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="deep-learning/rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="deep-learning/rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deep-learning/rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="deep-learning/nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="deep-learning/nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deep-learning/nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deep-learning/dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
     </div>
 </nav></div>
     </div>
@@ -368,7 +408,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Welcome to your Jupyter Book</h1>
+    <h1>Deep Learning Open Book</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -382,19 +422,111 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="welcome-to-your-jupyter-book">
-<h1>Welcome to your Jupyter Book<a class="headerlink" href="#welcome-to-your-jupyter-book" title="Link to this heading">#</a></h1>
-<p>This is a small sample book to give you a feel for how book content is
-structured.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Here is a note!</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="deep-learning-open-book">
+<h1><strong>Deep Learning Open Book</strong><a class="headerlink" href="#deep-learning-open-book" title="Link to this heading">#</a></h1>
+<center><img src="https://raw.githubusercontent.com/JackWang0318/JackW_DL/master/assets/images/ml_vs_dl.png" width="70%" class="bg-white mb-1" ><br> Image: What is DeepLearning</center>
+<!-- `````{grid} 2
+:reverse:
+
+```{grid-item}
+:columns: 3
+:class: sd-m-auto
+
+<img src="./logo.png" style="width:50%;height:50%"/>
+
+```
+
+
+````{grid-item}
+:columns: 9
+:class: sd-fs-3
+
+An interactive and visual Deep Learning book - with code and assignment
+
+
+````
+````` -->
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 text-center docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-1 sd-row-cols-md-2 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-header bg-light docutils">
+<p class="sd-card-text">Neural Networks 👨‍💻</p>
 </div>
-<p>And here is a code block:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <span class="n">mc</span><span class="o">^</span><span class="mi">2</span>
-</pre></div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">Neural networks are a class of machine learning models inspired by the structure and function of the human brain. They consist of interconnected nodes (neurons) organized in layers, including an input layer, one or more hidden layers, and an output layer. Each neuron processes input data by applying a weighted sum, followed by an activation function, to produce an output. Neural networks are trained using algorithms like backpropagation, where the model adjusts its internal parameters (weights) based on the errors between predicted and actual outputs.</p>
 </div>
-<p>Check out the content pages bundled with this sample book to see more.</p>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text">Start to read <span class="fas fa-arrow-right"></span></p>
+</div>
+<a class="sd-stretched-link reference internal" href="deep-learning/nn.html"><span class="doc"></span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-header bg-light docutils">
+<p class="sd-card-text">CNN Basics💾</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">Convolutional Neural Networks are a specialized type of neural network designed for processing structured grid-like data, such as images. They consist of multiple layers, including convolutional layers, pooling layers, and fully connected layers. CNNs use convolutional operations to extract features from input images, preserving the spatial relationships between pixels. Pooling layers reduce the dimensionality of feature maps, making the model more computationally efficient. CNNs have been highly successful in image classification, object detection, and other computer vision tasks.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text">Start to read <span class="fas fa-arrow-right"></span></p>
+</div>
+<a class="sd-stretched-link reference internal" href="deep-learning/cnn/cnn.html"><span class="doc"></span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-header bg-light docutils">
+<p class="sd-card-text">RNN Basics 🚀</p>
+</div>
+<div class="sd-card-body docutils">
+<p class="sd-card-text">Recurrent Neural Networks are designed to work with sequential data, such as time series or natural language.They contain recurrent connections that allow information to persist over time, enabling the network to capture temporal dependencies.RNNs process input sequences one element at a time while maintaining an internal state (hidden state) that evolves as new inputs are processed.RNNs are widely used in tasks such as machine translation, speech recognition, and sentiment analysis, where understanding context and sequential patterns is crucial.</p>
+</div>
+<div class="sd-card-footer docutils">
+<p class="sd-card-text">Start to read <span class="fas fa-arrow-right"></span></p>
+</div>
+<span class="sd-stretched-link"></span></div>
+</div>
+<!-- ```{grid-item-card}
+:link: deep-learning/rnn
+:link-type: doc
+:class-header: bg-light
+
+xxx Basics 🚀
+^^^
+
+TODO: RNNs are ...
++++
+Start to read {fas}`arrow-right`
+```
+
+```{grid-item-card}
+:link: deep-learning/rnn
+:link-type: doc
+:class-header: bg-light
+
+xxx Basics 🚀
+^^^
+
+TODO: RNNs are ...
++++
+Start to read {fas}`arrow-right`
+```
+
+```{grid-item-card}
+:link: deep-learning/rnn
+:link-type: doc
+:class-header: bg-light
+
+xxx Basics 🚀
+^^^
+
+TODO: RNNs are ...
++++
+Start to read {fas}`arrow-right`
+``` -->
+</div>
+</div>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -431,6 +563,15 @@ structured.</p>
                 <footer class="prev-next-footer">
                   
 <div class="prev-next-area">
+    <a class="right-next"
+       href="deep-learning/dl-overview.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Intro to Deep Learning</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

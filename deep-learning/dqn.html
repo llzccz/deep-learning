@@ -1,0 +1,1399 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Deep Q-learning &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/dqn';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/dqn.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Google Stock Price Prediction RNN" href="../assignments/google-stock-price-prediction-rnn.html" />
+    <link rel="prev" title="Diffusion Model" href="difussion-model.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/dqn.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/dqn.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/dqn.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/dqn.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/deep-learning/dqn.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Deep Q-learning</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-terminology">Basic terminology</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">Reward</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-dependent-return-definitions">Task-dependent return definitions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#episodic-tasks">Episodic tasks</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#continuing-tasks">Continuing tasks</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state">State</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-state">Environment state</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-state">Agent state</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action">Action</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy">Policy</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions">Value functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration-and-exploitation">Exploration and exploitation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-algorithms">Main algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-solution-by-policy">RL-solution by policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-solution-by-value-function">RL-solution by value function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-solution-by-model-evaluation">RL-solution by model evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-agent-taxonomy">RL agent taxonomy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-study">Self study</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="deep-q-learning">
+<h1>Deep Q-learning<a class="headerlink" href="#deep-q-learning" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Usually, we regard Deep Q Network as DQN, and it can also be called Reinforcement Learning (RL) whose aim is to achieve the desired behavior of an agent that learns from its mistakes and improves its performance.</p>
+<p>RL is a type of machine learning that allows us to create AI agents that learn from the environment by interacting with it to maximize its cumulative reward. Here is an image showing the basic RL operation principle:</p>
+<figure class="align-default" id="pipline-of-dqn">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/02_pipline.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/02_pipline.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/02_pipline.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 46 </span><span class="caption-text">Pipline of DQN</span><a class="headerlink" href="#pipline-of-dqn" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>From this image, we can see that at each step <span class="math notranslate nohighlight">\(k\)</span>, the agent picks an action <span class="math notranslate nohighlight">\(u_k\)</span>, receives an observation <span class="math notranslate nohighlight">\(y_k\)</span> and receives a reward <span class="math notranslate nohighlight">\(r_k\)</span>, and the environment receives an action <span class="math notranslate nohighlight">\(u_k\)</span>, emits an observation <span class="math notranslate nohighlight">\(y_{k+1}\)</span> and emits a reward <span class="math notranslate nohighlight">\(r_{k+1}\)</span>. Later, the time increments k ← k + 1. A one step time delay is assumed between executing the action and receiving the observation as well as reward. We assume that the resulting time interval <span class="math notranslate nohighlight">\(∆t = t_k − t_{k+1}\)</span> is constant.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Key characteristics of RL:</p>
+<ul class="simple">
+<li><p>No supervisor.</p></li>
+<li><p>Data-driven.</p></li>
+<li><p>Discrete time steps.</p></li>
+<li><p>Sequential data stream (not independent and identically distributed data).</p></li>
+<li><p>Agent actions affect subsequent data (sequential decision making).</p></li>
+</ul>
+</div>
+</section>
+<section id="basic-terminology">
+<h2>Basic terminology<a class="headerlink" href="#basic-terminology" title="Link to this heading">#</a></h2>
+<section id="reward">
+<h3>Reward<a class="headerlink" href="#reward" title="Link to this heading">#</a></h3>
+<p>A reward is a scalar random variable <span class="math notranslate nohighlight">\(R_k\)</span> with realizations <span class="math notranslate nohighlight">\(r_k\)</span>:</p>
+<ul class="simple">
+<li><p>Often it is considered a real-number <span class="math notranslate nohighlight">\(r_k \in \mathbb{R}\)</span> or an integer <span class="math notranslate nohighlight">\(r_k \in \mathbb{Z}\)</span>.</p></li>
+<li><p>The reward function (interpreter) may be naturally given or is a design degree of freedom (i.e., can be manipulated).</p></li>
+<li><p>It fully indicates how well an RL agent is doing at step <span class="math notranslate nohighlight">\(k\)</span>.</p></li>
+<li><p>The agent’s task is to maximize its reward over time.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If we want the machine to flip a pancake:</p>
+<ul class="simple">
+<li><p>Pos. reward: catching the 180◦ rotated pancake</p></li>
+<li><p>Neg. reward: droping the pancake on the floor</p></li>
+</ul>
+</div>
+<p>Rewards can have many different flavors and are highly dependent on the given problem:</p>
+<ul class="simple">
+<li><p>Actions may have short and/or long term consequences.</p></li>
+<li><p>The reward for a certain action may be delayed.</p></li>
+<li><p>Examples: Stock trading, strategic board games,…</p></li>
+<li><p>Rewards can be positive and negative real values.</p></li>
+<li><p>Certain situations (e.g. car hits wall) might lead to a negative reward.</p></li>
+<li><p>Exogenous impacts might introduce stochastic reward components.</p></li>
+<li><p>Example: A wind gust pushes the helicopter into a tree.</p></li>
+</ul>
+<p>Besides, the RL agent’s learning process is heavily linked with the reward distribution over time. Designing expedient rewards functions is therefore crucially important for successfully applying RL. And often there is no predefined way on how to design the “best reward function”.</p>
+</section>
+<section id="task-dependent-return-definitions">
+<h3>Task-dependent return definitions<a class="headerlink" href="#task-dependent-return-definitions" title="Link to this heading">#</a></h3>
+<section id="episodic-tasks">
+<h4>Episodic tasks<a class="headerlink" href="#episodic-tasks" title="Link to this heading">#</a></h4>
+<p>Episodic tasks can naturally break into subsequences (finite horizon), for examples: most games, maze,… And the return becomes a finite sum: <span class="math notranslate nohighlight">\(g_k = r_{k+1} + r_{k+2} + ... + r_{N}\)</span>. Episodes end at their terminal step <span class="math notranslate nohighlight">\(k = N\)</span>.</p>
+</section>
+<section id="continuing-tasks">
+<h4>Continuing tasks<a class="headerlink" href="#continuing-tasks" title="Link to this heading">#</a></h4>
+<p>Continuing tasks lack a natural end (infinite horizon), for example: process control task, and the return should be discounted to prevent infinite numbers: <span class="math notranslate nohighlight">\(g_k = r_{k+1} + \gamma r_{k+2} + \gamma^2 r_{k+3} + ... = \sum_{i=1}^{\infty} \gamma^{i} r_{k+i+1}\)</span>. Here, <span class="math notranslate nohighlight">\(\gamma ∈ {\mathbb{R}|0 ≤ \gamma ≤ 1}\)</span> is the discount rate.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>From numeric viewpoint:
+If <span class="math notranslate nohighlight">\(\gamma\)</span> = 1 and <span class="math notranslate nohighlight">\(r_k\)</span> &gt; 0 for <span class="math notranslate nohighlight">\(k → \infty \)</span>, <span class="math notranslate nohighlight">\(g_k\)</span> gets infinite.
+If <span class="math notranslate nohighlight">\(\gamma\)</span> &lt; 1 and <span class="math notranslate nohighlight">\(r_k\)</span> is bounded for <span class="math notranslate nohighlight">\(k → \infty\)</span>, <span class="math notranslate nohighlight">\(g_k\)</span> is bounded.</p>
+<p>From strategic viewpoint:
+If <span class="math notranslate nohighlight">\(\gamma\)</span> ≈ 1: agent is farsighted.
+If <span class="math notranslate nohighlight">\(\gamma\)</span> ≈ 0: agent is shortsighted (only interested in immediate reward).</p>
+</div>
+</section>
+</section>
+<section id="state">
+<h3>State<a class="headerlink" href="#state" title="Link to this heading">#</a></h3>
+<section id="environment-state">
+<h4>Environment state<a class="headerlink" href="#environment-state" title="Link to this heading">#</a></h4>
+<p>Random variable <span class="math notranslate nohighlight">\(X_k^{e}\)</span> with realizations <span class="math notranslate nohighlight">\(x_k^{e}\)</span>:</p>
+<ul class="simple">
+<li><p>Internal status representation of the environment, e.g.physical states (car velocity or motor current), game states (current chess board situation). financial states (stock market status).</p></li>
+<li><p>Fully, limited or not at all visible by the agent:sometimes even ’foggy’ or uncertain, but in general: <span class="math notranslate nohighlight">\(Y_k = f(X_k)\)</span> as the measurable outputs of the environment.</p></li>
+<li><p>Continuous or discrete quantity.</p></li>
+</ul>
+</section>
+<section id="agent-state">
+<h4>Agent state<a class="headerlink" href="#agent-state" title="Link to this heading">#</a></h4>
+<p>Random variable <span class="math notranslate nohighlight">\(X_k^{a}\)</span> with realizations <span class="math notranslate nohighlight">\(x_k^{a}\)</span>:</p>
+<ul class="simple">
+<li><p>Internal status representation of the agent.</p></li>
+<li><p>In general: <span class="math notranslate nohighlight">\(x_k^{a} \neq x_k^{e}\)</span>, e.g., due to measurement noise or an additional agent’s memory.</p></li>
+<li><p>Agent’s condensed information relevant for next action.</p></li>
+<li><p>Dependent on internal knowledge / policy representation of the agent.</p></li>
+<li><p>Continuous or discrete quantity.</p></li>
+</ul>
+</section>
+</section>
+<section id="action">
+<h3>Action<a class="headerlink" href="#action" title="Link to this heading">#</a></h3>
+<p>An action is the agent’s degree of freedom in order to maximize its reward. The major distinctions are:</p>
+<ul class="simple">
+<li><p>Finite action set (FAS): <span class="math notranslate nohighlight">\(u_k ∈ {u_{k,1},u_{k,2}, ...} ∈ \mathbb{R}_m\)</span>.</p></li>
+<li><p>Continuous action set (CAS): Infinite number of actions: <span class="math notranslate nohighlight">\(u_k ∈ \mathbb{R}_m\)</span>.</p></li>
+<li><p>Deterministic <span class="math notranslate nohighlight">\(u_k\)</span> or random Uk variable.</p></li>
+<li><p>Often state-dependent and potentially constrained: <span class="math notranslate nohighlight">\(u_k ∈ U(x_k) ⊆ \mathbb{R}_m\)</span>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Evaluating the state and action spaces (e.g., finite vs. continuous) of a new RL problem should be always the first steps in order to choose appropriate solution algorithms.</p>
+</div>
+</section>
+<section id="policy">
+<h3>Policy<a class="headerlink" href="#policy" title="Link to this heading">#</a></h3>
+<p>A policy <span class="math notranslate nohighlight">\(\pi\)</span> is the agent’s internal strategy on picking actions.</p>
+<ul class="simple">
+<li><p>Deterministic policies: maps state and action directly: <span class="math notranslate nohighlight">\(u_k = \pi (x_k)\)</span>.</p></li>
+<li><p>Stochastic policies: maps a probability of the action given a state: <span class="math notranslate nohighlight">\(\pi(U_k|X_k) = \mathbb{P} [Uk|Xk]\)</span> .</p></li>
+<li><p>RL is all about changing <span class="math notranslate nohighlight">\(\pi\)</span> over time in order to maximize the expected return.</p></li>
+</ul>
+<section id="example">
+<h4>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h4>
+<p>Here is a deterministic policy example: find optimal gains <span class="math notranslate nohighlight">\({K_p, K_i, K_d}\)</span> given the reward <span class="math notranslate nohighlight">\(r_k = −e^2_k\)</span></p>
+<ul class="simple">
+<li><p>Agent’s behavior is explicitly determined by <span class="math notranslate nohighlight">\({K_p, K_i, K_d}\)</span>.</p></li>
+<li><p>Reference value is part of the environment state: <span class="math notranslate nohighlight">\(x_k =[y_k y^∗_k]^T\)</span>.</p></li>
+<li><p>Control output is the agent’s action: <span class="math notranslate nohighlight">\(u_k = \pi(x_k|K_p, K_i, K_d)\)</span>.</p></li>
+</ul>
+<figure class="align-default" id="classical-pid-control-loop-with-scalar-quantities">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/03_policy_example.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/03_policy_example.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/03_policy_example.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 47 </span><span class="caption-text">Classical PID control loop with scalar quantities</span><a class="headerlink" href="#classical-pid-control-loop-with-scalar-quantities" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="value-functions">
+<h3>Value functions<a class="headerlink" href="#value-functions" title="Link to this heading">#</a></h3>
+<p>The state-value function is the expected return being in state <span class="math notranslate nohighlight">\(x_k\)</span> following a policy <span class="math notranslate nohighlight">\(\pi:v_{\pi}(x_k)\)</span>.</p>
+<p>Assuming an MDP problem structure the state-value function is <span class="math notranslate nohighlight">\(v_{\pi}(x_k) = \mathbb{E}_{\pi} [G_k | X_k = x_k] = \mathbb{E}_{\pi}[\sum_{i=0}^{\infty} \gamma^i R_{k+i+1} | x_k]\)</span>.</p>
+<p>The action-value function is the expected return being in state <span class="math notranslate nohighlight">\(x_k\)</span> taken an action <span class="math notranslate nohighlight">\(u_k\)</span> and, thereafter, following a policy <span class="math notranslate nohighlight">\(\pi: q_{\pi}(x_k,u_k)\)</span>.</p>
+<p>Assuming an MDP problem structure the action-value function is <span class="math notranslate nohighlight">\(q_{\pi}(x_k, u_k) = \mathbb{E}_{\pi} [G_k | X_k=x_k, U_k=u_k] = \mathbb{E}_{\pi} [\sum_{i=0}^{\infty} \gamma^i R_{k+i+1} | x_k,u_k]\)</span>.</p>
+<p>A key task in RL is to estimate <span class="math notranslate nohighlight">\(v_{\pi}(x_k)\)</span> and <span class="math notranslate nohighlight">\(q_{\pi}(x_k,u_k)\)</span> based on sampled data.</p>
+</section>
+<section id="model">
+<h3>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h3>
+<p>A model predicts what will happen inside an environment.</p>
+<p>That could be a state model <span class="math notranslate nohighlight">\(\mathcal{P}\)</span>: <span class="math notranslate nohighlight">\(\mathcal{P} = \mathbb{P}[X_{k+1}=x_{k+1}|X_k=x_k, U_k=u_k]\)</span>. Or a reward model <span class="math notranslate nohighlight">\(\mathcal{R}\)</span>: <span class="math notranslate nohighlight">\(\mathcal{R} = \mathbb{P}[R_{k+1}=r_{k+1}|X_k=x_k, U_k=u_k]\)</span>. In general, those models could be stochastic (as denoted above) but in some problems relax to a deterministic form. Using data in order to fit a model is a learning problem of its own and often called system identification.</p>
+</section>
+<section id="exploration-and-exploitation">
+<h3>Exploration and exploitation<a class="headerlink" href="#exploration-and-exploitation" title="Link to this heading">#</a></h3>
+<p>In RL the environment is initially unknown. How to act optimal?</p>
+<ul class="simple">
+<li><p>Exploration: find out more about the environment.</p></li>
+<li><p>Exploitation: maximize current reward using limited information.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Trade-off problem: what’s the best split between both strategies?</p>
+</div>
+</section>
+</section>
+<section id="main-algorithms">
+<h2>Main algorithms<a class="headerlink" href="#main-algorithms" title="Link to this heading">#</a></h2>
+<p>In this section, we will take maze as an example. The problem statement is:</p>
+<ul class="simple">
+<li><p>Reward: <span class="math notranslate nohighlight">\(r_k = −1\)</span>.</p></li>
+<li><p>At goal: episode termination.</p></li>
+<li><p>Actions: <span class="math notranslate nohighlight">\(u_k \in {N, E, S, W}\)</span>.</p></li>
+<li><p>State: agent’s location.</p></li>
+<li><p>Deterministic problem (no stochastic influences).</p></li>
+</ul>
+<figure class="align-default" id="maze-setup-statement">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/04_maze.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/04_maze.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/04_maze.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 48 </span><span class="caption-text">Maze setup statement</span><a class="headerlink" href="#maze-setup-statement" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="rl-solution-by-policy">
+<h3>RL-solution by policy<a class="headerlink" href="#rl-solution-by-policy" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="maze-solved-by-policy">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/05_maze_policy.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/05_maze_policy.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/05_maze_policy.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 49 </span><span class="caption-text">Maze solved by policy</span><a class="headerlink" href="#maze-solved-by-policy" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Key characteristics:</p>
+<ul class="simple">
+<li><p>For any state there is a direct action command.</p></li>
+<li><p>The policy is explicitly available.</p></li>
+</ul>
+</section>
+<section id="rl-solution-by-value-function">
+<h3>RL-solution by value function<a class="headerlink" href="#rl-solution-by-value-function" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="maze-solved-by-value-functiony">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/06_maze_valuefunc.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/06_maze_valuefunc.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/06_maze_valuefunc.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 50 </span><span class="caption-text">Maze solved by value function</span><a class="headerlink" href="#maze-solved-by-value-functiony" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Key characteristics:</p>
+<ul class="simple">
+<li><p>The agent evaluates neighboring maze positions by their value.</p></li>
+<li><p>The policy is only implicitly available.</p></li>
+</ul>
+</section>
+<section id="rl-solution-by-model-evaluation">
+<h3>RL-solution by model evaluation<a class="headerlink" href="#rl-solution-by-model-evaluation" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="maze-solved-by-model-evaluation">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/07_maze_modeleval.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/07_maze_modeleval.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/07_maze_modeleval.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 51 </span><span class="caption-text">Maze solved by model evaluation</span><a class="headerlink" href="#maze-solved-by-model-evaluation" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Key characteristics:</p>
+<ul class="simple">
+<li><p>Agent uses internal model of the environment.</p></li>
+<li><p>The model is only an estimate (inaccurate, incomplete).</p></li>
+<li><p>The agent interacts with the model before.</p></li>
+</ul>
+</section>
+<section id="rl-agent-taxonomy">
+<h3>RL agent taxonomy<a class="headerlink" href="#rl-agent-taxonomy" title="Link to this heading">#</a></h3>
+<figure class="align-default" id="main-categories-of-reinforcement-learning-algorithms">
+<a class="reference internal image-reference" href="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/07_taxonomy.png"><img alt="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/07_taxonomy.png" src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/DQN/07_taxonomy.png" style="width: 100%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 52 </span><span class="caption-text">Main categories of reinforcement learning algorithms</span><a class="headerlink" href="#main-categories-of-reinforcement-learning-algorithms" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>This is an example of DQN discrete model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">random</span> <span class="k">as</span> <span class="nn">r</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">NeuralNetwork</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">num_memory_units</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_model</span><span class="p">(</span><span class="n">input_size</span><span class="p">,</span> <span class="n">num_memory_units</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_size</span><span class="p">,</span> <span class="n">num_memory_units</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="n">input_size</span><span class="p">,)),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">4</span> <span class="o">+</span> <span class="n">num_memory_units</span><span class="p">)</span>
+        <span class="p">])</span>
+        <span class="k">return</span> <span class="n">model</span>
+    
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">training</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Maze</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">maze_type</span><span class="p">):</span>
+        <span class="c1"># Use the maze types from maze_collection.py</span>
+        <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">,</span>
+         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">startX</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">startY</span><span class="p">],</span>
+         <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">goalX</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalY</span><span class="p">]]</span> <span class="o">=</span> <span class="n">maze_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startY</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">won</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">squares</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startX</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">startY</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">won</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">win</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">display</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">display_commandline</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">to_print</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">x_pos</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">y_pos</span><span class="p">:</span>
+                    <span class="n">to_print</span> <span class="o">+=</span> <span class="s2">&quot; O &quot;</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalX</span> <span class="o">==</span> <span class="n">x_pos</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalY</span> <span class="o">==</span> <span class="n">y_pos</span><span class="p">:</span>
+                    <span class="n">to_print</span> <span class="o">+=</span> <span class="s2">&quot; X &quot;</span>
+                <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">to_print</span> <span class="o">+=</span> <span class="s2">&quot;   &quot;</span>
+                <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">to_print</span> <span class="o">+=</span> <span class="s2">&quot; # &quot;</span>
+            <span class="n">to_print</span> <span class="o">+=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">to_print</span><span class="p">)</span>
+
+    <span class="c1"># def initialise_graphics(self):</span>
+    <span class="c1">#     self.win = g.GraphWin(&quot;Maze&quot;, 200 + (50 * len(self.maze[0])), 200 + (50 * len(self.maze)))</span>
+    <span class="c1">#     self.squares = []</span>
+    <span class="c1">#     for i in range(len(self.maze)):</span>
+    <span class="c1">#         self.squares.append([])</span>
+    <span class="c1">#         for j in range(len(self.maze[i])):</span>
+    <span class="c1">#             self.squares[i].append(</span>
+    <span class="c1">#                 g.Rectangle(g.Point(100 + (j * 50), 100 + (i * 50)), g.Point(150 + (j * 50), 150 + (i * 50))))</span>
+    <span class="c1">#             self.squares[i][j].draw(self.win)</span>
+    <span class="c1">#     self.display()</span>
+
+    <span class="k">def</span> <span class="nf">display</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">x_pos</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="n">y_pos</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">squares</span><span class="p">[</span><span class="n">y_pos</span><span class="p">][</span><span class="n">x_pos</span><span class="p">]</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s2">&quot;orangered&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalX</span> <span class="o">==</span> <span class="n">x_pos</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalY</span> <span class="o">==</span> <span class="n">y_pos</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">squares</span><span class="p">[</span><span class="n">y_pos</span><span class="p">][</span><span class="n">x_pos</span><span class="p">]</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">squares</span><span class="p">[</span><span class="n">y_pos</span><span class="p">][</span><span class="n">x_pos</span><span class="p">]</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">squares</span><span class="p">[</span><span class="n">y_pos</span><span class="p">][</span><span class="n">x_pos</span><span class="p">]</span><span class="o">.</span><span class="n">setFill</span><span class="p">(</span><span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">check_win_condition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalX</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalY</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">won</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">move_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_win_condition</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">move_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_win_condition</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">move_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_win_condition</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">move_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_win_condition</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">distance_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">distance_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">distance_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">][</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">i</span>
+
+    <span class="k">def</span> <span class="nf">distance_right</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">i</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">normal_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normal_y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normal_goal_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalX</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normal_goal_y</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">goalY</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">T_maze</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span>  <span class="c1"># Layout</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>  <span class="c1"># Start coordinates</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>   <span class="c1"># Goal coordinates</span>
+<span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">):</span>
+    <span class="c1"># housekeeping</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">Maze</span><span class="p">(</span><span class="n">T_maze</span><span class="p">)</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.0001</span>
+    <span class="n">num_memory_units</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">graphical</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">file_output</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">nn</span> <span class="o">=</span> <span class="n">NeuralNetwork</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="n">num_memory_units</span><span class="p">,</span> <span class="n">num_memory_units</span><span class="p">)</span>
+    
+    <span class="n">optimizer</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">file_output</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="c1"># output to file (this is set to overwrite!)</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_name</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;Iter</span><span class="se">\t</span><span class="s2">Won?</span><span class="se">\t</span><span class="s2">Steps</span><span class="se">\t</span><span class="s2">All steps</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># weight update operation</span>
+    <span class="c1"># ph_delta_weights_list = [tf.placeholder(tf.float32, w.get_shape()) for w in weights_list]</span>
+    <span class="c1"># ph_delta_weights_list = [w.get_shape() for w in weights_list]</span>
+    <span class="c1"># update_weights = [tf.compat.v1.assign(weights_list[i], weights_list[i] + ph_delta_weights_list[i])</span>
+    <span class="c1">#                   for i in range(len(weights_list))]</span>
+
+    <span class="c1"># training setup</span>
+    <span class="n">maxSteps</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">maxIterations</span> <span class="o">=</span> <span class="mi">10000</span>
+
+    <span class="n">steps_taken</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">maxIterations</span><span class="p">)</span>
+
+    <span class="c1"># Plot display -----------------------------------------------------------------------------------------------------</span>
+    <span class="k">if</span> <span class="n">graphical</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">spread</span> <span class="o">=</span> <span class="mi">50</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">ion</span><span class="p">()</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Maze solver&quot;</span><span class="p">)</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">maxIterations</span><span class="o">/</span><span class="n">spread</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxSteps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Steps taken&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Iterations (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">spread</span><span class="p">))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+        <span class="n">iterations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">duration_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Looping through iterations</span>
+    <span class="k">while</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">maxIterations</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">convert_to_tensor</span><span class="p">([</span><span class="n">input_values</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+            <span class="n">left_output</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+            <span class="n">right_output</span> <span class="o">=</span> <span class="n">y</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
+            <span class="n">action_probs</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">left_output</span><span class="p">)</span>
+            <span class="n">memory_units</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">right_output</span><span class="p">)</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="n">action_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_up</span><span class="p">()</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">action_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">nn</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_right</span><span class="p">()</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">action_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">nn</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_down</span><span class="p">()</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">action_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">nn</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_left</span><span class="p">()</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">action_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">nn</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+            <span class="n">grads</span> <span class="o">=</span> <span class="n">dp_dthetas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="p">[(</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">action_probs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">action</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span> <span class="o">*</span> <span class="n">reward</span><span class="p">)</span> <span class="o">*</span> <span class="n">grad</span> <span class="k">for</span> <span class="n">grad</span> <span class="ow">in</span> <span class="n">grads</span><span class="p">]</span>
+            <span class="n">optimizer</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+
+        <span class="c1"># Current step</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># # All outputs and dp_dthetas for this iteration</span>
+        <span class="c1"># probabilities = np.zeros(maxSteps)</span>
+        <span class="c1"># dp_dthetas = list()</span>
+        <span class="c1">#</span>
+        <span class="c1"># memory = np.zeros(num_memory_units)</span>
+        <span class="c1">#</span>
+        <span class="c1"># movements = &quot;&quot;</span>
+
+        <span class="k">while</span> <span class="n">m</span><span class="o">.</span><span class="n">won</span> <span class="ow">is</span> <span class="kc">False</span> <span class="ow">and</span> <span class="n">step</span> <span class="o">&lt;</span> <span class="n">maxSteps</span><span class="p">:</span>
+            <span class="c1"># All outputs and dp_dthetas for this iteration</span>
+            <span class="n">probabilities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">maxSteps</span><span class="p">)</span>
+            <span class="n">dp_dthetas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+            <span class="n">memory</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_memory_units</span><span class="p">)</span>
+
+            <span class="n">movements</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+            <span class="c1"># Defining neural network input</span>
+            <span class="n">input_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">normal_x</span><span class="p">(),</span> <span class="n">m</span><span class="o">.</span><span class="n">normal_y</span><span class="p">()])</span>
+            <span class="n">input_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_values</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span>
+
+            <span class="c1"># Running input through the neural network</span>
+            <span class="c1"># [output, dp0dtheta, dp1dtheta, dp2dtheta, dp3dtheta, output_memory] =\</span>
+            <span class="c1">#     sess.run([y, dprobability0_dweights, dprobability1_dweights, dprobability2_dweights,</span>
+            <span class="c1">#               dprobability3_dweights, memory_units],</span>
+            <span class="c1">#              feed_dict={x: [input_values]})</span>
+
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">(</span><span class="n">persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cast</span><span class="p">(</span><span class="n">input_values</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+                <span class="n">W1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="mi">2</span><span class="o">+</span><span class="n">num_memory_units</span><span class="p">,</span> <span class="mi">6</span><span class="p">]))</span>
+                <span class="n">b1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]))</span>
+                <span class="n">W2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">]))</span>
+                <span class="n">b2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">]))</span>
+                <span class="n">W3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="o">+</span><span class="n">num_memory_units</span><span class="p">]))</span>
+                <span class="n">b3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Variable</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">truncated_normal</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="o">+</span><span class="n">num_memory_units</span><span class="p">]))</span>
+
+                <span class="n">h1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="n">W1</span><span class="p">)</span> <span class="o">+</span> <span class="n">b1</span><span class="p">)</span>
+                <span class="n">h2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span> <span class="n">W2</span><span class="p">)</span> <span class="o">+</span> <span class="n">b2</span><span class="p">)</span>
+
+                <span class="n">output_final_layer_before_activation_function</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">h2</span><span class="p">,</span> <span class="n">W3</span><span class="p">)</span> <span class="o">+</span> <span class="n">b3</span>
+                <span class="n">left_output</span> <span class="o">=</span> <span class="n">output_final_layer_before_activation_function</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+                <span class="n">right_output</span> <span class="o">=</span> <span class="n">output_final_layer_before_activation_function</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">:]</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="n">left_output</span><span class="p">)</span>
+                <span class="n">memory_units</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">right_output</span><span class="p">)</span>
+
+                <span class="n">weights_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span><span class="p">,</span> <span class="n">W3</span><span class="p">,</span> <span class="n">b3</span><span class="p">]</span>
+            <span class="n">dprobability0_dweights</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">weights_list</span><span class="p">)</span>
+            <span class="c1"># print(dprobability0_dweights)</span>
+            <span class="c1"># print(&quot;gradient&quot;)</span>
+            <span class="n">dprobability1_dweights</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">weights_list</span><span class="p">)</span>
+            <span class="n">dprobability2_dweights</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">weights_list</span><span class="p">)</span>
+            <span class="n">dprobability3_dweights</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">weights_list</span><span class="p">)</span>
+
+            <span class="n">ph_delta_weights_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weights_list</span><span class="p">]</span>
+            <span class="c1"># update_weights = [tf.compat.v1.assign(weights_list[i], weights_list[i] + ph_delta_weights_list[i])</span>
+            <span class="c1">#           for i in range(len(weights_list))]</span>
+
+            <span class="p">[</span><span class="n">output</span><span class="p">,</span> <span class="n">dp0dtheta</span><span class="p">,</span> <span class="n">dp1dtheta</span><span class="p">,</span> <span class="n">dp2dtheta</span><span class="p">,</span> <span class="n">dp3dtheta</span><span class="p">,</span> <span class="n">output_memory</span><span class="p">]</span> <span class="o">=</span>\
+                <span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">dprobability0_dweights</span><span class="p">,</span> <span class="n">dprobability1_dweights</span><span class="p">,</span> <span class="n">dprobability2_dweights</span><span class="p">,</span>
+                          <span class="n">dprobability3_dweights</span><span class="p">,</span> <span class="n">memory_units</span><span class="p">]</span>
+
+
+            <span class="c1"># Random value between 0 and 1, inclusive on both sides</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="c1"># Up</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_up</span><span class="p">()</span>
+                <span class="n">probabilities</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp0dtheta</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">dp0dtheta</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=========================================&quot;</span><span class="p">)</span>
+                <span class="n">movements</span> <span class="o">+=</span> <span class="s2">&quot;U&quot;</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="c1"># Right</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_right</span><span class="p">()</span>
+                <span class="n">probabilities</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp1dtheta</span><span class="p">)</span>
+                <span class="n">movements</span> <span class="o">+=</span> <span class="s2">&quot;R&quot;</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="c1"># Down</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_down</span><span class="p">()</span>
+                <span class="n">probabilities</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp2dtheta</span><span class="p">)</span>
+                <span class="n">movements</span> <span class="o">+=</span> <span class="s2">&quot;D&quot;</span>
+            <span class="k">elif</span> <span class="n">result</span> <span class="o">&lt;=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="c1"># Left</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">move_left</span><span class="p">()</span>
+                <span class="n">probabilities</span><span class="p">[</span><span class="n">step</span><span class="p">]</span> <span class="o">=</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span>
+                <span class="n">dp_dthetas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dp3dtheta</span><span class="p">)</span>
+                <span class="n">movements</span> <span class="o">+=</span> <span class="s2">&quot;L&quot;</span>
+
+            <span class="n">memory</span> <span class="o">=</span> <span class="n">output_memory</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Iteration #</span><span class="si">{:05d}</span><span class="se">\t</span><span class="s2">Won: </span><span class="si">{}</span><span class="se">\t</span><span class="s2">Steps taken: </span><span class="si">{:04d}</span><span class="se">\t</span><span class="s2">Steps: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">won</span><span class="p">,</span>
+                                                                                  <span class="n">step</span><span class="p">,</span> <span class="n">movements</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">file_output</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{:05d}</span><span class="se">\t</span><span class="si">{}</span><span class="se">\t</span><span class="si">{:04d}</span><span class="se">\t</span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">won</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">movements</span><span class="p">))</span>
+
+        <span class="c1"># Assigning a reward</span>
+        <span class="n">reward</span> <span class="o">=</span> <span class="n">maxSteps</span> <span class="o">-</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">step</span><span class="p">)</span>  <span class="c1"># linear reward function</span>
+        <span class="c1">#reward = maxSteps - pow(step, 2)  # power reward function</span>
+
+        <span class="c1"># Applying weight change for every step taken, based on the reward given at the end</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+            <span class="c1"># print(dp_dthetas[0][0])</span>
+            <span class="c1"># print(&#39;===================================&#39;)</span>
+            <span class="c1"># print((1 / probabilities[i]) * reward)</span>
+            <span class="n">deltaTheta</span> <span class="o">=</span> <span class="p">[(</span><span class="n">learning_rate</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">probabilities</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">*</span> <span class="n">reward</span><span class="p">)</span> <span class="o">*</span> <span class="n">dp_dthetas</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+                          <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">weights_list</span><span class="p">))]</span>
+
+            <span class="c1"># sess.run(update_weights, feed_dict=dict(zip(ph_delta_weights_list, deltaTheta)))</span>
+            <span class="n">update_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">tf</span><span class="o">.</span><span class="n">compat</span><span class="o">.</span><span class="n">v1</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">weights_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weights_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">ph_delta_weights_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ph_delta_weights_list</span><span class="p">,</span> <span class="n">deltaTheta</span><span class="p">))))]</span>
+
+        <span class="n">steps_taken</span><span class="p">[</span><span class="n">iteration</span><span class="p">]</span> <span class="o">=</span> <span class="n">step</span>
+        <span class="k">if</span> <span class="n">graphical</span> <span class="ow">is</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">iteration</span> <span class="o">%</span> <span class="n">spread</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">steps_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">steps_taken</span><span class="p">[</span><span class="n">iteration</span><span class="o">-</span><span class="n">spread</span><span class="p">:</span><span class="n">iteration</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">iterations</span> <span class="o">=</span> <span class="n">iterations</span><span class="o">+</span><span class="p">[</span><span class="n">iteration</span><span class="o">/</span><span class="n">spread</span><span class="p">]</span>
+            <span class="n">duration_history</span> <span class="o">=</span> <span class="n">duration_history</span><span class="o">+</span><span class="p">[</span><span class="n">steps_mean</span><span class="p">]</span>
+            <span class="k">del</span> <span class="n">ax</span><span class="o">.</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">iterations</span><span class="p">,</span> <span class="n">duration_history</span><span class="p">,</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Traj1&#39;</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">pause</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)</span>
+
+        <span class="n">m</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+        <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">file_output</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">graphical</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">file_output</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">output_file_name</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="c1">#input(&quot;Press [enter] to continue.&quot;)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="c1"># Ensure we are using TensorFlow 2.x</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;2&#39;</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This code requires TensorFlow V2.x&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">directory_name</span><span class="p">):</span>
+    <span class="c1"># Sample TensorFlow operation for demonstration</span>
+    <span class="c1"># This creates a constant tensor and prints it.</span>
+    <span class="n">tensor</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;In directory: </span><span class="si">{</span><span class="n">directory_name</span><span class="si">}</span><span class="s2">, tensor values are:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:05d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+        <span class="n">dir_name</span> <span class="o">=</span> <span class="s2">&quot;T_fixed-memory-linear_reward_&quot;</span> <span class="o">+</span> <span class="n">number</span>
+        
+        <span class="c1"># Check if directory exists, if not create it</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+        
+        <span class="c1"># Execute main function</span>
+        <span class="n">main</span><span class="p">(</span><span class="n">dir_name</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>In directory: T_fixed-memory-linear_reward_00011, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00012, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00013, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00014, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00015, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00016, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00017, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00018, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00019, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00020, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00021, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00022, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00023, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+In directory: T_fixed-memory-linear_reward_00024, tensor values are:
+tf.Tensor(
+[[1 2]
+ [3 4]], shape=(2, 2), dtype=int32)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<!-- Assignment - [DQN on foreign exchange market](../assignments/deep-learning/dqn/dqn-on-foreign-exchange-market.ipynb) -->
+</section>
+<section id="self-study">
+<h2>Self study<a class="headerlink" href="#self-study" title="Link to this heading">#</a></h2>
+<p>You can refer to this website for further study:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pylessons.com/CartPole-reinforcement-learning">Introduction to Reinforcement Learning</a></p></li>
+</ul>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://github.com/upb-lea">Paderborn University - LEA</a> for creating the open-source course <a class="reference external" href="https://github.com/upb-lea/reinforcement_learning_course_materials">reinforcement_learning_course_materials</a> and <a class="reference external" href="https://github.com/pacsuta">Gergely Pacsuta</a> for creating the open-source project <a class="reference external" href="https://github.com/pacsuta/tf-nn-maze-solver">tf-nn-maze-solver</a>. They inspire the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="difussion-model.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Diffusion Model</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../assignments/google-stock-price-prediction-rnn.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Google Stock Price Prediction RNN</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-terminology">Basic terminology</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reward">Reward</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#task-dependent-return-definitions">Task-dependent return definitions</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#episodic-tasks">Episodic tasks</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#continuing-tasks">Continuing tasks</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#state">State</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-state">Environment state</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-state">Agent state</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#action">Action</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#policy">Policy</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#value-functions">Value functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exploration-and-exploitation">Exploration and exploitation</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#main-algorithms">Main algorithms</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-solution-by-policy">RL-solution by policy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-solution-by-value-function">RL-solution by value function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-solution-by-model-evaluation">RL-solution by model evaluation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rl-agent-taxonomy">RL agent taxonomy</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#self-study">Self study</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

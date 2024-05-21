@@ -1,0 +1,999 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Natural Language Processing &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/nlp/nlp';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/nlp/nlp.html" />
+    <link rel="icon" href="../../_static/fav.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Text Preprocessing" href="text-preprocessing.html" />
+    <link rel="prev" title="Image segmentation" href="../image-segmentation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Natural Language Processing</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../gan.html">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/nlp/nlp.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/nlp/nlp.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/nlp/nlp.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/nlp/nlp.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/deep-learning/nlp/nlp.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Natural Language Processing</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-natural-language-processing">What is Natural Language Processing?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-of-nlp">Components of NLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax">Syntax</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantics">Semantics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pragmatics">Pragmatics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discourse">Discourse</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-nlp-used-for">What is NLP Used For?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#healthcare">Healthcare</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finance">Finance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#customer-service">Customer Service</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-commerce">E-Commerce</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#legal">Legal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#everyday-applications">Everyday applications</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overcoming-nlp-challenges">Overcoming NLP challenges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-vectors">Building vectors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="natural-language-processing">
+<h1>Natural Language Processing<a class="headerlink" href="#natural-language-processing" title="Link to this heading">#</a></h1>
+<p>Natural Language Processing (NLP) stands as a pivotal technology in the realm of artificial intelligence, bridging the gap between human communication and computer understanding. It is a multidisciplinary domain that empowers computers to interpret, analyze, and generate human language, enabling seamless interaction between humans and machines. The significance of NLP is evident in its widespread applications, ranging from automated customer support to real-time language translation.</p>
+<p>This section aims to provide newcomers with a comprehensive overview of NLP, its workings, applications, challenges, and future outlook.</p>
+<section id="what-is-natural-language-processing">
+<h2>What is Natural Language Processing?<a class="headerlink" href="#what-is-natural-language-processing" title="Link to this heading">#</a></h2>
+<center><img src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/NLP/nlp.gif" width="80%" class="bg-white mb-1" ><br> Image: Natural Language Processing</center><p>Natural Language Processing (NLP) is a branch of artificial intelligence that focuses on the interaction between computers and humans through natural language. The objective is to program computers to process and analyze large amounts of natural language data.</p>
+<p>NLP involves enabling machines to understand, interpret, and produce human language in a way that is both valuable and meaningful. OpenAI, known for developing advanced language models like ChatGPT, highlights the importance of NLP in creating intelligent systems that can understand, respond to, and generate text, making technology more user-friendly and accessible</p>
+</section>
+<section id="components-of-nlp">
+<h2>Components of NLP<a class="headerlink" href="#components-of-nlp" title="Link to this heading">#</a></h2>
+<p>Natural Language Processing is not a monolithic, singular approach, but rather, it is composed of several components, each contributing to the overall understanding of language. The main components that NLP strives to understand are <strong>Syntax</strong>, <strong>Semantics</strong>, <strong>Pragmatics</strong>, and <strong>Discourse</strong>.</p>
+<section id="syntax">
+<h3>Syntax<a class="headerlink" href="#syntax" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Definition: Syntax pertains to the arrangement of words and phrases to create well-structured sentences in a language.</p></li>
+<li><p>Example: Consider the sentence “The cat sat on the mat.” Syntax involves analyzing the grammatical structure of this sentence, ensuring that it adheres to the grammatical rules of English, such as subject-verb agreement and proper word order.</p></li>
+</ul>
+</section>
+<section id="semantics">
+<h3>Semantics<a class="headerlink" href="#semantics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Definition: Semantics is concerned with understanding the meaning of words and how they create meaning when combined in sentences.</p></li>
+<li><p>Example: In the sentence “The panda eats shoots and leaves,” semantics helps distinguish whether the panda eats plants (shoots and leaves) or is involved in a violent act (shoots) and then departs (leaves), based on the meaning of the words and the context.</p></li>
+</ul>
+<center><img src="https://static-1300131294.cos.ap-shanghai.myqcloud.com/images/deep-learning/NLP/semantics.gif" width="80%" class="bg-white mb-1" ><br> Image: Semantics in NLP</center></section>
+<section id="pragmatics">
+<h3>Pragmatics<a class="headerlink" href="#pragmatics" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Definition: Pragmatics deals with understanding language in various contexts, ensuring that the intended meaning is derived based on the situation, speaker’s intent, and shared knowledge.</p></li>
+<li><p>Example: If someone says, “Can you pass the salt?” Pragmatics involves understanding that this is a request rather than a question about one’s ability to pass the salt, interpreting the speaker’s intent based on the dining context.</p></li>
+</ul>
+</section>
+<section id="discourse">
+<h3>Discourse<a class="headerlink" href="#discourse" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Definition: Discourse focuses on the analysis and interpretation of language beyond the sentence level, considering how sentences relate to each other in texts and conversations.</p></li>
+<li><p>Example: In a conversation where one person says, “I’m freezing,” and another responds, “I’ll close the window,” discourse involves understanding the coherence between the two statements, recognizing that the second statement is a response to the implied request in the first.</p></li>
+</ul>
+<p>Understanding these components is crucial for anyone delving into NLP, as they form the backbone of how NLP models interpret and generate human langua</p>
+</section>
+</section>
+<section id="what-is-nlp-used-for">
+<h2>What is NLP Used For?<a class="headerlink" href="#what-is-nlp-used-for" title="Link to this heading">#</a></h2>
+<p>Natural Language Processing has found extensive applications across various industries, revolutionizing the way businesses operate and interact with users. Here are some of the key industry applications of NLP.</p>
+<section id="healthcare">
+<h3>Healthcare<a class="headerlink" href="#healthcare" title="Link to this heading">#</a></h3>
+<p>NLP assists in transcribing and organizing clinical notes, ensuring accurate and efficient documentation of patient information. For instance, a physician might dictate their notes, which NLP systems transcribe into text. Advanced NLP models can further categorize the information, identifying symptoms, diagnoses, and prescribed treatments, thereby streamlining the documentation process, minimizing manual data entry, and enhancing the accuracy of electronic health records.</p>
+</section>
+<section id="finance">
+<h3>Finance<a class="headerlink" href="#finance" title="Link to this heading">#</a></h3>
+<p>Financial institutions leverage NLP to perform sentiment analysis on various text data like news articles, financial reports, and social media posts to gauge market sentiment regarding specific stocks or the market in general. Algorithms analyze the frequency of positive or negative words, and through machine learning models, predict potential impacts on stock prices or market movements, aiding traders and investors in making informed decisions.</p>
+</section>
+<section id="customer-service">
+<h3>Customer Service<a class="headerlink" href="#customer-service" title="Link to this heading">#</a></h3>
+<p>NLP-powered chatbots have revolutionized customer support by providing instant, 24/7 responses to customer inquiries. These chatbots understand customer queries through text or voice, interpret the underlying intent, and provide accurate responses or solutions. For instance, a customer might inquire about their order status, and the chatbot, integrating with the order management system, retrieves and delivers the real-time status, enhancing customer experience and reducing support workload.</p>
+</section>
+<section id="e-commerce">
+<h3>E-Commerce<a class="headerlink" href="#e-commerce" title="Link to this heading">#</a></h3>
+<p>NLP significantly enhances on-site search functionality in e-commerce platforms by understanding and interpreting user queries, even if they are phrased in a conversational manner or contain typos. For example, if a user searches for “blu jeens,” NLP algorithms correct the typos and understand the intent, providing relevant results for “blue jeans,” thereby ensuring that users find what they are looking for, even with imprecise queries.</p>
+</section>
+<section id="legal">
+<h3>Legal<a class="headerlink" href="#legal" title="Link to this heading">#</a></h3>
+<p>In the legal sector, NLP is utilized to automate document review processes, significantly reducing the manual effort involved in sifting through vast volumes of legal documents. For instance, during litigation, legal professionals need to review numerous documents to identify relevant information. NLP algorithms can scan through these documents, identify and highlight pertinent information, such as specific terms, dates, or clauses, thereby expediting the review process and ensuring that no critical information is overlooked.</p>
+</section>
+<section id="everyday-applications">
+<h3>Everyday applications<a class="headerlink" href="#everyday-applications" title="Link to this heading">#</a></h3>
+<p>Beyond industry-specific applications, NLP is ingrained in our daily lives, making technology more accessible and user-friendly. Here are some everyday applications of NLP:</p>
+<ul class="simple">
+<li><p>Search engines. NLP is fundamental to the functioning of search engines, enabling them to understand user queries and provide relevant results.</p></li>
+<li><p>Virtual assistants. Siri, Alexa, and Google Assistant are examples of virtual assistants that use NLP to understand and respond to user commands.</p></li>
+<li><p>Translation services. Services like Google Translate employ NLP to provide real-time language translation, breaking down language barriers and fostering communication.</p></li>
+<li><p>Email filtering. NLP is used in email services to filter out spam and categorize emails, helping users manage their inboxes more effectively.</p></li>
+<li><p>Social media monitoring. NLP enables the analysis of social media content to gauge public opinion, track trends, and manage online reputation.</p></li>
+</ul>
+<p>The applications of NLP are diverse and pervasive, impacting various industries and our daily interactions with technology. Understanding these applications provides a glimpse into the transformative potential of NLP in shaping the future of technology and human interaction.</p>
+</section>
+</section>
+<section id="overcoming-nlp-challenges">
+<h2>Overcoming NLP challenges<a class="headerlink" href="#overcoming-nlp-challenges" title="Link to this heading">#</a></h2>
+<p>Natural Language Processing, despite its advancements, faces several challenges due to the inherent complexities and nuances of human language. Here are some of the challenges in NLP:</p>
+<ul class="simple">
+<li><p>Ambiguity. Human language is often ambiguous, with words having multiple meanings, making it challenging for NLP models to interpret the correct meaning in different contexts.</p></li>
+<li><p>Context. Understanding the context in which words are used is crucial for accurate interpretation, and it remains a significant challenge for NLP.</p></li>
+<li><p>Sarcasm and irony. Detecting sarcasm and irony is particularly challenging as it requires understanding the intended meaning, which may be opposite to the literal meaning.</p></li>
+<li><p>Cultural nuances. Language is deeply intertwined with culture, and understanding cultural nuances and idioms is essential for effective NLP.</p></li>
+</ul>
+</section>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<p>Now that we have a preliminary understanding of natural language processing, let’s train a model about disaster tweets to help you better understand.</p>
+<p>First, let’s import the necessary libraries.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">feature_extraction</span><span class="p">,</span> <span class="n">linear_model</span><span class="p">,</span> <span class="n">model_selection</span><span class="p">,</span> <span class="n">preprocessing</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now import the dataset which contains numerous tweet texts. Each tweet is labeled as either related to a real disaster or not. Our task is to utilize Natural Language Processing (NLP) techniques to process and analyze these tweet texts. We aim to build a model that can automatically identify whether a tweet is related to a disaster or not.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://static-1300131294.cos.ap-shanghai.myqcloud.com/data/deep-learning/nlp/disaster_tweets_train.csv&quot;</span><span class="p">)</span>
+<span class="n">test_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://static-1300131294.cos.ap-shanghai.myqcloud.com/data/deep-learning/nlp/disaster_tweets_test.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s take a quick look at our data… first, an example of what is NOT a disaster tweet.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_df</span><span class="p">[</span><span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;I love fruits&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Then an example of what is a disaster tweet.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_df</span><span class="p">[</span><span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s2">&quot;text&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Forest fire near La Ronge Sask. Canada&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="building-vectors">
+<h3>Building vectors<a class="headerlink" href="#building-vectors" title="Link to this heading">#</a></h3>
+<p>The theory behind the model we’ll build in this section is pretty simple: the words contained in each tweet are a good indicator of whether they’re about a real disaster or not (this is not entirely correct, but it’s a great place to start).</p>
+<p>We’ll use scikit-learn’s CountVectorizer to count the words in each tweet and turn them into data our machine learning model can process.</p>
+<p>Note: a vector is, in this context, a set of numbers that a machine learning model can work with. We’ll look at one in just a second.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">count_vectorizer</span> <span class="o">=</span> <span class="n">feature_extraction</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">CountVectorizer</span><span class="p">()</span>
+
+<span class="c1">## let&#39;s get counts for the first 5 tweets in the data</span>
+<span class="n">example_train_vectors</span> <span class="o">=</span> <span class="n">count_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;Our Deeds are the Reason of this #earthquake May ALLAH Forgive us all&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## we use .todense() here because these vectors are &quot;sparse&quot; (only non-zero elements are kept to save space)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">example_train_vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">example_train_vectors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 54)
+[[0 0 0 1 1 1 0 0 0 0 0 0 1 1 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 1 0
+  0 0 0 1 0 0 0 0 0 0 0 0 0 1 1 0 1 0]]
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above tells us that:</p>
+<ul class="simple">
+<li><p>There are 54 unique words (or “tokens”) in the first five tweets.</p></li>
+<li><p>The first tweet contains only some of those unique tokens - all of the non-zero counts above are the tokens that exist in the first tweet.</p></li>
+</ul>
+<p>Now let’s create vectors for all of our tweets.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_vectors</span> <span class="o">=</span> <span class="n">count_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+<span class="n">test_vectors</span> <span class="o">=</span> <span class="n">count_vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">test_df</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="model">
+<h3>Model<a class="headerlink" href="#model" title="Link to this heading">#</a></h3>
+<p>As we mentioned above, we think the words contained in each tweet are a good indicator of whether they’re about a real disaster or not. The presence of particular word (or set of words) in a tweet might link directly to whether or not that tweet is real.</p>
+<p>What we’re assuming here is a linear connection. So let’s build a linear model and see!</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Our vectors are really big, so we want to push our model&#39;s weights toward 0 without completely discounting different words - ridge regression is a good way to do this.</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">RidgeClassifier</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s test our model and see how well it does on the training data. For this we’ll use cross-validation - where we train on a portion of the known data, then validate it with the rest. If we do this several times (with different portions) we can get a good idea for how a particular model or method performs.</p>
+<p>Here, we are using F1 score as the performance evaluation metric for the model.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="n">model_selection</span><span class="o">.</span><span class="n">cross_val_score</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">train_vectors</span><span class="p">,</span> <span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">],</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">&quot;f1&quot;</span><span class="p">)</span>
+<span class="n">scores</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0.59421842, 0.56498283, 0.64082434])
+</pre></div>
+</div>
+</div>
+</div>
+<p>The above scores aren’t terrible! It indicates that our hypothesis is approximately 65% likely. Let’s continue moving forward, fit the model and predict the test set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_vectors</span><span class="p">,</span> <span class="n">train_df</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RidgeClassifier()
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_submission</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://static-1300131294.cos.ap-shanghai.myqcloud.com/data/deep-learning/nlp/disaster_tweets_test.csv&quot;</span><span class="p">)</span>
+<span class="n">sample_submission</span><span class="p">[</span><span class="s2">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">test_vectors</span><span class="p">)</span>
+<span class="n">sample_submission</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>keyword</th>
+      <th>location</th>
+      <th>text</th>
+      <th>target</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Just happened a terrible car crash</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Heard about #earthquake is different cities, s...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>there is a forest fire at spot pond, geese are...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Apocalypse lighting. #Spokane #wildfires</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>11</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>Typhoon Soudelor kills 28 in China and Taiwan</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The above is the result of the model. Because only the linear regression model is used, the effect is not ideal, but for beginners, it is a good opportunity to understand natural language processing technology.</p>
+</section>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<p>You can practice your nlp skills by following the assignment <a class="reference internal" href="#../../assignments/deep-learning/nlp/getting-start-nlp-with-classification-task.ipynb"><span class="xref myst">getting start nlp with classification task</span></a>.</p>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://www.datacamp.com/portfolio/mattcrabtree">Matt Crabtree</a> and <a class="reference external" href="https://www.kaggle.com/philculliton">Phil Culliton</a> for creating the open-source course <a class="reference external" href="https://www.datacamp.com/blog/what-is-natural-language-processing">What is Natural Language Processing (NLP)?</a> and <a class="reference external" href="https://www.kaggle.com/code/philculliton/nlp-getting-started-tutorial">NLP Getting Started Tutorial</a>. It inspires the majority of the content in this chapter.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="text-representation.html">Word embedding</a></li>
+</ul>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "open-machine-learning-jupyter-book"
+        },
+        kernelOptions: {
+            name: "open-machine-learning-jupyter-book",
+            path: "./deep-learning/nlp"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'open-machine-learning-jupyter-book'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../image-segmentation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Image segmentation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="text-preprocessing.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Text Preprocessing</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-natural-language-processing">What is Natural Language Processing?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#components-of-nlp">Components of NLP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#syntax">Syntax</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#semantics">Semantics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pragmatics">Pragmatics</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#discourse">Discourse</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-nlp-used-for">What is NLP Used For?</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#healthcare">Healthcare</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#finance">Finance</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#customer-service">Customer Service</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-commerce">E-Commerce</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#legal">Legal</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#everyday-applications">Everyday applications</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overcoming-nlp-challenges">Overcoming NLP challenges</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-vectors">Building vectors</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model">Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

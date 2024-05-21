@@ -1,0 +1,1096 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Generative adversarial networks &#8212; DL-learning</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deep-learning/gan';</script>
+    <link rel="canonical" href="https://JackWang0318.github.io/JackW_DL/deep-learning/gan.html" />
+    <link rel="icon" href="../_static/fav.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Diffusion Model" href="difussion-model.html" />
+    <link rel="prev" title="Word embedding" href="nlp/text-representation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="DL-learning - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="DL-learning - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">DEEP LEARNING</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dl-overview.html">Intro to Deep Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nn.html">Neural Networks</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="cnn/cnn.html">Convolutional Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-vgg.html">Stylenet / Neural-Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cnn/cnn-deepdream.html">Deepdream in TensorFlow</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="rnn/rnn.html">Recurrent Neural Networks</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="rnn/lstm.html">Long-short term memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rnn/bi-rnn.html">Bidirectional RNN</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="time-series.html">Time series</a></li>
+<li class="toctree-l1"><a class="reference internal" href="autoencoder.html">Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="object-detection.html">Object detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-classification.html">Image classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="image-segmentation.html">Image segmentation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nlp/nlp.html">Natural Language Processing</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-preprocessing.html">Text Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp/text-representation.html">Word embedding</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Generative adversarial networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="difussion-model.html">Diffusion Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dqn.html">Deep Q-learning</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ASSIGNMENTS</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../assignments/google-stock-price-prediction-rnn.html">Google Stock Price Prediction RNN</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/bitcoin-lstm-model-with-tweet-volume-and-sentiment.html">Bitcoin LSTM Model with Tweet Volume and Sentiment</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../assignments/beginner-guide-to-text-preprocessing.html">Beginner’s Guide to Text Pre-Processing</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/JackWang0318/JackW_DL/master?urlpath=tree/deep-learning/gan.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onBinder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/JackWang0318/JackW_DL/blob/master/deep-learning/gan.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/edit/main/deep-learning/gan.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/JackWang0318/JackW_DL/issues/new?title=Issue%20on%20page%20%2Fdeep-learning/gan.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/deep-learning/gan.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Generative adversarial networks</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-of-displaying-a-grid-of-images">Function of displaying a grid of images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions-of-pre-processing-and-post-processing-images">Functions of pre-processing and post-processing images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-a-file-from-a-url-using-the-requests-library">Download a file from a URL using the requests library</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-leaky-relu-activation-function">Compute the leaky ReLU activation function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-random-uniform-noise-from-1-to-1">Generate random uniform noise from -1 to 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-discriminator-score-for-a-batch-of-input-images">Compute discriminator score for a batch of input images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-generator-score-for-a-batch-of-input-images">Compute generator score for a batch of input images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-discriminator-loss">Compute the discriminator loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-generator-loss">Compute the generator loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-solvers-for-gan-training">Create solvers for GAN training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-gan-for-a-certain-number-of-epochs">Train a GAN for a certain number of epochs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="cell tag_hide-cell docutils container">
+<details class="hide above-input">
+<summary aria-label="Toggle hidden content">
+<span class="collapsed">Show code cell content</span>
+<span class="expanded">Hide code cell content</span>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the necessary dependencies</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="o">!{</span>sys.executable<span class="o">}</span><span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--quiet<span class="w"> </span>pandas<span class="w"> </span>scikit-learn<span class="w"> </span>numpy<span class="w"> </span>matplotlib<span class="w"> </span>jupyterlab_myst<span class="w"> </span>ipython
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="generative-adversarial-networks">
+<h1>Generative adversarial networks<a class="headerlink" href="#generative-adversarial-networks" title="Link to this heading">#</a></h1>
+<p>Generative adversarial networks (GANs) emerge as the virtuosos of artificial creativity, painting canvases with pixels rather than pigments. At their genesis, GANs were forged with a singular mission: to breathe life into the digital realm, conjuring new data from the ethereal depths of probability distributions. Their pioneering design was a symphony of innovation, orchestrating a duel between two neural networks in a ballet of creation and critique.</p>
+<p>Picture this: on one side of the stage stands the Generator, a prodigious apprentice armed with brushes of binary. Its purpose, its raison d’être, is to craft masterpieces ex nihilo, stitching together pixels with mathematical finesse. With each iteration, it tiptoes closer to perfection, learning the intricate tapestry of the training set distribution like a virtuoso studying the score.</p>
+<p>Opposing it, the Discerner awaits—the arbiter of authenticity, the gatekeeper of verisimilitude. Trained to discern the genuine from the counterfeit, it scrutinizes each creation with a discerning eye, sniffing out flaws and imperfections like a seasoned art critic.</p>
+<p>The dance begins. With each pass, the Generator’s strokes grow bolder, its compositions more intricate, as it strives to outwit its adversary. Meanwhile, the Discerner stands vigilant, its discriminating gaze sharpened by every encounter. Back and forth they go, locked in an eternal tango of creation and critique.</p>
+<p>And then, a breakthrough. In a moment of revelation, the Generator unveils a masterpiece—a synthesis of pixels so sublime, so lifelike, that even the Discerner is momentarily deceived. In that fleeting instant, the boundaries of possibility expand, as the digital canvas is imbued with the spark of innovation.</p>
+<p>Such is the essence of GANs—a testament to the power of adversarial collaboration, where artistry and algorithm converge to redefine the boundaries of creativity. From images to text, from music to medicine, their domain knows no bounds, as they continue to shape the future of artificial intelligence, one pixel at a time.</p>
+<p>GAN is proposed in 2005, the paper is Ian J. Goodfellow, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, Yoshua Bengio. “Generative Adversarial Networks”, arxiv:1406.2661.</p>
+<section id="code">
+<h2>Code<a class="headerlink" href="#code" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="k">as</span> <span class="nn">gridspec</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">)</span> <span class="c1"># set default size of plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;image.interpolation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;nearest&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;image.cmap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="function-of-displaying-a-grid-of-images">
+<h3>Function of displaying a grid of images<a class="headerlink" href="#function-of-displaying-a-grid-of-images" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">show_images</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="p">[</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># images reshape to (batch_size, D)</span>
+    <span class="n">sqrtn</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span>
+    <span class="n">sqrtimg</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])))</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">sqrtn</span><span class="p">,</span> <span class="n">sqrtn</span><span class="p">))</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">sqrtn</span><span class="p">,</span> <span class="n">sqrtn</span><span class="p">)</span>
+    <span class="n">gs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">images</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">([</span><span class="n">sqrtimg</span><span class="p">,</span><span class="n">sqrtimg</span><span class="p">]))</span>
+    <span class="k">return</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="functions-of-pre-processing-and-post-processing-images">
+<h3>Functions of pre-processing and post-processing images<a class="headerlink" href="#functions-of-pre-processing-and-post-processing-images" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">preprocess_img</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">-</span> <span class="mf">1.0</span>
+
+<span class="k">def</span> <span class="nf">deprocess_img</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+
+<span class="k">def</span> <span class="nf">rel_error</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1e-8</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span><span class="p">))))</span>
+
+<span class="k">def</span> <span class="nf">count_params</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Count the number of parameters in the current TensorFlow graph &quot;&quot;&quot;</span>
+    <span class="n">param_count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">param_count</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="download-a-file-from-a-url-using-the-requests-library">
+<h3>Download a file from a URL using the requests library<a class="headerlink" href="#download-a-file-from-a-url-using-the-requests-library" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;https://static-1300131294.cos.ap-shanghai.myqcloud.com/data/deep-learning/Gan/gan-checks-tf.npz&#39;</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;gan-checks-tf.npz&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="c1"># Now you can use np.load on the downloaded file</span>
+<span class="n">answers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;gan-checks-tf.npz&#39;</span><span class="p">)</span>
+
+<span class="n">NOISE_DIM</span> <span class="o">=</span> <span class="mi">96</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-data">
+<h3>Load Data<a class="headerlink" href="#load-data" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MNIST</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct an iterator object over the MNIST data</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        - batch_size: Integer giving number of elements per minibatch</span>
+<span class="sd">        - shuffle: (optional) Boolean, whether to shuffle the data on each epoch</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">train</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">mnist</span><span class="o">.</span><span class="n">load_data</span><span class="p">()</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">train</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">/</span><span class="mi">255</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span> <span class="o">=</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span>
+
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">N</span><span class="p">,</span> <span class="n">B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+        <span class="n">idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">idxs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">B</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">B</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">B</span><span class="p">))</span> 
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span> 
+<span class="n">show_images</span><span class="p">(</span><span class="n">mnist</span><span class="o">.</span><span class="n">X</span><span class="p">[:</span><span class="mi">25</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/9de3a1dc8ee422f12258866c0343141684af1a89372611965af970e672f7c3fd.png" src="../_images/9de3a1dc8ee422f12258866c0343141684af1a89372611965af970e672f7c3fd.png" />
+</div>
+</div>
+</section>
+<section id="compute-the-leaky-relu-activation-function">
+<h3>Compute the leaky ReLU activation function<a class="headerlink" href="#compute-the-leaky-relu-activation-function" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="generate-random-uniform-noise-from-1-to-1">
+<h3>Generate random uniform noise from -1 to 1<a class="headerlink" href="#generate-random-uniform-noise-from-1-to-1" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sample_noise</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">dim</span><span class="p">):</span>
+    <span class="n">noise</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">([</span><span class="n">batch_size</span><span class="p">,</span><span class="n">dim</span><span class="p">],</span><span class="n">minval</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">maxval</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">noise</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-discriminator-score-for-a-batch-of-input-images">
+<h3>Compute discriminator score for a batch of input images<a class="headerlink" href="#compute-discriminator-score-for-a-batch-of-input-images" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">discriminator</span><span class="p">():</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">InputLayer</span><span class="p">(</span><span class="mi">784</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.01</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.01</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">test_discriminator</span><span class="p">(</span><span class="n">true_count</span><span class="o">=</span><span class="mi">267009</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">()</span>
+    <span class="n">cur_count</span> <span class="o">=</span> <span class="n">count_params</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cur_count</span> <span class="o">!=</span> <span class="n">true_count</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Incorrect number of parameters in discriminator. </span><span class="si">{0}</span><span class="s1"> instead of </span><span class="si">{1}</span><span class="s1">. Check your achitecture.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_count</span><span class="p">,</span><span class="n">true_count</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Correct number of parameters in discriminator.&#39;</span><span class="p">)</span>
+        
+<span class="n">test_discriminator</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Correct number of parameters in discriminator.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-generator-score-for-a-batch-of-input-images">
+<h3>Compute generator score for a batch of input images<a class="headerlink" href="#compute-generator-score-for-a-batch-of-input-images" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generator</span><span class="p">(</span><span class="n">noise_dim</span><span class="o">=</span><span class="n">NOISE_DIM</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Sequential</span><span class="p">([</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">InputLayer</span><span class="p">(</span><span class="n">noise_dim</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1024</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">1024</span><span class="p">),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+        <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">Dense</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span><span class="n">activation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">tanh</span><span class="p">)</span>
+    <span class="p">])</span>
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_generator</span><span class="p">(</span><span class="n">true_count</span><span class="o">=</span><span class="mi">1858320</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">generator</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">cur_count</span> <span class="o">=</span> <span class="n">count_params</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cur_count</span> <span class="o">!=</span> <span class="n">true_count</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Incorrect number of parameters in generator. </span><span class="si">{0}</span><span class="s1"> instead of </span><span class="si">{1}</span><span class="s1">. Check your achitecture.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_count</span><span class="p">,</span><span class="n">true_count</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Correct number of parameters in generator.&#39;</span><span class="p">)</span>
+        
+<span class="n">test_generator</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Correct number of parameters in generator.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-the-discriminator-loss">
+<h3>Compute the discriminator loss<a class="headerlink" href="#compute-the-discriminator-loss" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">discriminator_loss</span><span class="p">(</span><span class="n">logits_real</span><span class="p">,</span> <span class="n">logits_fake</span><span class="p">):</span>
+
+    <span class="n">loss</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">BinaryCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span>
+    <span class="n">real_loss</span> <span class="o">=</span> <span class="n">cross_entropy</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">logits_real</span><span class="p">),</span> <span class="n">logits_real</span><span class="p">)</span>
+    <span class="n">fake_loss</span> <span class="o">=</span> <span class="n">cross_entropy</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">logits_fake</span><span class="p">),</span> <span class="n">logits_fake</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">real_loss</span> <span class="o">+</span> <span class="n">fake_loss</span>
+    <span class="c1"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="k">def</span> <span class="nf">test_discriminator_loss</span><span class="p">(</span><span class="n">logits_real</span><span class="p">,</span> <span class="n">logits_fake</span><span class="p">,</span> <span class="n">d_loss_true</span><span class="p">):</span>
+    <span class="n">d_loss</span> <span class="o">=</span> <span class="n">discriminator_loss</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">logits_real</span><span class="p">),</span>
+                                <span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">logits_fake</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum error in d_loss: </span><span class="si">%g</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">rel_error</span>(d_loss_true, d_loss))
+
+<span class="n">test_discriminator_loss</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;logits_real&#39;</span><span class="p">],</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;logits_fake&#39;</span><span class="p">],</span>
+                        <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;d_loss_true&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum error in d_loss: 6.02597e-17
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="compute-the-generator-loss">
+<h3>Compute the generator loss<a class="headerlink" href="#compute-the-generator-loss" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generator_loss</span><span class="p">(</span><span class="n">logits_fake</span><span class="p">):</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cross_entropy</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">losses</span><span class="o">.</span><span class="n">BinaryCrossentropy</span><span class="p">(</span><span class="n">from_logits</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">cross_entropy</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">logits_fake</span><span class="p">),</span> <span class="n">logits_fake</span><span class="p">)</span>
+    <span class="c1"># *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****</span>
+    <span class="k">return</span> <span class="n">loss</span>
+
+<span class="k">def</span> <span class="nf">test_generator_loss</span><span class="p">(</span><span class="n">logits_fake</span><span class="p">,</span> <span class="n">g_loss_true</span><span class="p">):</span>
+    <span class="n">g_loss</span> <span class="o">=</span> <span class="n">generator_loss</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">constant</span><span class="p">(</span><span class="n">logits_fake</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Maximum error in g_loss: </span><span class="si">%g</span><span class="s2">&quot;</span><span class="o">%</span><span class="k">rel_error</span>(g_loss_true, g_loss))
+
+<span class="n">test_generator_loss</span><span class="p">(</span><span class="n">answers</span><span class="p">[</span><span class="s1">&#39;logits_fake&#39;</span><span class="p">],</span> <span class="n">answers</span><span class="p">[</span><span class="s1">&#39;g_loss_true&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Maximum error in g_loss: 7.19722e-17
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-solvers-for-gan-training">
+<h3>Create solvers for GAN training<a class="headerlink" href="#create-solvers-for-gan-training" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_solvers</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">beta1</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="n">D_solver</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">G_solver</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">D_solver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">,</span><span class="n">beta1</span><span class="p">)</span>
+    <span class="n">G_solver</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">,</span><span class="n">beta1</span><span class="p">)</span>
+    <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">D_solver</span><span class="p">,</span> <span class="n">G_solver</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="train-a-gan-for-a-certain-number-of-epochs">
+<h3>Train a GAN for a certain number of epochs<a class="headerlink" href="#train-a-gan-for-a-certain-number-of-epochs" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_a_gan</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">D_solver</span><span class="p">,</span> <span class="n">G_solver</span><span class="p">,</span> <span class="n">discriminator_loss</span><span class="p">,</span> <span class="n">generator_loss</span><span class="p">,</span>\
+              <span class="n">show_every</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">print_every</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_size</span><span class="o">=</span><span class="mi">96</span><span class="p">):</span>
+    <span class="n">mnist</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">iter_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">mnist</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+                <span class="n">real_data</span> <span class="o">=</span> <span class="n">x</span>
+                <span class="n">logits_real</span> <span class="o">=</span> <span class="n">D</span><span class="p">(</span><span class="n">preprocess_img</span><span class="p">(</span><span class="n">real_data</span><span class="p">))</span>
+
+                <span class="n">g_fake_seed</span> <span class="o">=</span> <span class="n">sample_noise</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">noise_size</span><span class="p">)</span>
+                <span class="n">fake_images</span> <span class="o">=</span> <span class="n">G</span><span class="p">(</span><span class="n">g_fake_seed</span><span class="p">)</span>
+                <span class="n">logits_fake</span> <span class="o">=</span> <span class="n">D</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">fake_images</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">784</span><span class="p">]))</span>
+                <span class="n">d_total_error</span> <span class="o">=</span> <span class="n">discriminator_loss</span><span class="p">(</span><span class="n">logits_real</span><span class="p">,</span> <span class="n">logits_fake</span><span class="p">)</span>
+                <span class="n">d_gradients</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">d_total_error</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>      
+                <span class="n">D_solver</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">d_gradients</span><span class="p">,</span> <span class="n">D</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+            
+            <span class="k">with</span> <span class="n">tf</span><span class="o">.</span><span class="n">GradientTape</span><span class="p">()</span> <span class="k">as</span> <span class="n">tape</span><span class="p">:</span>
+                <span class="n">g_fake_seed</span> <span class="o">=</span> <span class="n">sample_noise</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">noise_size</span><span class="p">)</span>
+                <span class="n">fake_images</span> <span class="o">=</span> <span class="n">G</span><span class="p">(</span><span class="n">g_fake_seed</span><span class="p">)</span>
+
+                <span class="n">gen_logits_fake</span> <span class="o">=</span> <span class="n">D</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">fake_images</span><span class="p">,</span> <span class="p">[</span><span class="n">batch_size</span><span class="p">,</span> <span class="mi">784</span><span class="p">]))</span>
+                <span class="n">g_error</span> <span class="o">=</span> <span class="n">generator_loss</span><span class="p">(</span><span class="n">gen_logits_fake</span><span class="p">)</span>
+                <span class="n">g_gradients</span> <span class="o">=</span> <span class="n">tape</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">g_error</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">)</span>      
+                <span class="n">G_solver</span><span class="o">.</span><span class="n">apply_gradients</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">g_gradients</span><span class="p">,</span> <span class="n">G</span><span class="o">.</span><span class="n">trainable_variables</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">iter_count</span> <span class="o">%</span> <span class="n">show_every</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{}</span><span class="s1">, Iter: </span><span class="si">{}</span><span class="s1">, D: </span><span class="si">{:.4}</span><span class="s1">, G:</span><span class="si">{:.4}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">iter_count</span><span class="p">,</span><span class="n">d_total_error</span><span class="p">,</span><span class="n">g_error</span><span class="p">))</span>
+                <span class="n">imgs_numpy</span> <span class="o">=</span> <span class="n">fake_images</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+                <span class="n">show_images</span><span class="p">(</span><span class="n">imgs_numpy</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">30</span><span class="p">])</span>
+                <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+            <span class="n">iter_count</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="c1"># random noise fed into our generator</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">sample_noise</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">noise_size</span><span class="p">)</span>
+    <span class="c1"># generated images</span>
+    <span class="n">G_sample</span> <span class="o">=</span> <span class="n">G</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final images&#39;</span><span class="p">)</span>
+    <span class="n">show_images</span><span class="p">(</span><span class="n">G_sample</span><span class="p">[:</span><span class="mi">16</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+<span class="c1"># Make the discriminator</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">discriminator</span><span class="p">()</span>
+
+<span class="c1"># Make the generator</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">generator</span><span class="p">()</span>
+
+<span class="c1"># Use the function you wrote earlier to get optimizers for the Discriminator and the Generator</span>
+<span class="n">D_solver</span><span class="p">,</span> <span class="n">G_solver</span> <span class="o">=</span> <span class="n">get_solvers</span><span class="p">()</span>
+
+<span class="c1"># Run it!</span>
+<span class="n">run_a_gan</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">D_solver</span><span class="p">,</span> <span class="n">G_solver</span><span class="p">,</span> <span class="n">discriminator_loss</span><span class="p">,</span> <span class="n">generator_loss</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0, Iter: 0, D: 1.14, G:0.6946
+</pre></div>
+</div>
+<img alt="../_images/2b3395d480c37bdb02cc37b676d8223d0d9186a72e8b75235f10fb294c5eb000.png" src="../_images/2b3395d480c37bdb02cc37b676d8223d0d9186a72e8b75235f10fb294c5eb000.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0, Iter: 1000, D: 0.7591, G:2.441
+</pre></div>
+</div>
+<img alt="../_images/34582977e7eb594b0f7b721247684189272c2662d78fd68b980702906fcb31db.png" src="../_images/34582977e7eb594b0f7b721247684189272c2662d78fd68b980702906fcb31db.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0, Iter: 2000, D: 0.9709, G:0.9196
+</pre></div>
+</div>
+<img alt="../_images/c7d9db92fd21d96e95d2ef0e5d5e7dac69faf6d22fd8e4c134ff97c7c2f1f433.png" src="../_images/c7d9db92fd21d96e95d2ef0e5d5e7dac69faf6d22fd8e4c134ff97c7c2f1f433.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 0, Iter: 3000, D: 1.2, G:2.018
+</pre></div>
+</div>
+<img alt="../_images/810b133c3cf30e521998da011804ebd744b38f726c46a201adf8b687961a1d37.png" src="../_images/810b133c3cf30e521998da011804ebd744b38f726c46a201adf8b687961a1d37.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1, Iter: 4000, D: 1.199, G:1.177
+</pre></div>
+</div>
+<img alt="../_images/fa2b67b7470eb005324510fe5ac1d7d52a26e337d494a8bf2de50a7f4419b06f.png" src="../_images/fa2b67b7470eb005324510fe5ac1d7d52a26e337d494a8bf2de50a7f4419b06f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1, Iter: 5000, D: 1.263, G:1.492
+</pre></div>
+</div>
+<img alt="../_images/9517822edc5fb312de3426db703c0336dd71351309096671319675b0af0612ff.png" src="../_images/9517822edc5fb312de3426db703c0336dd71351309096671319675b0af0612ff.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1, Iter: 6000, D: 1.287, G:0.8328
+</pre></div>
+</div>
+<img alt="../_images/9343358ad691055fcfe5a22dac08c83c4c84c6cad1b2f11cd8f57b26f7fb225a.png" src="../_images/9343358ad691055fcfe5a22dac08c83c4c84c6cad1b2f11cd8f57b26f7fb225a.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1, Iter: 7000, D: 1.295, G:1.124
+</pre></div>
+</div>
+<img alt="../_images/69088ab27a3b4b88c71c87a74d69997cc96a041e3b31e12b773aec32849ff9e9.png" src="../_images/69088ab27a3b4b88c71c87a74d69997cc96a041e3b31e12b773aec32849ff9e9.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 2, Iter: 8000, D: 1.302, G:1.125
+</pre></div>
+</div>
+<img alt="../_images/2c812594c2c49045830a21b1b8ab011936444e798af5d0212ab903eee5072c52.png" src="../_images/2c812594c2c49045830a21b1b8ab011936444e798af5d0212ab903eee5072c52.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 2, Iter: 9000, D: 1.118, G:0.6758
+</pre></div>
+</div>
+<img alt="../_images/3deffdc4341e6e00f2abab249245822abf146294fc91854085d27d10b0730704.png" src="../_images/3deffdc4341e6e00f2abab249245822abf146294fc91854085d27d10b0730704.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 2, Iter: 10000, D: 1.173, G:0.7965
+</pre></div>
+</div>
+<img alt="../_images/31ac94e62d5224719229789fb4af46ca904c00fee7a613bbf32c8b3e1ba0973c.png" src="../_images/31ac94e62d5224719229789fb4af46ca904c00fee7a613bbf32c8b3e1ba0973c.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 2, Iter: 11000, D: 1.351, G:0.9481
+</pre></div>
+</div>
+<img alt="../_images/8233e639779727f612523d721e9b300a71913ec84021a70d1fca3d315e33e861.png" src="../_images/8233e639779727f612523d721e9b300a71913ec84021a70d1fca3d315e33e861.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Final images
+</pre></div>
+</div>
+<img alt="../_images/7a097c8ea0375be6e20192c7e6b79d9bac32395a755752401e8040f0a40baece.png" src="../_images/7a097c8ea0375be6e20192c7e6b79d9bac32395a755752401e8040f0a40baece.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="your-turn">
+<h2>Your turn! 🚀<a class="headerlink" href="#your-turn" title="Link to this heading">#</a></h2>
+<p>Implement TODO part of the code in this notebook.</p>
+<!-- Assignment - [Art by gan](../assignments/deep-learning/gan/art-by-gan.ipynb) -->
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading">#</a></h2>
+<p>Thanks to <a class="reference external" href="https://github.com/rasbt">Sebastian Raschka</a> for creating the open-source project <a class="reference external" href="https://github.com/rasbt/stat453-deep-learning-ss20">stat453-deep-learning-ss20</a> and <a class="reference external" href="https://github.com/diegoalejogm">Diego Gomez</a> for creating the open-source project <a class="reference external" href="https://github.com/diegoalejogm/gans">gans</a>. They inspire the majority of the content in this chapter.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./deep-learning"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="nlp/text-representation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Word embedding</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="difussion-model.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Diffusion Model</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code">Code</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#function-of-displaying-a-grid-of-images">Function of displaying a grid of images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions-of-pre-processing-and-post-processing-images">Functions of pre-processing and post-processing images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-a-file-from-a-url-using-the-requests-library">Download a file from a URL using the requests library</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#load-data">Load Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-leaky-relu-activation-function">Compute the leaky ReLU activation function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-random-uniform-noise-from-1-to-1">Generate random uniform noise from -1 to 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-discriminator-score-for-a-batch-of-input-images">Compute discriminator score for a batch of input images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-generator-score-for-a-batch-of-input-images">Compute generator score for a batch of input images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-discriminator-loss">Compute the discriminator loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compute-the-generator-loss">Compute the generator loss</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-solvers-for-gan-training">Create solvers for GAN training</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#train-a-gan-for-a-certain-number-of-epochs">Train a GAN for a certain number of epochs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#your-turn">Your turn! 🚀</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Xinyu Li
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
