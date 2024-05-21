@@ -1,18 +1,18 @@
-# JackW_DL
+# Lxy DeepLearning class
 
-A Deep Learning Open Book created by JackWang
+A Deep Learning Open Book created by llzccz
 
 ## Usage
 
 ### Building the book
 
-If you'd like to develop and/or build the JackW_DL book, you should:
+If you'd like to develop and/or build the llzccz, you should:
 
 1. Clone this repository
 2. Run `pip install -r requirements.txt` (it is recommended you do this within a virtual environment)
-3. (Optional) Edit the books source files located in the `JackW_DL/` directory
-4. Run `jupyter-book clean JackW_DL/` to remove any existing builds
-5. Run `jupyter-book build JackW_DL/`
+3. (Optional) Edit the books source files located in the `llzccz/` directory
+4. Run `jupyter-book clean llzccz/` to remove any existing builds
+5. Run `jupyter-book build llzccz/`
 
 A fully-rendered HTML version of the book will be built in `JackW_DL/_build/html/`.
 
