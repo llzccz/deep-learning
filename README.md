@@ -1,4 +1,4 @@
-# Lxy DeepLearning class
+# Lxy DeepLearning Course
 
 A Deep Learning Open Book created by llzccz
 
@@ -14,7 +14,7 @@ If you'd like to develop and/or build the llzccz, you should:
 4. Run `jupyter-book clean llzccz/` to remove any existing builds
 5. Run `jupyter-book build llzccz/`
 
-A fully-rendered HTML version of the book will be built in `JackW_DL/_build/html/`.
+A fully-rendered HTML version of the book will be built in `llzccz/_build/html/`.
 
 ### Hosting the book
 
@@ -24,7 +24,7 @@ For GitHub and GitLab deployment specifically, the [cookiecutter-jupyter-book](h
 
 ## Contributors
 
-We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/JackWang0318/JackW_DL/graphs/contributors).
+We welcome and recognize all contributions. You can see a list of current contributors in the [contributors tab](https://github.com/llzccz/deep-earning/graphs/contributors).
 
 ## Credits
 
